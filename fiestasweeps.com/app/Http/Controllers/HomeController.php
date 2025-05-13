@@ -30,4 +30,13 @@ class HomeController extends Controller
     {
         return view('contact');
     }
+
+    public function play($slug)
+    {
+        $game = Game::where('slug', $slug)
+                    ->where('active', true)
+                    ->firstOrFail();
+                    
+        return view('games.play', compact('game'));
+    }
 }

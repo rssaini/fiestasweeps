@@ -9,7 +9,9 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+// Game routes
 Route::get('/games', [HomeController::class, 'games'])->name('games');
+Route::get('/games/{slug}', [HomeController::class, 'play'])->name('games.play');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
