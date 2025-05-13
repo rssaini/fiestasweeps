@@ -18,7 +18,7 @@
 
     <meta itemprop="name" content="Play Fun Spot - Home">
     <meta itemprop="description" content="" welcome="" to="" fun="" spot="" –="" your="" ultimate="" destination="" for="" thrilling="" online="" gaming="" experiences!="" dive="" into="" a="" world="" where="" excitement="" meets="" innovation,="" with="" diverse="" range="" of="" games.="" offers="" an="" ever-expanding="" library="" games="" keep="" you="" entertained="" hours.="" join="" our="" community="" passionate="" gamers="" and="" embark="" on="" unforgettable="" journey.="" play,="" connect,="" discover="" something="" new="" every="" day="" at="" never="" stops!"="">
-    <meta itemprop="image" content="https://tFa2sPLJC8LS.com/assets/images/seo/LbO3FMaJGF7b.png">
+    <meta itemprop="image" content="/assets/images/seo/LbO3FMaJGF7b.png">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Fun Spot - The Ultimate Online Gaming Platform">
@@ -27,7 +27,7 @@
     <meta property="og:image:type" content="png">
     <meta property="og:image:width" content="1180">
     <meta property="og:image:height" content="600">
-    <meta property="og:url" content="https://tFa2sPLJC8LS.com">
+    <meta property="og:url" content="https://fiestasweeps.com">
 
     <meta name="twitter:card" content="summary_large_image">
 
@@ -81,22 +81,22 @@
     <div class="header__bottom">
         <div class="container">
             <nav class="navbar navbar-expand-xl align-items-center p-0">
-                <a class="site-logo site-title" href="https://tFa2sPLJC8LS.com"><img src="assets/images/logoIcon/logo.png" alt="site-logo"></a>
+                <a class="site-logo site-title" href="https://fiestasweeps.com"><img src="assets/images/logoIcon/logo.png" alt="site-logo"></a>
                 <button class="navbar-toggler ml-auto" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="menu-toggle"></span>
                 </button>
                 <div class="navbar-collapse collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav main-menu m-auto">
-                        <li><a href="https://tFa2sPLJC8LS.com">Home</a></li>
-                                                    <li><a href="https://tFa2sPLJC8LS.com/about-us">About Us</a></li>
-                                                <li><a href="https://tFa2sPLJC8LS.com/games">Games</a></li>
-                        <li><a href="https://tFa2sPLJC8LS.com/blog">Blog</a></li>
-                        <li><a href="https://tFa2sPLJC8LS.com/contact">Contact</a></li>
+                        <li><a href="https://fiestasweeps.com">Home</a></li>
+                                                    <li><a href="https://fiestasweeps/about-us">About Us</a></li>
+                                                <li><a href="https://fiestasweeps.com/games">Games</a></li>
+                        <li><a href="https://fiestasweeps.com/blog">Blog</a></li>
+                        <li><a href="https://fiestasweeps.com/contact">Contact</a></li>
                     </ul>
                     <div class="nav-right">
 
-                                                    <a href="https://tFa2sPLJC8LS.com/user/login"><i class="las la-sign-in-alt"></i> Login                            </a>
-                                                            <a href="https://tFa2sPLJC8LS.com/user/register"><i class="las la-user-plus"></i> Registration</a>
+                                                    <a href="https://fiestasweeps.com/user/login"><i class="las la-sign-in-alt"></i> Login                            </a>
+                                                            <a href="https://fiestasweeps.com/user/register"><i class="las la-user-plus"></i> Registration</a>
 
                                                                                 <select class="langSel">
                                                                     <option value="en" selected="">English</option>
@@ -184,7 +184,7 @@
                         </div>
                         <div class="game-card__content">
                             <h4 class="game-name">Golden Dragon</h4>
-                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://tFa2sPLJC8LS.com/user/play/game/head_tail">Play Now</a>
+                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://fiestasweeps.com/user/play/game/head_tail">Play Now</a>
                         </div>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
                         </div>
                         <div class="game-card__content">
                             <h4 class="game-name">Ultra Panda</h4>
-                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://tFa2sPLJC8LS.com/user/play/game/rock_paper_scissors">Play Now</a>
+                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://fiestasweeps.com/user/play/game/rock_paper_scissors">Play Now</a>
                         </div>
                     </div>
                 </div>
@@ -206,7 +206,7 @@
                         </div>
                         <div class="game-card__content">
                             <h4 class="game-name">Orion power</h4>
-                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://tFa2sPLJC8LS.com/user/play/game/dice_rolling">Play Now</a>
+                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://fiestasweeps.com/user/play/game/dice_rolling">Play Now</a>
                         </div>
                     </div>
                 </div>
@@ -217,7 +217,7 @@
                         </div>
                         <div class="game-card__content">
                             <h4 class="game-name">V blink</h4>
-                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://tFa2sPLJC8LS.com/user/play/game/card_finding">Play Now</a>
+                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://fiestasweeps.com/user/play/game/card_finding">Play Now</a>
                         </div>
                     </div>
                 </div>
@@ -228,7 +228,7 @@
                         </div>
                         <div class="game-card__content">
                             <h4 class="game-name">Magic city 777</h4>
-                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://tFa2sPLJC8LS.com/user/play/game/number_pool">Play Now</a>
+                            <a class="cmn-btn d-block btn-sm btn--capsule mt-3 text-center" href="https://fiestasweeps.com/user/play/game/number_pool">Play Now</a>
                         </div>
                     </div>
                 </div>
@@ -480,9 +480,9 @@
                         <span class="post-card__date">02 May, 2024</span>
                     </div>
                     <div class="post-card__content">
-                        <h3 class="post-card__title mt-2 mb-3"><a href="https://tFa2sPLJC8LS.com/blog/understanding-the-plight-of-afghan-refugees-in-north-florida-needs-and-support/125">Understanding the Plight of Afghan Refugees in North Florida: Needs and Support</a>
+                        <h3 class="post-card__title mt-2 mb-3"><a href="https://fiestasweeps.com/blog/understanding-the-plight-of-afghan-refugees-in-north-florida-needs-and-support/125">Understanding the Plight of Afghan Refugees in North Florida: Needs and Support</a>
                         </h3>
-                        <a href="https://tFa2sPLJC8LS.com/blog/understanding-the-plight-of-afghan-refugees-in-north-florida-needs-and-support/125" class="cmn-btn btn-sm mt-3">Read More</a>
+                        <a href="https://fiestasweeps.com/blog/understanding-the-plight-of-afghan-refugees-in-north-florida-needs-and-support/125" class="cmn-btn btn-sm mt-3">Read More</a>
                     </div>
                 </div>
             </div>
@@ -493,9 +493,9 @@
                         <span class="post-card__date">02 May, 2024</span>
                     </div>
                     <div class="post-card__content">
-                        <h3 class="post-card__title mt-2 mb-3"><a href="https://tFa2sPLJC8LS.com/blog/the-future-of-online-gaming-emerging-trends-and-technologies/104">The Future of Online Gaming: Emerging Trends and Technologies</a>
+                        <h3 class="post-card__title mt-2 mb-3"><a href="https://fiestasweeps.com/blog/the-future-of-online-gaming-emerging-trends-and-technologies/104">The Future of Online Gaming: Emerging Trends and Technologies</a>
                         </h3>
-                        <a href="https://tFa2sPLJC8LS.com/blog/the-future-of-online-gaming-emerging-trends-and-technologies/104" class="cmn-btn btn-sm mt-3">Read More</a>
+                        <a href="https://fiestasweeps.com/blog/the-future-of-online-gaming-emerging-trends-and-technologies/104" class="cmn-btn btn-sm mt-3">Read More</a>
                     </div>
                 </div>
             </div>
@@ -506,9 +506,9 @@
                         <span class="post-card__date">02 May, 2024</span>
                     </div>
                     <div class="post-card__content">
-                        <h3 class="post-card__title mt-2 mb-3"><a href="https://tFa2sPLJC8LS.com/blog/mastering-the-art-of-table-games-strategies-for-blackjack-and-roulette-introduction/103">Mastering the Art of Table Games: Strategies for Blackjack and Roulette"  Introduction</a>
+                        <h3 class="post-card__title mt-2 mb-3"><a href="https://fiestasweeps.com/blog/mastering-the-art-of-table-games-strategies-for-blackjack-and-roulette-introduction/103">Mastering the Art of Table Games: Strategies for Blackjack and Roulette"  Introduction</a>
                         </h3>
-                        <a href="https://tFa2sPLJC8LS.com/blog/mastering-the-art-of-table-games-strategies-for-blackjack-and-roulette-introduction/103" class="cmn-btn btn-sm mt-3">Read More</a>
+                        <a href="https://fiestasweeps.com/blog/mastering-the-art-of-table-games-strategies-for-blackjack-and-roulette-introduction/103" class="cmn-btn btn-sm mt-3">Read More</a>
                     </div>
                 </div>
             </div>
@@ -554,7 +554,7 @@
             <div class="row gy-4 align-items-center justify-content-center justify-content-md-between">
                 <div class="col-lg-4 col-md-4 text-md-left">
                     <div class="footer-widget text-md-start text-center">
-                        <a class="footer-logo" href="https://tFa2sPLJC8LS.com">
+                        <a class="footer-logo" href="https://fiestasweeps.com">
                             <img src="assets/images/logoIcon/logo.png" alt="image">
                         </a>
                     </div>
@@ -590,19 +590,19 @@
                                     </ul>
                 <ul class="footer-menu">
                                             <li>
-                            <a href="https://tFa2sPLJC8LS.com/policy/privacy-policy/42">Privacy Policy</a>
+                            <a href="https://fiestasweeps.com/policy/privacy-policy/42">Privacy Policy</a>
                         </li>
                                             <li>
-                            <a href="https://tFa2sPLJC8LS.com/policy/terms-and-conditions/43">Terms and Conditions</a>
+                            <a href="https://fiestasweeps.com/policy/terms-and-conditions/43">Terms and Conditions</a>
                         </li>
                                             <li>
-                            <a href="https://tFa2sPLJC8LS.com/policy/responsible-gaming/122">Responsible Gaming</a>
+                            <a href="https://fiestasweeps.com/policy/responsible-gaming/122">Responsible Gaming</a>
                         </li>
                                             <li>
-                            <a href="https://tFa2sPLJC8LS.com/policy/banking/123">Banking</a>
+                            <a href="https://fiestasweeps.com/policy/banking/123">Banking</a>
                         </li>
                                             <li>
-                            <a href="https://tFa2sPLJC8LS.com/policy/refund-policy/124">Refund Policy</a>
+                            <a href="https://fiestasweeps.com/policy/refund-policy/124">Refund Policy</a>
                         </li>
                                     </ul>
             </div>
@@ -650,7 +650,7 @@
                     headers: {
                         "X-CSRF-TOKEN": "Whm47lmkUShOdMFJOW9gBOjGWswScEfyn7uiViza",
                     },
-                    url: "https://tFa2sPLJC8LS.com/subscribe",
+                    url: "https://fiestasweeps.com/subscribe",
                     method: "POST",
                     data: {
                         email: email
@@ -701,11 +701,11 @@
         (function($) {
             "use strict";
             $(".langSel").on("change", function() {
-                window.location.href = "https://tFa2sPLJC8LS.com/change/" + $(this).val();
+                window.location.href = "https://fiestasweeps.com/change/" + $(this).val();
             });
 
             $('.policy').on('click', function() {
-                $.get('https://tFa2sPLJC8LS.com/cookie/accept', function(response) {
+                $.get('https://fiestasweeps.com/cookie/accept', function(response) {
                     $('.cookies-card').addClass('d-none');
                 });
             });
