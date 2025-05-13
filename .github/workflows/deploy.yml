@@ -1,0 +1,22 @@
+name: Deploy on Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Deploy to Server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > /tmp/server_key
+        chmod 600 /tmp/server_key
+        ssh -i /tmp/server_key -o StrictHostKeyChecking=no ubuntu@35.162.38.244 'bash -s' < /home/ubuntu/deploy.sh
