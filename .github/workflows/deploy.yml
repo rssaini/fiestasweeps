@@ -15,8 +15,9 @@ jobs:
 
     - name: Deploy to Server
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_PRIVATE_KEY_SERVER: ${{ secrets.SSH_PRIVATE_KEY_SERVER }}
       run: |
-        echo "$SSH_PRIVATE_KEY" > /tmp/server_key
-        chmod 600 /tmp/server_key
-        ssh -i /tmp/server_key -o StrictHostKeyChecking=no ubuntu@35.162.38.244 'bash -s' < /home/ubuntu/deploy.sh
+        echo "$SSH_PRIVATE_KEY_SERVER" > /tmp/server_keys
+        echo "$SSH_PRIVATE_KEY_SERVER"
+        chmod 600 /tmp/server_keys
+        ssh -i /tmp/server_keys -o StrictHostKeyChecking=no ubuntu@35.162.38.244 'bash -s' < /home/ubuntu/deploy.sh
