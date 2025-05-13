@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+/*
 // Game routes
 Route::get('/games', [HomeController::class, 'games'])->name('games');
 Route::get('/games/{slug}', [HomeController::class, 'play'])->name('games.play');
@@ -37,3 +39,4 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+*/

@@ -9,11 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $featuredGames = Game::where('featured', true)
-                            ->where('active', true)
-                            ->take(6)
-                            ->get();
-        return view('home', compact('featuredGames'));
+        return view('welcome');
     }
 
     public function games()
@@ -36,7 +32,7 @@ class HomeController extends Controller
         $game = Game::where('slug', $slug)
                     ->where('active', true)
                     ->firstOrFail();
-                    
+
         return view('games.play', compact('game'));
     }
 }

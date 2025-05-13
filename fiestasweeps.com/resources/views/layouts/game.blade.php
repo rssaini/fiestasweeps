@@ -10,16 +10,16 @@
     <meta name="keywords" content="live game,online gaming">
     <link rel="shortcut icon" href="assets/images/logoIcon/favicon.png" type="image/x-icon">
 
-    
+
     <link rel="apple-touch-icon" href="assets/images/logoIcon/logo.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Play Fun Spot - Home">
-    
+
     <meta itemprop="name" content="Play Fun Spot - Home">
     <meta itemprop="description" content="" welcome="" to="" fun="" spot="" –="" your="" ultimate="" destination="" for="" thrilling="" online="" gaming="" experiences!="" dive="" into="" a="" world="" where="" excitement="" meets="" innovation,="" with="" diverse="" range="" of="" games.="" offers="" an="" ever-expanding="" library="" games="" keep="" you="" entertained="" hours.="" join="" our="" community="" passionate="" gamers="" and="" embark="" on="" unforgettable="" journey.="" play,="" connect,="" discover="" something="" new="" every="" day="" at="" never="" stops!"="">
     <meta itemprop="image" content="https://tFa2sPLJC8LS.com/assets/images/seo/LbO3FMaJGF7b.png">
-    
+
     <meta property="og:type" content="website">
     <meta property="og:title" content="Fun Spot - The Ultimate Online Gaming Platform">
     <meta property="og:description" content="Get ready for non-stop entertainment and big wins with Fun Spot - Ultimate Online Gaming Platform! With seamless mobile compatibility, you can enjoy your favorite games anytime. Our friendly and knowledgeable customer support team is available 24/7 to ensure a smooth and enjoyable gaming experience. Join now and experience the excitement of our Online Gaming Platform!">
@@ -28,7 +28,7 @@
     <meta property="og:image:width" content="1180">
     <meta property="og:image:height" content="600">
     <meta property="og:url" content="https://tFa2sPLJC8LS.com">
-    
+
     <meta name="twitter:card" content="summary_large_image">
 
     <link href="assets/global/css/bootstrap.min.css" rel="stylesheet">
@@ -65,7 +65,7 @@
 </head>
 
 <body>
-    
+
     <div class="preloader">
         <div class="preloader__inner">
             <div class="preloader__thumb">
@@ -97,7 +97,7 @@
 
                                                     <a href="https://tFa2sPLJC8LS.com/user/login"><i class="las la-sign-in-alt"></i> Login                            </a>
                                                             <a href="https://tFa2sPLJC8LS.com/user/register"><i class="las la-user-plus"></i> Registration</a>
-                                                    
+
                                                                                 <select class="langSel">
                                                                     <option value="en" selected="">English</option>
                                                                     <option value="hn">Hindi</option>
@@ -111,7 +111,7 @@
 </header>
 
 
-    
+
         <section class="hero bg_img" style="background-image: url( assets/images/frontend/banner/6305cef1a72c51661325041.jpg );">
     <div class="container">
         <div class="row justify-content-between align-items-center">
@@ -514,7 +514,7 @@
             </div>
                     </div>
     </div>
-</section>            
+</section>
     <footer class="footer-section overflow-hidden">
     <div class="payment-area">
         <div class="border-bottom container pb-5">
@@ -634,12 +634,12 @@
         </span>
     </div>
 
-    
-    
+
+
     <script src="assets/global/js/jquery-3.6.0.min.js"></script>
     <script src="assets/global/js/bootstrap.bundle.min.js"></script>
 
-    
+
         <script>
         (function($) {
             "use strict";
@@ -668,7 +668,7 @@
         })(jQuery)
     </script>
 
-    
+
     <link href="assets/global/css/iziToast.min.css" rel="stylesheet">
 <script src="assets/global/js/iziToast.min.js"></script>
 
