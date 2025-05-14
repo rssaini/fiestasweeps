@@ -16,8 +16,10 @@ jobs:
     - name: Deploy to Server
       env:
         SSH_PRIVATE_KEY_SERVER: ${{ secrets.SSH_PRIVATE_KEY_SERVER }}
+        ACTIONS_STEP_DEBUG: true
       run: |
+        echo "Testing server connection..."
         echo "$SSH_PRIVATE_KEY_SERVER" > /tmp/server_keys
         echo "$SSH_PRIVATE_KEY_SERVER"
         chmod 600 /tmp/server_keys
-        ssh -i /tmp/server_keys -o StrictHostKeyChecking=no ubuntu@35.162.38.244 'bash -s' < /home/ubuntu/deploy.sh
+        ssh -i /tmp/server_keys -o StrictHostKeyChecking=no ubuntu@35.162.38.244 '/home/ubuntu/deploy.sh'
