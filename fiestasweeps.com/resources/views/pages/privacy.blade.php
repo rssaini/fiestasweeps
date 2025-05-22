@@ -3,19 +3,20 @@
 @section('title', 'Privacy Policy')
 
 @section('content')
-<div class="page-container">
-    <div class="page-content">
-        <h1>Privacy Policy</h1>
-        <div class="content-section">
-            <h2>Information We Collect</h2>
-            <p>We collect information that you provide directly to us when you create an account, make a purchase, or contact us.</p>
-            
-            <h2>How We Use Your Information</h2>
-            <p>We use the information we collect to provide, maintain, and improve our services, communicate with you, and ensure security.</p>
-            
-            <h2>Information Sharing</h2>
-            <p>We do not sell or share your personal information with third parties except as described in this policy.</p>
-        </div>
-    </div>
-</div>
+<section id="legal">
+    <h2>Privacy Policy – Fiesta Sweeps</h2>
+    <p class="effective">Last Revised: May 19, 2025</p>
+
+    <h3>Introduction</h3>
+    <p>At Fiesta Sweeps, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information.</p>
+
+    <h3>Information We Collect</h3>
+    <p>We collect information that you provide directly to us, including:</p>
+    <ul>
+        <li>Name and contact information</li>
+        <li>Account credentials</li>
+        <li>Transaction data</li>
+        <li>Communication preferences</li>
+    </ul>
+</section>
 @endsection
