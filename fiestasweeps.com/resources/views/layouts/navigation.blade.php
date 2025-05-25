@@ -11,8 +11,16 @@
     </nav>
 
     <div class="auth-buttons">
-        <a href="{{ route('signin') }}" class="sign-in-button">Sign In</a>
-        <a href="{{ route('register') }}" class="register-button">Register</a>
+        @if(auth()->check())
+            <a href="{{ route('dashboard') }}" class="dashboard-button">Dashboard</a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        @else
+            <a href="{{ route('signin') }}" class="sign-in-button">Sign In</a>
+            <a href="{{ route('register') }}" class="register-button">Register</a>
+        @endif
     </div>
 </header>
 
