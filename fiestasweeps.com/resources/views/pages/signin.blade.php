@@ -8,6 +8,7 @@
 
             <div class="signin-container">
                 <form action="{{ route('signin.post') }}" method="POST">
+                    @csrf
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="username" inputmode="email" spellcheck="false" onfocus="this.removeAttribute('autocomplete');" required />
 

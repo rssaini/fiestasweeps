@@ -10,10 +10,10 @@
                 <form action="{{ route('register.post') }}" method="POST">
                     @csrf
                     <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" name="first-name" placeholder="Enter your first name" required />
+                    <input type="text" id="first-name" name="fname" placeholder="Enter your first name" required />
 
                     <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" name="last-name" placeholder="Enter your last name" required />
+                    <input type="text" id="last-name" name="lname" placeholder="Enter your last name" required />
 
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required />
