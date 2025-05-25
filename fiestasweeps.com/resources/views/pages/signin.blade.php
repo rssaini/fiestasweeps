@@ -7,7 +7,7 @@
             <h2>Sign In</h2>
 
             <div class="signin-container">
-                <form action="dashboard.html" method="POST">
+                <form action="{{ route('signin.post') }}" method="POST">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="username" inputmode="email" spellcheck="false" onfocus="this.removeAttribute('autocomplete');" required />
 
@@ -22,4 +22,5 @@
                 <p class="create-account">Don't have an account? <a href="{{ route('register') }}">Sign Up Here</a></p>
             </div>
         </section>
+
 @endsection
