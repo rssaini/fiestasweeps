@@ -12,10 +12,10 @@
 
     <div class="auth-buttons">
         @if(auth()->check())
-            <a href="{{ route('dashboard') }}" class="dashboard-button">Dashboard</a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+            <a href="{{ route('dashboard') }}" class="sign-in-button">Dashboard</a>
+            <a href="javascript:;" onclick="document.getElementById('logout_frm').submit()" class="register-button">Logout</a>
+            <form id="logout_frm" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
-                <button type="submit" class="logout-button">Logout</button>
             </form>
         @else
             <a href="{{ route('signin') }}" class="sign-in-button">Sign In</a>
