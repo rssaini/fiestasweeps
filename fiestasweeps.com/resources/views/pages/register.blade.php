@@ -22,7 +22,7 @@
                     <input type="password" id="password" name="password" placeholder="Create a password" autocomplete="new-password" required />
 
                     <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" name="confirmed" placeholder="Re-enter your password" required />
+                    <input type="password" id="confirm-password" name="password_confirmation" placeholder="Re-enter your password" required />
 
                     <label for="phone">Phone Number (Optional)</label>
                     <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" />
