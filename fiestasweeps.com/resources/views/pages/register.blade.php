@@ -7,7 +7,8 @@
             <h2>Create Your Account</h2>
 
             <div class="register-container">
-                <form action="dashboard.html" method="POST">
+                <form action="{{ route('register.post') }}" method="POST">
+                    @csrf
                     <label for="first-name">First Name</label>
                     <input type="text" id="first-name" name="first-name" placeholder="Enter your first name" required />
 
