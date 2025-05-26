@@ -23,7 +23,10 @@ class User extends Authenticatable
         'password',
         'lname',
         'phone',
-        'dob'
+        'dob',
+        'online_stats',
+        'marketting_stats',
+        'game_stats',
     ];
 
     /**

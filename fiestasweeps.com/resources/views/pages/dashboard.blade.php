@@ -85,15 +85,15 @@
                     <div class="toggle-group">
                         <div class="toggle-item">
                             <label>Share gameplay statistics</label>
-                            <input onchange="updateStat('game_stat', this)" type="checkbox" class="toggle" {{ auth()->user()->game_stats == '1'  ? 'checked' : '' }}>
+                            <input onchange="updateStat('game_stats', this)" type="checkbox" class="toggle" {{ auth()->user()->game_stats == '1'  ? 'checked' : '' }}>
                         </div>
                         <div class="toggle-item">
                             <label>Allow marketing emails</label>
-                            <input onchange="updateStat('marketting_stat', this)" type="checkbox" class="toggle" {{ auth()->user()->marketting_stats == '1' ? 'checked' : '' }}>
+                            <input onchange="updateStat('marketting_stats', this)" type="checkbox" class="toggle" {{ auth()->user()->marketting_stats == '1' ? 'checked' : '' }}>
                         </div>
                         <div class="toggle-item">
                             <label>Show online status</label>
-                            <input onchange="updateStat('online_stat', this)" type="checkbox" class="toggle" {{ auth()->user()->online_stats == '1' ? 'checked' : '' }}>
+                            <input onchange="updateStat('online_stats', this)" type="checkbox" class="toggle" {{ auth()->user()->online_stats == '1' ? 'checked' : '' }}>
                         </div>
                     </div>
                 </div>
