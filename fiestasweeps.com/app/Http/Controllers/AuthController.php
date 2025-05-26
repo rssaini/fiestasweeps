@@ -77,11 +77,11 @@ class AuthController extends Controller
     {
         $stat = $request->stat_name;
         $user = Auth::user();
-        $user->update([$request->state => $request->input('value', '0')]);
+        $user->update([$request->stat_name => $request->input('value', '0')]);
         return response()->json([
             'status' => 'success',
             'message' => "Your $stat has been updated successfully.",
-            'value' => $user->{$request->state}
+            'value' => $user->{$request->stat_name}
         ]);
     }
 }
