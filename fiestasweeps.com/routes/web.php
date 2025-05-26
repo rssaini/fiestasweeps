@@ -34,6 +34,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
     Route::get('/stats-update', [AuthController::class, 'statsUpdate'])->name('stats.update');
+    Route::post('/profile-update', [AuthController::class, 'profileUpdate'])->name('profile.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

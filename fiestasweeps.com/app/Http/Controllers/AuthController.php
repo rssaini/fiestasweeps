@@ -85,4 +85,23 @@ class AuthController extends Controller
             'value' => $user->{$request->stat_name}
         ]);
     }
+
+    public function profileUpdate(Request $request)
+    {
+        $user = Auth::user();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'lname' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:15',
+            'dob' => 'nullable|date',
+        ]);
+
+        $user->name = trim($validated['name']);
+        $user->lname = $validated['lname'] ?? '';
+        $user->phone = $validated['phone'];
+        $user->dob = $validated['dob'];
+        $user->save();
+
+        return redirect()->back()->with('status', 'Profile updated successfully.');
+    }
 }

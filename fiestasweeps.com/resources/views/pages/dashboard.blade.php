@@ -45,28 +45,29 @@
 
                 <div class="content-card">
                     <h2>Personal Information</h2>
-                    <form>
+                    <form action="{{ route('profile.update') }}" method="POST">
+                        @csrf
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName">First Name</label>
-                                <input type="text" id="firstName" value="{{ auth()->user()->name }}">
+                                <input type="text" id="firstName" name="name" value="{{ auth()->user()->name }}">
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
-                                <input type="text" id="lastName" value="{{auth()->user()->lname }}">
+                                <input type="text" id="lastName" name="lname" value="{{auth()->user()->lname }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" value="{{ auth()->user()->email }}">
+                            <input type="email" id="email" readonly value="{{ auth()->user()->email }}">
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" value="{{ auth()->user()->phone }}">
+                            <input type="tel" id="phone" name="phone" value="{{ auth()->user()->phone }}">
                         </div>
                         <div class="form-group">
                             <label for="birthdate">Date of Birth</label>
-                            <input type="date" id="birthdate" value="{{ auth()->user()->dob }}">
+                            <input type="date" id="birthdate" name="dob" value="{{ auth()->user()->dob }}">
                         </div>
                         <button type="submit" class="cta-button">Save Changes</button>
                     </form>
