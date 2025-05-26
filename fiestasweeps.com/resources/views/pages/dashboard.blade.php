@@ -19,7 +19,7 @@
                     <img src="assets/logo.png" alt="Fiesta Sweeps Logo" style="height: 80px;">
                 </div>
                 <h2>Dashboard</h2>
-                <p>Welcome back, John!</p>
+                <p>Welcome back, {{ auth()->user()->name }}!</p>
             </div>
 
             <nav class="sidebar-menu">
@@ -244,7 +244,7 @@
                 <div class="content-card">
                     <h2>Contact Support</h2>
                     <p>Need help? Our support team is here to assist you.</p>
-                    <a href="contact.html" class="cta-button">Contact Us</a>
+                    <a href="{{ route('contact') }}" class="cta-button">Contact Us</a>
                 </div>
             </div>
         </div>
