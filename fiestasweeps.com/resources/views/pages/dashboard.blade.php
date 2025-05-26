@@ -253,7 +253,7 @@
     <script>
         function updateStat(stat, checkbox) {
             const isChecked = checkbox.checked ? 1 : 0;
-            fetch(`/stats-update?stat_name={stat}&value=${isChecked}`)
+            fetch(`/stats-update?stat_name=${stat}&value=${isChecked}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
