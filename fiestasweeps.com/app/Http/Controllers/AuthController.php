@@ -106,4 +106,22 @@ class AuthController extends Controller
 
         return redirect()->back()->with('status', 'Profile updated successfully.');
     }
+
+    public function passwordUpdate(Request $request)
+    {
+        $user = Auth::user();
+        $validated = $request->validate([
+            'pwd' => 'required',
+            'npwd' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($validated['pwd'], $user->password)) {
+            return back()->withErrors(['pwd' => 'Current password is incorrect.']);
+        }
+
+        $user->password = Hash::make($validated['npwd']);
+        $user->save();
+
+        return redirect()->back()->with('status', 'Password updated successfully.');
+    }
 }

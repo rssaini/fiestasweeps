@@ -109,18 +109,19 @@
 
                 <div class="content-card">
                     <h2>Change Password</h2>
-                    <form>
+                    <form action="{{ route('password.update') }}" method="POST">
+                        @csrf
                         <div class="form-group">
                             <label for="currentPassword">Current Password</label>
-                            <input type="password" id="currentPassword">
+                            <input type="password" name="pwd" id="currentPassword">
                         </div>
                         <div class="form-group">
                             <label for="newPassword">New Password</label>
-                            <input type="password" id="newPassword">
+                            <input type="password" name="npwd" id="newPassword">
                         </div>
                         <div class="form-group">
                             <label for="confirmPassword">Confirm New Password</label>
-                            <input type="password" id="confirmPassword">
+                            <input type="password" name="npwd_confirmation" id="confirmPassword">
                         </div>
                         <button type="submit" class="cta-button">Update Password</button>
                     </form>
