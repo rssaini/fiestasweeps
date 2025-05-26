@@ -49,7 +49,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName">First Name</label>
-                                <input type="text" id="firstName" value="John">
+                                <input type="text" id="firstName" value="{{ auth()->user()->name }}">
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" value="john.doe@email.com">
+                            <input type="email" id="email" value="{{ auth()->user()->email }}">
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
