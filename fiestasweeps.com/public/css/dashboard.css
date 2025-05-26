@@ -1,0 +1,714 @@
+/* Dashboard-specific styles that extend the main styles.css */
+
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    background-color: #13212b;
+    padding: 30px 0;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 0 30px 30px;
+    border-bottom: 2px solid #1a3040;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.sidebar-header h2 {
+    color: #da5446;
+    font-size: 1.5em;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 15px 0 5px 0;
+}
+
+.sidebar-header p {
+    color: #f9f0e4;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.sidebar-menu {
+    padding: 0 15px;
+}
+
+.menu-item {
+    display: block;
+    color: #f9f0e4;
+    text-decoration: none;
+    padding: 15px 15px;
+    margin-bottom: 8px;
+    border-radius: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.menu-item:hover {
+    background-color: #1a3040;
+    color: #da5446;
+    text-decoration: none;
+    border-color: #da5446;
+}
+
+.menu-item.active {
+    background-color: #da5446;
+    color: #f9f0e4;
+    font-weight: 900;
+}
+
+.menu-item.active:hover {
+    background-color: #b3463a;
+    border-color: #b3463a;
+    color: #f9f0e4;
+}
+
+/* Main Content Styles */
+.main-content {
+    margin-left: 280px;
+    padding: 40px;
+    flex: 1;
+    max-width: calc(100% - 280px);
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+.content-header {
+    margin-bottom: 40px;
+}
+
+.content-header h1 {
+    color: #da5446;
+    font-size: 2.5em;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.content-header p {
+    color: #25304e;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+/* Content Cards */
+.content-card {
+    background-color: #13212b;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.content-card h2 {
+    color: #da5446;
+    font-size: 1.5em;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.content-card h3 {
+    color: #f9f0e4;
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.content-card p {
+    color: #f9f0e4;
+    margin-bottom: 15px;
+}
+
+/* Form Styles */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+    color: #f9f0e4;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    font-size: 1em;
+    background-color: #f9f0e4;
+    color: #13212b;
+    font-family: 'Karla', sans-serif;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #da5446;
+    outline: none;
+    box-shadow: 0px 0px 10px rgba(218, 84, 70, 0.3);
+}
+
+/* Button Extensions */
+.btn-secondary {
+    background-color: transparent;
+    border: 2px solid #da5446;
+    color: #da5446;
+}
+
+.btn-secondary:hover {
+    background-color: #da5446;
+    color: #f9f0e4;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background-color: #1a3040;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.stat-card .stat-number {
+    color: #da5446;
+    font-size: 2.5em;
+    font-weight: 900;
+    display: block;
+}
+
+.stat-card .stat-label {
+    color: #f9f0e4;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Toggle Switches */
+.toggle-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.toggle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #1a3040;
+}
+
+.toggle-item:last-child {
+    border-bottom: none;
+}
+
+.toggle-item label {
+    color: #f9f0e4;
+    font-weight: 600;
+    text-transform: none;
+    margin-bottom: 0;
+}
+
+.toggle {
+    position: relative;
+    width: 50px;
+    height: 25px;
+    appearance: none;
+    background-color: #1a3040;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle:checked {
+    background-color: #da5446;
+}
+
+.toggle::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 21px;
+    height: 21px;
+    background-color: #f9f0e4;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.toggle:checked::before {
+    transform: translateX(25px);
+}
+
+/* Game History Table */
+.game-history-table {
+    background-color: #1a3040;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    background-color: #da5446;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #f9f0e4;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    border-bottom: 1px solid #13212b;
+    color: #f9f0e4;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.table-row .win {
+    color: #34bb82;
+    font-weight: 700;
+}
+
+.table-row .loss {
+    color: #da5446;
+    font-weight: 700;
+}
+
+/* Desktop-specific overrides for clean styling */
+@media (min-width: 769px) {
+    .cta-button,
+    .register-button,
+    .claim-button {
+        box-shadow: none !important;
+        border: none !important;
+        background: #da5446 !important;
+        color: #f9f0e4 !important;
+        padding: 12px 25px !important;
+        border-radius: 15px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        font-size: 0.9em !important;
+        transition: background-color 0.2s ease !important;
+        display: inline-block !important;
+        width: auto !important;
+        cursor: pointer !important;
+    }
+    
+    .cta-button:hover,
+    .register-button:hover,
+    .claim-button:hover {
+        background: #b3463a !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+    }
+    
+    .register-button {
+        background: #13212b !important;
+    }
+    
+    .register-button:hover {
+        background: #1a3040 !important;
+    }
+    
+    /* Fix form input sizing on desktop */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+    
+    .form-row .form-group {
+        width: 100%;
+    }
+    
+    .form-row .form-group input,
+    .form-row .form-group select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 15px 0;
+    }
+    
+    .sidebar-header {
+        padding: 0 15px 15px;
+        margin-bottom: 15px;
+    }
+    
+    .sidebar-header .logo img {
+        height: 50px;
+    }
+    
+    .sidebar-header h2 {
+        font-size: 1.1em;
+        margin: 10px 0 5px 0;
+    }
+    
+    .sidebar-header p {
+        font-size: 0.8em;
+    }
+    
+    .sidebar-menu {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 8px;
+        padding: 0 15px;
+    }
+    
+    .menu-item {
+        padding: 8px 6px;
+        font-size: 0.7em;
+        text-align: center;
+        margin-bottom: 0;
+        border-radius: 8px;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 15px;
+    }
+    
+    .content-header {
+        margin-bottom: 20px;
+    }
+    
+    .content-header h1 {
+        font-size: 1.8em;
+        margin-bottom: 5px;
+    }
+    
+    .content-header p {
+        font-size: 0.9em;
+    }
+    
+    .content-card {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 15px;
+    }
+    
+    .content-card h2 {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        font-size: 0.8em;
+        margin-bottom: 5px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .stat-card {
+        padding: 15px;
+        border-radius: 10px;
+    }
+    
+    .stat-card .stat-number {
+        font-size: 1.8em;
+    }
+    
+    .stat-card .stat-label {
+        font-size: 0.8em;
+    }
+    
+    .table-header,
+    .table-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        text-align: left;
+        padding: 12px;
+    }
+    
+    .table-header {
+        display: none;
+    }
+    
+    .table-row {
+        display: flex;
+        flex-direction: column;
+        background-color: #13212b;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        border-bottom: none;
+        padding: 12px;
+    }
+    
+    .table-row span {
+        padding: 3px 0;
+        font-size: 0.9em;
+    }
+    
+    .table-row span:before {
+        content: attr(data-label) ": ";
+        font-weight: bold;
+        color: #da5446;
+        text-transform: uppercase;
+        font-size: 0.7em;
+        display: inline-block;
+        width: 60px;
+    }
+    
+    .toggle-item {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+    }
+    
+    .toggle-item label {
+        font-size: 0.9em;
+    }
+    
+    .toggle {
+        width: 40px;
+        height: 20px;
+    }
+    
+    .toggle::before {
+        width: 16px;
+        height: 16px;
+        top: 2px;
+        left: 2px;
+    }
+    
+    .toggle:checked::before {
+        transform: translateX(20px);
+    }
+    
+    .cta-button,
+    .register-button,
+    .claim-button {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        display: block;
+        margin: 10px 0;
+        /* Clean flat design for mobile */
+        box-shadow: none !important;
+        border: none !important;
+        background: #da5446 !important;
+        color: #f9f0e4 !important;
+        padding: 15px !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        font-size: 0.9em !important;
+        transition: background-color 0.2s ease !important;
+    }
+    
+    .cta-button:hover,
+    .register-button:hover,
+    .claim-button:hover {
+        background: #b3463a !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+    }
+    
+    .register-button {
+        background: #13212b !important;
+    }
+    
+    .register-button:hover {
+        background: #1a3040 !important;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+        font-size: 0.8em;
+        border-radius: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: none !important;
+        border: none !important;
+    }
+    
+    .btn-secondary {
+        width: auto;
+        display: inline-block;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-menu {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+    
+    .menu-item {
+        font-size: 0.65em;
+        padding: 6px 4px;
+    }
+    
+    .content-header h1 {
+        font-size: 1.5em;
+    }
+    
+    .content-header p {
+        font-size: 0.85em;
+    }
+    
+    .main-content {
+        padding: 10px;
+    }
+    
+    .content-card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .content-card h2 {
+        font-size: 1.1em;
+        margin-bottom: 12px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 8px;
+        font-size: 14px;
+    }
+    
+    .stat-card {
+        padding: 12px;
+    }
+    
+    .stat-card .stat-number {
+        font-size: 1.6em;
+    }
+    
+    .table-row {
+        padding: 10px;
+        margin-bottom: 6px;
+    }
+    
+    .table-row span {
+        font-size: 0.85em;
+        padding: 2px 0;
+    }
+    
+    .table-row span:before {
+        width: 50px;
+        font-size: 0.65em;
+    }
+    
+    .toggle-item {
+        padding: 10px 0;
+    }
+    
+    .toggle-item label {
+        font-size: 0.85em;
+    }
+    
+    .cta-button,
+    .register-button,
+    .claim-button {
+        padding: 12px 15px !important;
+        font-size: 0.8em !important;
+        width: 100%;
+        margin: 8px 0;
+        border-radius: 10px !important;
+    }
+    
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.75em;
+    }
+}

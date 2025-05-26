@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Fiesta Sweeps</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="dashboard.css" />
-    <link rel="icon" type="image/png" href="assets/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-    <link rel="shortcut icon" href="assets/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Fiesta Sweeps" />
-    <link rel="manifest" href="assets/site.webmanifest" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('assets/favicon.ico') }}" />
 </head>
 <body>
     <div class="dashboard-container">
