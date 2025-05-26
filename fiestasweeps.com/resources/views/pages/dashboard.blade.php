@@ -85,15 +85,15 @@
                     <div class="toggle-group">
                         <div class="toggle-item">
                             <label>Share gameplay statistics</label>
-                            <input type="checkbox" class="toggle" {{ auth()->user()->game_stats == '1' ? 'checked' : '' }}>
+                            <input onchange="updateStat('game_stat', this)" type="checkbox" class="toggle" {{ auth()->user()->game_stats == '1'  ? 'checked' : '' }}>
                         </div>
                         <div class="toggle-item">
                             <label>Allow marketing emails</label>
-                            <input type="checkbox" class="toggle">
+                            <input onchange="updateStat('marketting_stat', this)" type="checkbox" class="toggle" {{ auth()->user()->marketting_stats == '1' ? 'checked' : '' }}>
                         </div>
                         <div class="toggle-item">
                             <label>Show online status</label>
-                            <input type="checkbox" class="toggle" checked>
+                            <input onchange="updateStat('online_stat', this)" type="checkbox" class="toggle" {{ auth()->user()->online_stats == '1' ? 'checked' : '' }}>
                         </div>
                     </div>
                 </div>
@@ -251,6 +251,20 @@
     </div>
 
     <script>
+        function updateStat(stat, checkbox) {
+            const isChecked = checkbox.checked ? 1 : 0;
+            fetch(`/stats-update?stat_name={stat}&value=${isChecked}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(`${stat} updated successfully.`);
+                } else {
+                    console.error(`Failed to update ${stat}.`);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
         function showSection(sectionId) {
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(section => {

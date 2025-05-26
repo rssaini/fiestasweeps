@@ -33,6 +33,7 @@ Route::middleware('guest')->group(function () {
 // Add inside auth middleware group
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+    Route::get('/stats-update', [AuthController::class, 'statsUpdate'])->name('stats.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

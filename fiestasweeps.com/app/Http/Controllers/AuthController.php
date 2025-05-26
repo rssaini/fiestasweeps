@@ -72,4 +72,16 @@ class AuthController extends Controller
         $user = Auth::user();
         return view('pages.dashboard', compact('user'));
     }
+
+    public function statsUpdate(Request $request)
+    {
+        $stat = $request->stat_name;
+        $user = Auth::user();
+        $user->update([$request->state => $request->input('value', '0')]);
+        return response()->json([
+            'status' => 'success',
+            'message' => "Your $stat has been updated successfully.",
+            'value' => $user->{$request->state}
+        ]);
+    }
 }
