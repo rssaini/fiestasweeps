@@ -85,7 +85,7 @@
                     <div class="toggle-group">
                         <div class="toggle-item">
                             <label>Share gameplay statistics</label>
-                            <input type="checkbox" class="toggle" {{ auth()->user()->gameplay_stats ? 'checked' : '' }}>
+                            <input type="checkbox" class="toggle" {{ auth()->user()->game_stats ? 'checked' : '' }}>
                         </div>
                         <div class="toggle-item">
                             <label>Allow marketing emails</label>
