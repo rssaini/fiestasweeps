@@ -53,7 +53,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
-                                <input type="text" id="lastName" value="Doe">
+                                <input type="text" id="lastName" value="{{auth()->user()->lname }}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -62,11 +62,11 @@
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" value="+1 (555) 123-4567">
+                            <input type="tel" id="phone" value="{{ auth()->user()->phone }}">
                         </div>
                         <div class="form-group">
                             <label for="birthdate">Date of Birth</label>
-                            <input type="date" id="birthdate" value="1990-01-15">
+                            <input type="date" id="birthdate" value="{{ auth()->user()->dob }}">
                         </div>
                         <button type="submit" class="cta-button">Save Changes</button>
                     </form>
@@ -85,7 +85,7 @@
                     <div class="toggle-group">
                         <div class="toggle-item">
                             <label>Share gameplay statistics</label>
-                            <input type="checkbox" class="toggle" checked>
+                            <input type="checkbox" class="toggle" {{ auth()->user()->gameplay_stats ? 'checked' : '' }}>
                         </div>
                         <div class="toggle-item">
                             <label>Allow marketing emails</label>
