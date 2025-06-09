@@ -56,6 +56,8 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
+        $user->assignRole('PLAYER');
+
         Auth::login($user);
 
         return redirect('/');
@@ -72,7 +74,14 @@ class AuthController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        return view('pages.dashboard', compact('user'));
+        if ($user->hasRole('PLAYER')) {
+            return view('pages.dashboard', compact('user'));
+    // This user is a PLAYER
+        } else {
+           return view('adash', compact('user'));
+        }
+
+
     }
 
     public function statsUpdate(Request $request)

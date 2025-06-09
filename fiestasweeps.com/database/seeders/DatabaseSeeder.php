@@ -8,8 +8,10 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        // $this->call([
-        //     GameSeeder::class,
-        // ]);
+
+        $this->call([
+            // GameSeeder::class,
+            RoleSeeder::class,
+        ]);
     }
 }
