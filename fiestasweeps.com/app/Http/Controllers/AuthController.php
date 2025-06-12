@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Game;
 use App\Models\PaymentGateway;
 use App\Models\PaymentHandle;
+use App\Models\Transaction;
 use App\Models\UserHandle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,21 +84,77 @@ class AuthController extends Controller
         }
         $supervisors = User::role('Supervisor')->get();
         $agents = null;
-        $games = null;
+        $games = Game::all();
         $gateways = PaymentGateway::all();
+
+        $transactions = [];
+        $cashouts = [];
+
+        $paymentHandles = [];
+
+        $userHandle = null;
         if ($user->hasRole('Admin')){
             $agents = User::role('Agent')->get();
-            $games = Game::all();
+            $Handles = PaymentHandle::all();
+            foreach ($Handles as $handle) {
+                $paymentHandles[] = $handle;
+            }
+            $transactions = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
+                ->where('transaction_type', 'deposit')
+                ->orderBy('created_at', 'desc')
+                ->get();
+            $cashouts = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
+                ->where('transaction_type', 'cashout')
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
         if ($user->hasRole('Supervisor')) {
+            $userHandle = UserHandle::where('user_id', $user->id)->get();
             $agents = User::role('Agent')->where('parent_id', $user->id)->get();
+
+            $user_ids = [];
+            $user_ids[] = $user->id; // Include the supervisor's own ID
+            $user->children->pluck('id')->each(function ($childId) use (&$user_ids) {
+                $user_ids[] = $childId;
+            });
+
+            $transactions = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
+                ->whereIn('created_by', $user_ids)
+                ->where('transaction_type', 'deposit')
+                ->orderBy('created_at', 'desc')->get();
+
+            $cashouts = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
+                ->whereIn('created_by', $user_ids)
+                ->where('transaction_type', 'cashout')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+        }
+        if ($user->hasRole('Agent')) {
+            $userHandle = UserHandle::where('user_id', $user->parent->id)->get();
+            $transactions = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
+                ->where('created_by', $user->id)
+                ->where('transaction_type', 'deposit')
+                ->orderBy('created_at', 'desc')->get();
+            $cashouts = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
+                ->where('created_by', $user->id)
+                ->where('transaction_type', 'cashout')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+        if ($user->hasRole('Supervisor') || $user->hasRole('Agent')) {
+            if($userHandle->count() > 0) {
+                foreach ($userHandle as $handle) {
+                    $paymentHandles[] = $handle->handle;
+                }
+            }
         }
 
 
         if ($user->hasRole('Player')) {
             return view('pages.dashboard', compact('user'));
         }
-        return view('adash', compact('user','supervisors', 'agents', 'games', 'gateways'));
+        return view('adash', compact('user','supervisors', 'agents', 'games', 'gateways', 'paymentHandles', 'transactions', 'cashouts'));
     }
 
     public function createAdminUser(Request $request)
@@ -192,15 +249,16 @@ class AuthController extends Controller
         $transaction->amount = $request->amount;
         $transaction->points = $request->points;
         $transaction->created_by = Auth::id();
+        // $transaction->updated_by = Auth::id();
 
         if($request->transaction_type === 'deposit') {
 
         } else {
             $transaction->last_deposit = $request->last_deposit;
-            $transaction->deposit_gateway_id = $request->deposit_gateway_id;
+            $transaction->deposit_handle_id = $request->deposit_handle_id;
         }
 
-        $transaction->gateway_id = $request->gateway_id;
+        $transaction->handle_id = $request->payment_handle;
         $transaction->player_handle = $request->player_handle;
         $transaction->transaction_type = $request->transaction_type;
         $transaction->status = 'pending'; // Default status

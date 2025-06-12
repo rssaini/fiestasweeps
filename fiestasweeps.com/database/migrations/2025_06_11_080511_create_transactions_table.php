@@ -19,15 +19,15 @@ return new class extends Migration
         $table->decimal('points', 10, 2);
 
         $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-        $table->foreignId('updated_by')->constrained('users')->onDelete('cascade');
+        $table->foreignId('updated_by')->constrained('users')->onDelete('cascade')->nullable()->default(null);
 
         $table->decimal('last_deposit', 10, 2)->nullable()->default(null);
-        $table->foreignId('deposit_gateway_id')->constrained('payment_gateways')->nullable();
+        $table->foreignId('deposit_handle_id')->constrained('payment_handles')->nullable()->default(null);
 
-        $table->foreignId('gateway_id')->constrained('payment_gateways')->nullable();
+        $table->foreignId('handle_id')->constrained('payment_handles')->nullable();
         $table->string('player_handle')->nullable(); // handle for the player, if applicable
 
-        $table->enum('status', ['pending', 'successful', 'failed'])->default('pending');
+        $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
         $table->string('transaction_type')->comment('deposit, withdrawal, etc.');
 
         $table->timestamps();

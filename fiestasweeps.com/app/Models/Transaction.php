@@ -14,8 +14,8 @@ class Transaction extends Model
         'created_by',
         'updated_by',
         'last_deposit',
-        'deposit_gateway_id',
-        'gateway_id',
+        'deposit_handle_id',
+        'handle_id',
         'player_handle',
         'transaction_type',
         'status',
@@ -38,12 +38,12 @@ class Transaction extends Model
     {
         return $this->belongsTo('App\Models\User', 'updated_by');
     }
-    public function depositGateway()
+    public function depositHandle()
     {
-        return $this->belongsTo('App\Models\PaymentHandle', 'deposit_gateway_id');
+        return $this->belongsTo('App\Models\PaymentHandle', 'deposit_handle_id');
     }
-    public function gateway()
+    public function handle()
     {
-        return $this->belongsTo('App\Models\PaymentGateway', 'gateway_id');
+        return $this->belongsTo('App\Models\PaymentHandle', 'handle_id');
     }
 }
