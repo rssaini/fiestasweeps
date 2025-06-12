@@ -37,5 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile-update', [AuthController::class, 'profileUpdate'])->name('profile.update');
     Route::post('/password-update', [AuthController::class, 'passwordUpdate'])->name('password.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/create-admin-user', [AuthController::class, 'createAdminUser'])->name('admin.user.create');
+    Route::post('/game-create', [AuthController::class, 'createGame'])->name('game.create');
+    Route::post('/payment-method', [AuthController::class, 'addPaymentMethod'])->name('paymentMethod.create');
+    Route::get('/update-user-handle', [AuthController::class, 'updateUserHandle'])->name('userHandle.update');
 });
 

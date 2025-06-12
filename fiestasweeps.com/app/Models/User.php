@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'parent_id',
         'password',
         'lname',
         'phone',
@@ -51,5 +52,24 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    public function userHandle()
+    {
+        return $this->hasOne(UserHandle::class, 'user_id');
+    }
+    public function paymentHandles()
+    {
+        return $this->hasManyThrough(PaymentHandle::class, UserHandle::class, 'user_id', 'id', 'id', 'handle_id');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->name . ' ' . $this->lname;
     }
 }

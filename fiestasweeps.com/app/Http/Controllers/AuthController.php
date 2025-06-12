@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Game;
+use App\Models\PaymentGateway;
+use App\Models\PaymentHandle;
+use App\Models\UserHandle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +60,7 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        $user->assignRole('PLAYER');
+        $user->assignRole('Player');
 
         Auth::login($user);
 
@@ -74,14 +78,136 @@ class AuthController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        if ($user->hasRole('PLAYER')) {
-            return view('pages.dashboard', compact('user'));
-    // This user is a PLAYER
-        } else {
-           return view('adash', compact('user'));
+        if (!$user) {
+            return redirect()->route('login');
+        }
+        $supervisors = User::role('Supervisor')->get();
+        $agents = null;
+        $games = null;
+        $gateways = PaymentGateway::all();
+        if ($user->hasRole('Admin')){
+            $agents = User::role('Agent')->get();
+            $games = Game::all();
+        }
+        if ($user->hasRole('Supervisor')) {
+            $agents = User::role('Agent')->where('parent_id', $user->id)->get();
         }
 
 
+        if ($user->hasRole('Player')) {
+            return view('pages.dashboard', compact('user'));
+        }
+        return view('adash', compact('user','supervisors', 'agents', 'games', 'gateways'));
+    }
+
+    public function createAdminUser(Request $request)
+    {
+
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'parent_id' => $request->parent_id,
+            'password' => Hash::make($request->password),
+        ]);
+
+
+        $user->assignRole($request->role);
+
+        return redirect()->back()->with('success', 'Supervisor created successfully.');
+    }
+
+    public function createGame(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        // Create the game record
+        $game = new Game();
+        $game->name = $request->name;
+        $game->description = $request->description;
+        $game->save();
+
+        return redirect()->back()->with('success', 'Game created successfully.');
+    }
+
+    public function addPaymentMethod(Request $request)
+    {
+        $request->validate([
+            'gateway_id' => 'required|exists:payment_gateways,id',
+            'account_handle' => 'required|string|max:255',
+        ]);
+
+        PaymentHandle::create([
+            'gateway_id' => $request->gateway_id,
+            'account_name' => $request->account_name,
+            'account_handle' => $request->account_handle,
+            'description' => $request->description,
+            'status' => $request->status,
+            'daily_limit' => $request->daily_limit,
+        ]);
+
+        return redirect()->back()->with('success', 'Payment method added successfully.');
+    }
+
+    public function updateUserHandle(Request $request)
+    {
+        $handle_id = $request->handle_id;
+        $user_id = $request->user_id;
+        $user = Auth::user();
+
+        if (!($user->hasRole('Admin'))) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You are not authorized to update this handle.'
+            ], 403);
+        }
+        UserHandle::where('handle_id', $handle_id)->delete();
+        UserHandle::create([
+            'handle_id' => $handle_id,
+            'user_id' => $user_id,
+        ]);
+
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Your handle has been updated successfully.',
+            'handle' => $user->handle
+        ]);
+    }
+
+    public function createTransaction(Request $request)
+    {
+        $transaction = new Transaction();
+        $transaction->player_id = $request->player_id;
+        $transaction->game_id = $request->game_id;
+        $transaction->amount = $request->amount;
+        $transaction->points = $request->points;
+        $transaction->created_by = Auth::id();
+
+        if($request->transaction_type === 'deposit') {
+
+        } else {
+            $transaction->last_deposit = $request->last_deposit;
+            $transaction->deposit_gateway_id = $request->deposit_gateway_id;
+        }
+
+        $transaction->gateway_id = $request->gateway_id;
+        $transaction->player_handle = $request->player_handle;
+        $transaction->transaction_type = $request->transaction_type;
+        $transaction->status = 'pending'; // Default status
+
+        $transaction->save();
+
+        return redirect()->back()->with('success', 'Transaction created successfully.');
     }
 
     public function statsUpdate(Request $request)

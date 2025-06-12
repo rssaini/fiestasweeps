@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Dashboard - Gaming Platform</title>
     <link rel="stylesheet" href="/css/admindashboard.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
             <h1>Team Dashboard</h1>
+            @if ($user->hasRole('Admin'))
+                <div class="team-info">
+                <span>Admin</span> | <span>{{ count($supervisors)}} Active Supervisors</span> | <span>{{ count($agents)}} Active Agents</span>
+            </div>
+            @endif
+
+            @if ($user->hasRole('Supervisor'))
             <div class="team-info">
-                <span>Team Alpha</span> | <span>5 Active Agents</span> | <span>Last Updated: Today, 2:30 PM</span>
+                <span>{{ $user->name }}</span> | <span>5 Active Agents</span>
+            </div>
+            @endif
+            <div class="team-info">
+                {{ $user->id }} | {{ $user->name }} | {{ $user->email }} | {{ $user->getRoleNames()->first() }}
             </div>
         </div>
 
@@ -22,6 +35,17 @@
             <button class="nav-tab" onclick="showTab('transactions')">Transactions</button>
             <button class="nav-tab" onclick="showTab('cashouts')">Cashouts</button>
             <button class="nav-tab" onclick="showTab('payment-methods')">Payment Methods</button>
+            @if ($user->hasRole('Admin'))
+                <button class="nav-tab" onclick="showTab('games')">Games</button>
+                <button class="nav-tab" onclick="showTab('supervisors')">Supervisors</button>
+            @endif
+            @if ($user->hasRole('Supervisor') || $user->hasRole('Admin'))
+                <button class="nav-tab" onclick="showTab('agents')">Agents</button>
+            @endif
+            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button class="nav-tab" type="submit">Logout</button>
+            </form>
         </div>
 
         <!-- Overview Tab -->
@@ -170,18 +194,56 @@
         <!-- Payment Methods Tab -->
         <div id="payment-methods" class="tab-content">
             <div class="section-header">
-                <h2>Current Payment Method Handles</h2>
+                <h2>All Payment Method Handles</h2>
+                <button class="btn-primary" onclick="openModal('paymentModal')">+ New Payment Handle</button>
             </div>
-            <div class="payment-methods-grid">
-                <div class="payment-method-card">
-                    <div class="payment-icon">💳</div>
-                    <h3>Credit Cards</h3>
-                    <div class="method-details">
-                        <p><strong>Processor:</strong> Stripe</p>
-                        <p><strong>Status:</strong> <span class="status-active">Active</span></p>
-                        <p><strong>Daily Limit:</strong> $10,000</p>
+            <div class="payment-methods-grid" style="display: flex; flex-direction:column; gap: 20px;">
+                {{-- Loop through payment gateways --}}
+                @if($gateways)
+                    @foreach ($gateways as $gateway)
+                    <div class="payment-method-card">
+                        <div class="payment-icon">💳</div>
+                        <h3>{{ $gateway->name }}</h3>
+                        <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ac Name</th>
+                                    <th>Handle</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Daily Limit</th>
+                                    <th>Supervisor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($gateway->handles as $handle)
+                                <tr>
+                                    <td>{{ $handle->account_name }}</td>
+                                    <td>{{ $handle->account_handle }}</td>
+                                    <td>{{ $handle->description }}</td>
+                                    <td><span class="status-{{ $handle->status }}">{{ ucfirst($handle->status) }}</span></td>
+                                    <td>${{ number_format($handle->daily_limit, 2) }}</td>
+                                    <td>
+                                        @php
+                                            $assigned = $handle->users->count() > 0 ? $handle->users->first()->id : null;
+                                        @endphp
+                                        <select onchange="asignUserToHandle({{ $handle->id }}, this.value)">
+                                            <option value="">Select Supervisor</option>
+                                            @foreach ($supervisors as $supervisor)
+                                                <option value="{{ $supervisor->id }}" {{ $assigned === $supervisor->id ? 'selected' : '' }}>{{ $supervisor->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        </div>
                     </div>
-                </div>
+                    @endforeach
+                @endif
+                {{--
                 <div class="payment-method-card">
                     <div class="payment-icon">🏦</div>
                     <h3>Bank Transfers</h3>
@@ -209,8 +271,108 @@
                         <p><strong>Daily Limit:</strong> $15,000</p>
                     </div>
                 </div>
+                --}}
             </div>
         </div>
+
+        @if ($user->hasRole('Admin'))
+        <!-- Supervisors Tab -->
+        <div id="supervisors" class="tab-content">
+            <div class="section-header">
+                <h2>Supervisors</h2>
+                <button class="btn-primary" onclick="openModal('supervisorModal')">+ New Supervisor</button>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($supervisors as $supervisor)
+                            <tr>
+                                <td>{{ $supervisor->name }}</td>
+                                <td>{{ $supervisor->email }}</td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Games Tab -->
+        <div id="games" class="tab-content">
+            <div class="section-header">
+                <h2>Games</h2>
+                <button class="btn-primary" onclick="openModal('gameModal')">+ New Game</button>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($games as $game)
+                            <tr>
+                                <td>{{ $game->name }}</td>
+                                <td>{{ $game->description }}</td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+
+        @if ($user->hasRole('Admin') || $user->hasRole('Supervisor'))
+        <!-- Agents Tab -->
+        <div id="agents" class="tab-content">
+            <div class="section-header">
+                <h2>Agents</h2>
+                <button class="btn-primary" onclick="openModal('agentModal')">+ New Agent</button>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            @if ($user->hasRole('Admin'))
+                                <th>Supervisor</th>
+                            @endif
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach ($agents as $agent)
+                            <tr>
+                                <td>{{ $agent->name }}</td>
+                                <td>{{ $agent->email }}</td>
+                                @if ($user->hasRole('Admin'))
+                                <td>
+                                    @if ($agent->parent)
+                                        {{ $agent->parent->name }}
+                                    @else
+                                        No Supervisor
+                                    @endif
+                                </td>
+                                @endif
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
     </div>
 
     <!-- Transaction Modal -->
@@ -259,12 +421,179 @@
                     <input type="number" id="pointsValue" name="pointsValue" min="0" required>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-secondary" onclick="closeModal('transactionModal')">Cancel</button>
+                    <button type="button" class="btn-secondary"
+                        onclick="closeModal('transactionModal')">Cancel</button>
                     <button type="submit" class="btn-primary">Create Transaction</button>
                 </div>
             </form>
         </div>
     </div>
+
+    @if ($user->hasRole('Admin'))
+    <div id="supervisorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Supervisor</h2>
+                <span class="close" onclick="closeModal('supervisorModal')">&times;</span>
+            </div>
+            <form class="modal-form" method="POST" action="{{ route('admin.user.create') }}">
+                @csrf
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" name="password_confirmation" required>
+                </div>
+                <input type="hidden" name="parent_id" value="{{ $user->id }}">
+                <input type="hidden" name="role" value="Supervisor">
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary"
+                        onclick="closeModal('supervisorModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Supervisor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Game</h2>
+                <span class="close" onclick="closeModal('gameModal')">&times;</span>
+            </div>
+            <form class="modal-form" method="POST" action="{{ route('game.create') }}">
+                @csrf
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" name="description">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary"
+                        onclick="closeModal('gameModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Game</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Payment Handle</h2>
+                <span class="close" onclick="closeModal('paymentModal')">&times;</span>
+            </div>
+            <form class="modal-form" method="POST" action="{{ route('paymentMethod.create') }}">
+                @csrf
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select name="gateway_id" required>
+                        <option value="">Select Method</option>
+                        @foreach ($gateways as $gateway)
+                            <option value="{{ $gateway->id }}">{{ $gateway->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Account Name</label>
+                    <input type="text" name="account_name">
+                </div>
+                <div class="form-group">
+                    <label>Account Handle</label>
+                    <input type="text" name="account_handle" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" name="description">
+                </div>
+                <div class="form-group">
+                    <label>Daily Limit</label>
+                    <input type="number" name="daily_limit" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status" required>
+                        <option selected value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary"
+                        onclick="closeModal('paymentModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Payment Handle</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    @endif
+
+    @if ($user->hasRole('Admin') || $user->hasRole('Supervisor'))
+    <div id="agentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Agent</h2>
+                <span class="close" onclick="closeModal('agentModal')">&times;</span>
+            </div>
+            <form class="modal-form" method="POST" action="{{ route('admin.user.create') }}">
+                @csrf
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                @if ($user->hasRole('Admin'))
+                <div class="form-group">
+                    <label>Supervisor</label>
+                    <select name="parent_id" required>
+                        <option value="">Select Supervisor</option>
+                        @foreach ($supervisors as $supervisor)
+                            <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
+                @if ($user->hasRole('Supervisor'))
+                    <input type="hidden" name="parent_id" value="{{ $user->id }}">
+                @endif
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" name="password_confirmation" required>
+                </div>
+                <input type="hidden" name="role" value="Agent">
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary"
+                        onclick="closeModal('agentModal')">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Agent</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    @endif
+
+
 
     <!-- Cashout Modal -->
     <div id="cashoutModal" class="modal">
@@ -291,7 +620,8 @@
                 </div>
                 <div class="form-group">
                     <label for="lastDeposit">Last Deposit</label>
-                    <input type="number" id="lastDeposit" name="lastDeposit" step="0.01" min="0" required>
+                    <input type="number" id="lastDeposit" name="lastDeposit" step="0.01" min="0"
+                        required>
                 </div>
                 <div class="form-group">
                     <label for="depositMethod">Deposit Method</label>
@@ -376,6 +706,22 @@
             alert('Cashout processed successfully!');
             closeModal('cashoutModal');
         });
+
+        function asignUserToHandle(handleId, userId) {
+            if (userId) {
+                fetch(`/update-user-handle?handle_id=${handleId}&user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Supervisor assigned successfully!');
+                    } else {
+                        alert('Error assigning supervisor.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
     </script>
 </body>
+
 </html>
