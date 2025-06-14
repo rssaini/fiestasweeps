@@ -697,10 +697,9 @@
 
             // Add active class to clicked nav tab
             event.target.classList.add('active');
-
-            $('#daterange_transaction').data('daterangepicker').setStartDate(moment().format('MM/DD/YYYY'));
+            $('#daterange_transaction').data('daterangepicker').setStartDate(moment().subtract(7, 'days').format('MM/DD/YYYY'));
             $('#daterange_transaction').data('daterangepicker').setEndDate(moment().format('MM/DD/YYYY'));
-            $('#daterange_cashout').data('daterangepicker').setStartDate(moment().format('MM/DD/YYYY'));
+            $('#daterange_cashout').data('daterangepicker').setStartDate(moment().subtract(7, 'days').format('MM/DD/YYYY'));
             $('#daterange_cashout').data('daterangepicker').setEndDate(moment().format('MM/DD/YYYY'));
         }
 
