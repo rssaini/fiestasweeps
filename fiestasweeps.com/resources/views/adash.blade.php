@@ -880,7 +880,7 @@
             startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
             endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
             const userTimezone = moment.tz.guess();
-            window.open(`/transactions?export=csv&start_date=${startDate}&end_date=${endDate}&timezone=${userTimezone}`, '_blank');
+            window.open(`/transactions?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
         }
 
         function loadCashouts() {
@@ -942,7 +942,7 @@
             startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
             endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
             const userTimezone = moment.tz.guess();
-            window.open(`/cashouts?export=csv&start_date=${startDate}&end_date=${endDate}&timezone=${userTimezone}`, '_blank');
+            window.open(`/cashouts?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
         }
 
         function updateStatusTransaction(id, status){
