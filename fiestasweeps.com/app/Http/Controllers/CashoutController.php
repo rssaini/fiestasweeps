@@ -43,6 +43,48 @@ class CashoutController extends Controller
         } else {
             $transactions = $transactions->orderBy('created_at', 'desc')->get();
         }
+
+        if(request()->has('export') && request()->input('export') == 'csv') {
+            $filename = "cashouts_" . now()->format('Ymd_His') . ".csv";
+            $headers = [
+                "Content-type"        => "text/csv",
+                "Content-Disposition" => "attachment; filename=$filename",
+                "Pragma"              => "no-cache",
+                "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+                "Expires"             => "0"
+            ];
+
+            $callback = function() use ($transactions) {
+                $file = fopen('php://output', 'w');
+                // Add headings
+                fputcsv($file, ['ID','Player ID', 'Game','Last Deposit', 'Deposit Method', 'Deposit Handle' ,'AMOUNT', 'Payment Method', 'Payment Handle', 'Player Handle', 'Points Value', 'Created By','Updated By', 'Date', 'STATUS']);
+
+                foreach ($transactions as $transaction) {
+                    fputcsv($file, [
+                        $transaction->id,
+                        $transaction->player_id,
+                        $transaction->game ? $transaction->game->name : 'N/A',
+                        $transaction->last_deposit,
+                        $transaction->depositHandle ? $transaction->depositHandle->gateway->name : 'N/A',
+                        $transaction->depositHandle ? $transaction->depositHandle->account_handle : 'N/A',
+                        $transaction->amount,
+                        $transaction->handle ? $transaction->handle->gateway->name : 'N/A',
+                        $transaction->handle ? $transaction->handle->account_handle : 'N/A',
+                        $transaction->player_handle,
+                        $transaction->points,
+                        $transaction->createdBy ? $transaction->createdBy->name . '('. $transaction->createdBy->role .')': 'N/A',
+                        $transaction->updatedBy ? $transaction->updatedBy->name . '('. $transaction->updatedBy->role .')': 'N/A',
+                        $transaction->created_at->format('Y-m-d H:i:s'),
+                        $transaction->status,
+                    ]);
+                }
+
+                fclose($file);
+            };
+
+            return response()->stream($callback, 200, $headers);
+        }
+
         return response()->json($transactions);
     }
 

@@ -174,7 +174,7 @@
                     <div class="form-group" style="width: 300px;margin:0;margin-right: 10px;">
                         <input type="text" id="daterange_transaction" />
                     </div>
-                    <button class="btn-primary">🡅 Export</button>
+                    <button onclick="exportTransactions()" class="btn-primary">🡅 Export</button>
                 </div>
                 <div class="pagination-container"></div>
             </div>
@@ -211,7 +211,7 @@
                     <div class="form-group" style="width: 300px;margin:0;margin-right: 10px;">
                         <input type="text" id="daterange_cashout" />
                     </div>
-                    <button class="btn-primary">🡅 Export</button>
+                    <button onclick="exportCashouts()" class="btn-primary">🡅 Export</button>
                 </div>
                 <div class="pagination-container"></div>
             </div>
@@ -829,6 +829,15 @@
                 }
             })
         }
+
+        function exportTransactions(){
+            let startDate = $('#daterange_transaction').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            let endDate = $('#daterange_transaction').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
+            endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
+            window.open(`/transactions?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
+        }
+
         function loadCashouts() {
             let startDate = $('#daterange_cashout').data('daterangepicker').startDate.format('YYYY-MM-DD');
             let endDate = $('#daterange_cashout').data('daterangepicker').endDate.format('YYYY-MM-DD');
@@ -880,6 +889,14 @@
                     });
                 }
             })
+        }
+
+        function exportCashouts() {
+            let startDate = $('#daterange_cashout').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            let endDate = $('#daterange_cashout').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
+            endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
+            window.open(`/cashouts?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.all.min.js"></script>
