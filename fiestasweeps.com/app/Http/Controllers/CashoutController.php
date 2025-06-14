@@ -56,7 +56,7 @@ class CashoutController extends Controller
                 "Expires"             => "0"
             ];
 
-            $callback = function() use ($transactions) {
+            $callback = function() use ($transactions, $timezone) {
                 $file = fopen('php://output', 'w');
                 // Add headings
                 fputcsv($file, ['ID','Player ID', 'Game','Last Deposit', 'Deposit Method', 'Deposit Handle' ,'AMOUNT', 'Payment Method', 'Payment Handle', 'Player Handle', 'Points Value', 'Created By','Updated By', 'Date', 'STATUS']);

@@ -56,7 +56,7 @@ class TransactionController extends Controller
                 "Expires"             => "0"
             ];
 
-            $callback = function() use ($transactions) {
+            $callback = function() use ($transactions, $timezone) {
                 $file = fopen('php://output', 'w');
                 // Add headings
                 fputcsv($file, ['ID','Player ID', 'Game', 'AMOUNT', 'Payment Method', 'Payment Handle', 'Player Handle', 'Points Value', 'Created By','Updated By', 'Date', 'STATUS']);
@@ -80,7 +80,6 @@ class TransactionController extends Controller
 
                 fclose($file);
             };
-
             return response()->stream($callback, 200, $headers);
         }
         return response()->json($transactions);
