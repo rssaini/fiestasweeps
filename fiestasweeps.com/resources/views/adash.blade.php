@@ -946,9 +946,11 @@
         }
 
         function updateStatusTransaction(id, status){
-            openModal('statusChangeModal');
-            $('form.statusUpdateForm input[name="id"]').val(id);
-            $('form.statusUpdateForm select[name="status"]').val(status);
+            @if ($user->hasRole('Admin') || $user->hasRole('Supervisor'))
+                openModal('statusChangeModal');
+                $('form.statusUpdateForm input[name="id"]').val(id);
+                $('form.statusUpdateForm select[name="status"]').val(status);
+            @endif
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.all.min.js"></script>
