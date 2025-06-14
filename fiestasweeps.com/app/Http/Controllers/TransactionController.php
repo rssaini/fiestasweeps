@@ -46,7 +46,7 @@ class TransactionController extends Controller
         }
 
         if(request()->has('export') && request()->input('export') == 'csv') {
-            $timezone = $request->query('timezone', 'UTC');
+            $timezone = request()->query('timezone', 'UTC');
             $filename = "transactions_" . now()->format('Ymd_His') . ".csv";
             $headers = [
                 "Content-type"        => "text/csv",
