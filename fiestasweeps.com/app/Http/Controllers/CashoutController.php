@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use Carbon\Carbon;
 
 class CashoutController extends Controller
 {
@@ -45,6 +46,7 @@ class CashoutController extends Controller
         }
 
         if(request()->has('export') && request()->input('export') == 'csv') {
+            $timezone = $request->query('timezone', 'UTC');
             $filename = "cashouts_" . now()->format('Ymd_His') . ".csv";
             $headers = [
                 "Content-type"        => "text/csv",
@@ -74,7 +76,7 @@ class CashoutController extends Controller
                         $transaction->points,
                         $transaction->createdBy ? $transaction->createdBy->name . '('. $transaction->createdBy->role .')': 'N/A',
                         $transaction->updatedBy ? $transaction->updatedBy->name . '('. $transaction->updatedBy->role .')': 'N/A',
-                        $transaction->created_at->format('Y-m-d H:i:s'),
+                        Carbon::parse($transaction->created_at)->timezone($timezone)->format('m-d-Y H:i:s'),
                         $transaction->status,
                     ]);
                 }

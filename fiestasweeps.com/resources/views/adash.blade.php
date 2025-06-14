@@ -4,8 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Dashboard - Gaming Platform</title>
-    <link rel="stylesheet" href="/css/admindashboard.css">
+    <title>Team Dashboard - Gaming Platform - Fiesta Sweeps</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('assets/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/apple-touch-icon.png') }}" />
+    <meta name="apple-mobile-web-app-title" content="Fiesta Sweeps" />
+    <link rel="manifest" href="{{ asset('assets/site.webmanifest') }}" />
+    <link rel="stylesheet" href="/css/admin.css">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://pagination.js.org/dist/2.6.0/pagination.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -874,7 +880,8 @@
             let endDate = $('#daterange_transaction').data('daterangepicker').endDate.format('YYYY-MM-DD');
             startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
             endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            window.open(`/transactions?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
+            const userTimezone = moment.tz.guess();
+            window.open(`/transactions?export=csv&start_date=${startDate}&end_date=${endDate}&timezone=${userTimezone}`, '_blank');
         }
 
         function loadCashouts() {
@@ -935,7 +942,8 @@
             let endDate = $('#daterange_cashout').data('daterangepicker').endDate.format('YYYY-MM-DD');
             startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
             endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            window.open(`/cashouts?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
+            const userTimezone = moment.tz.guess();
+            window.open(`/cashouts?export=csv&start_date=${startDate}&end_date=${endDate}&timezone=${userTimezone}`, '_blank');
         }
 
         function updateStatusTransaction(id, status){
