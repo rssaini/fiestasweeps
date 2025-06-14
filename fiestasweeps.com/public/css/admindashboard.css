@@ -373,7 +373,7 @@ body {
     border-color: #f59e0b;
 }
 
-.status.processing {
+.status.processing, .status.needs-action, .status.review {
     background: linear-gradient(135deg, #dbeafe, #bfdbfe);
     color: #1e40af;
     border-color: #3b82f6;
@@ -389,7 +389,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-.status-maintenance {
+.status-maintenance, .status.failed {
     color: #dc2626;
     font-weight: 700;
     background: rgba(220, 38, 38, 0.1);

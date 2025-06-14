@@ -485,6 +485,7 @@
         </div>
     </div>
 
+
     @if ($user->hasRole('Admin'))
         <div id="supervisorModal" class="modal">
             <div class="modal-content">
@@ -643,6 +644,35 @@
 
             </div>
         </div>
+
+
+        <!-- Status Change Modal -->
+        <div id="statusChangeModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Update Status</h2>
+                    <span class="close" onclick="closeModal('statusChangeModal')">&times;</span>
+                </div>
+                <form class="modal-form statusUpdateForm" method="POST" action="{{ route('updateStatusTransaction') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" required>
+                            <option value="">Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="failed">Failed</option>
+                            <option value="review">Review</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="id">
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('statusChangeModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     @endif
 
     <script>
@@ -737,6 +767,15 @@
                             loadCashouts();
                             title = "Cashout created successfully!";
                         }
+                        if($(formTag).hasClass('statusUpdateForm')){
+                            title = "Status updated successfully!";
+                            if(response.type == 'deposit'){
+                                loadTransactions();
+                            }
+                            if(response.type == 'cashout'){
+                                loadCashouts();
+                            }
+                        }
                         Swal.fire({
                             position: "top-end",
                             icon: "success",
@@ -822,7 +861,7 @@
                             <td>${transaction.created_by ? transaction.created_by.name + ' (' + transaction.created_by.role + ')' : 'N/A'}</td>
                             <td>${transaction.updated_by ? transaction.updated_by.name + ' (' + transaction.updated_by.role + ')' : 'N/A'}</td>
                             <td>${new Date(transaction.created_at).toLocaleString()}</td>
-                            <td><span class="status ${transaction.status}">${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}</span></td>
+                            <td><span style="cursor:pointer;" onclick="updateStatusTransaction(${transaction.id}, '${transaction.status}')" class="status ${transaction.status}">${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}</span></td>
                         </tr>`;
                         tbody.innerHTML += row;
                     });
@@ -883,7 +922,7 @@
                             <td>${cashout.created_by ? cashout.created_by.name + ' (' + cashout.created_by.role + ')' : 'N/A'}</td>
                             <td>${cashout.updated_by ? cashout.updated_by.name + ' (' + cashout.updated_by.role + ')' : 'N/A'}</td>
                             <td>${new Date(cashout.created_at).toLocaleString()}</td>
-                            <td><span class="status ${cashout.status}">${cashout.status.charAt(0).toUpperCase() + cashout.status.slice(1)}</span></td>
+                            <td><span style="cursor:pointer;" onclick="updateStatusTransaction(${cashout.id}, '${cashout.status}')" class="status ${cashout.status}">${cashout.status.charAt(0).toUpperCase() + cashout.status.slice(1)}</span></td>
                         </tr>`;
                         tbody.innerHTML += row;
                     });
@@ -897,6 +936,12 @@
             startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
             endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
             window.open(`/cashouts?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
+        }
+
+        function updateStatusTransaction(id, status){
+            openModal('statusChangeModal');
+            $('form.statusUpdateForm input[name="id"]').val(id);
+            $('form.statusUpdateForm select[name="status"]').val(status);
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.all.min.js"></script>

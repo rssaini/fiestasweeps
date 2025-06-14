@@ -45,8 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment-method', [AuthController::class, 'addPaymentMethod'])->name('paymentMethod.create');
     Route::post('/createTransaction', [AuthController::class, 'createTransaction'])->name('createTransaction');
     Route::get('/update-user-handle', [AuthController::class, 'updateUserHandle'])->name('userHandle.update');
-
-
+    Route::post('/update-status-transaction', [TransactionController::class, 'updateStatus'])->name('updateStatusTransaction');
 
     // Transaction Routes
     Route::resource('transactions', TransactionController::class)->only([
@@ -54,7 +53,7 @@ Route::middleware('auth')->group(function () {
     ])->names([
         'index' => 'transactions.index',
         'create' => 'transactions.create',
-        'store' => 'transactions.store'
+        'store' => 'transactions.store',
     ]);
 
     // Cashout Routes

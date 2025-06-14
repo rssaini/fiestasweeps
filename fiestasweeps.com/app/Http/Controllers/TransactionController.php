@@ -84,6 +84,17 @@ class TransactionController extends Controller
         return response()->json($transactions);
     }
 
+    public function updateStatus(Request $request){
+        $user = auth()->user();
+        $id = $request->id;
+        $status = $request->status;
+        $transaction = Transaction::find($id);
+        $transaction->status = $status;
+        $transaction->updated_by = $user->id;
+        $transaction->save();
+        return response()->json(['status' => 'success', 'type' => $transaction->transaction_type]);
+    }
+
     public function create()
     {
         return view('transactions.create');

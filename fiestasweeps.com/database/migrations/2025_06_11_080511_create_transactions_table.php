@@ -27,7 +27,7 @@ return new class extends Migration
         $table->foreignId('handle_id')->constrained('payment_handles')->nullable();
         $table->string('player_handle')->nullable(); // handle for the player, if applicable
 
-        $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
+        $table->enum('status', ['pending', 'completed', 'failed', 'review'])->default('pending');
         $table->string('transaction_type')->comment('deposit, withdrawal, etc.');
 
         $table->timestamps();
