@@ -87,8 +87,6 @@ class AuthController extends Controller
         $games = Game::all();
         $gateways = PaymentGateway::all();
 
-        $transactions = [];
-        $cashouts = [];
 
         $paymentHandles = [];
 
@@ -99,14 +97,6 @@ class AuthController extends Controller
             foreach ($Handles as $handle) {
                 $paymentHandles[] = $handle;
             }
-            $transactions = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
-                ->where('transaction_type', 'deposit')
-                ->orderBy('created_at', 'desc')
-                ->get();
-            $cashouts = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
-                ->where('transaction_type', 'cashout')
-                ->orderBy('created_at', 'desc')
-                ->get();
         }
         if ($user->hasRole('Supervisor')) {
             $userHandle = UserHandle::where('user_id', $user->id)->get();
@@ -118,29 +108,9 @@ class AuthController extends Controller
                 $user_ids[] = $childId;
             });
 
-            $transactions = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
-                ->whereIn('created_by', $user_ids)
-                ->where('transaction_type', 'deposit')
-                ->orderBy('created_at', 'desc')->get();
-
-            $cashouts = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
-                ->whereIn('created_by', $user_ids)
-                ->where('transaction_type', 'cashout')
-                ->orderBy('created_at', 'desc')
-                ->get();
-
         }
         if ($user->hasRole('Agent')) {
             $userHandle = UserHandle::where('user_id', $user->parent->id)->get();
-            $transactions = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
-                ->where('created_by', $user->id)
-                ->where('transaction_type', 'deposit')
-                ->orderBy('created_at', 'desc')->get();
-            $cashouts = Transaction::with(['game', 'createdBy', 'updatedBy', 'depositHandle', 'handle'])
-                ->where('created_by', $user->id)
-                ->where('transaction_type', 'cashout')
-                ->orderBy('created_at', 'desc')
-                ->get();
         }
         if ($user->hasRole('Supervisor') || $user->hasRole('Agent')) {
             if($userHandle->count() > 0) {
@@ -154,7 +124,7 @@ class AuthController extends Controller
         if ($user->hasRole('Player')) {
             return view('pages.dashboard', compact('user'));
         }
-        return view('adash', compact('user','supervisors', 'agents', 'games', 'gateways', 'paymentHandles', 'transactions', 'cashouts'));
+        return view('adash', compact('user','supervisors', 'agents', 'games', 'gateways', 'paymentHandles' ));
     }
 
     public function createAdminUser(Request $request)
@@ -265,7 +235,10 @@ class AuthController extends Controller
 
         $transaction->save();
 
-        return redirect()->back()->with('success', 'Transaction created successfully.');
+        return response()->json([
+            'status' => 'success',
+            'message' => "Transaction created successfully.",
+        ]);
     }
 
     public function statsUpdate(Request $request)

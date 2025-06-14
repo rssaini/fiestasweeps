@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\CashoutController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +27,7 @@ Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 // Authentication Routes
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('signin');
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/signin', [AuthController::class, 'login'])->name('signin.post');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
@@ -42,5 +45,25 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment-method', [AuthController::class, 'addPaymentMethod'])->name('paymentMethod.create');
     Route::post('/createTransaction', [AuthController::class, 'createTransaction'])->name('createTransaction');
     Route::get('/update-user-handle', [AuthController::class, 'updateUserHandle'])->name('userHandle.update');
+
+
+
+    // Transaction Routes
+    Route::resource('transactions', TransactionController::class)->only([
+        'index', 'create', 'store'
+    ])->names([
+        'index' => 'transactions.index',
+        'create' => 'transactions.create',
+        'store' => 'transactions.store'
+    ]);
+
+    // Cashout Routes
+    Route::resource('cashouts', CashoutController::class)->only([
+        'index', 'create', 'store'
+    ])->names([
+        'index' => 'cashouts.index',
+        'create' => 'cashouts.create',
+        'store' => 'cashouts.store'
+    ]);
 });
 

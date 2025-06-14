@@ -6,6 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Dashboard - Gaming Platform</title>
     <link rel="stylesheet" href="/css/admindashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pagination.js.org/dist/2.6.0/pagination.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        .paginationjs.paginationjs-theme-blue .paginationjs-pages li {
+            border-color: #764ba2
+        }
+
+        .paginationjs.paginationjs-theme-blue .paginationjs-pages li>a {
+            color: #764ba2
+        }
+
+        .paginationjs.paginationjs-theme-blue .paginationjs-pages li>a:hover {
+            background: #e9f4fc
+        }
+
+        .paginationjs.paginationjs-theme-blue .paginationjs-pages li.active>a {
+            background: #764ba2;
+            color: #fff
+        }
+
+        .paginationjs.paginationjs-theme-blue .paginationjs-pages li.disabled>a:hover {
+            background: 0 0
+        }
+
+        .paginationjs.paginationjs-theme-blue .paginationjs-go-input>input[type=text],.paginationjs.paginationjs-theme-blue .paginationjs-size-changer>select {
+            border-color: #764ba2
+        }
+
+        .paginationjs.paginationjs-theme-blue .paginationjs-go-button>input[type=button] {
+            background: #764ba2;
+            border-color: #764ba2;
+            color: #fff
+        }
+
+        .paginationjs.paginationjs-theme-blue .paginationjs-go-button>input[type=button]:hover {
+            background-color: #764ba2
+        }
+    </style>
 </head>
 
 <body>
@@ -13,6 +53,10 @@
         <!-- Header -->
         <div class="header">
             <h1>Team Dashboard</h1>
+            <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="float: right;">
+                @csrf
+                <button class="nav-tab" style="background: #ca4c4c;" type="submit">Logout</button>
+            </form>
             @if ($user->hasRole('Admin'))
                 <div class="team-info">
                 <span>Admin</span> | <span>{{ count($supervisors)}} Active Supervisors</span> | <span>{{ count($agents)}} Active Agents</span>
@@ -29,11 +73,28 @@
             </div>
         </div>
 
+        <div class="alert">
+            @if (session('status'))
+                <div class="alert-message">
+                    {{ session('status') }}
+                </div>
+            @endif
+            @if ($errors->any())
+                <div class="alert-message error">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showTab('overview')">Overview</button>
-            <button class="nav-tab" onclick="showTab('transactions')">Transactions</button>
-            <button class="nav-tab" onclick="showTab('cashouts')">Cashouts</button>
+            <button class="nav-tab" onclick="showTab('transactions'); loadTransactions();">Transactions</button>
+            <button class="nav-tab" onclick="showTab('cashouts'); loadCashouts();">Cashouts</button>
             <button class="nav-tab" onclick="showTab('payment-methods')">Payment Methods</button>
             @if ($user->hasRole('Admin'))
                 <button class="nav-tab" onclick="showTab('games')">Games</button>
@@ -42,10 +103,6 @@
             @if ($user->hasRole('Supervisor') || $user->hasRole('Admin'))
                 <button class="nav-tab" onclick="showTab('agents')">Agents</button>
             @endif
-            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button class="nav-tab" type="submit">Logout</button>
-            </form>
         </div>
 
         <!-- Overview Tab -->
@@ -109,22 +166,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($transactions as $transaction)
-                        <tr>
-                            <td>{{ $transaction->player_id }}</td>
-                            <td>{{ $transaction->game->name }}</td>
-                            <td>${{ number_format($transaction->amount, 2) }}</td>
-                            <td>{{ $transaction->handle->gateway->name }} ({{ $transaction->handle->account_handle }})</td>
-                            <td>{{ $transaction->player_handle }}</td>
-                            <td>{{ $transaction->points }}</td>
-                            <td>{{ $transaction->createdBy ? $transaction->createdBy->name . ' ('. $transaction->createdBy->getRoleNames()->first() .')' : 'N/A' }}</td>
-                            <td>{{ $transaction->updatedBy ? $transaction->updatedBy->name . ' ('. $transaction->updatedBy->getRoleNames()->first() .')' : 'N/A' }}</td>
-                            <td>{{ $transaction->created_at }}</td>
-                            <td><span class="status {{ $transaction->status }}">{{ ucfirst($transaction->status) }}</span></td>
-                        </tr>
-                        @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <div style="display: flex; align-items: center;">
+                    <div class="form-group" style="width: 300px;margin:0;margin-right: 10px;">
+                        <input type="text" id="daterange_transaction" />
+                    </div>
+                    <button class="btn-primary">🡅 Export</button>
+                </div>
+                <div class="pagination-container"></div>
             </div>
         </div>
 
@@ -151,24 +203,17 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($cashouts as $cashout)
-                        <tr>
-                            <td>{{ $cashout->player_id }}</td>
-                            <td>{{ $cashout->game->name }}</td>
-                            <td>${{ number_format($cashout->last_deposit, 2) }}</td>
-                            <td>{{ $cashout->depositHandle->gateway->name }} ({{ $cashout->depositHandle->account_handle }})</td>
-                            <td>{{ $cashout->handle->gateway->name }} ({{ $cashout->handle->account_handle }})</td>
-                            <td>{{ $cashout->player_handle }}</td>
-                            <td>${{ number_format($cashout->amount, 2) }}</td>
-                            <td>{{ $cashout->createdBy ? $cashout->createdBy->name . ' ('. $cashout->createdBy->getRoleNames()->first() .')' : 'N/A' }}</td>
-                            <td>{{ $cashout->updatedBy ? $cashout->updatedBy->name . ' ('. $cashout->updatedBy->getRoleNames()->first() .')' : 'N/A' }}</td>
-                            <td>{{ $cashout->created_at }}</td>
-                            <td><span class="status {{ $cashout->status }}">{{ ucfirst($cashout->status) }}</span></td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+                    <tbody></tbody>
                 </table>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <div style="display: flex; align-items: center;">
+                    <div class="form-group" style="width: 300px;margin:0;margin-right: 10px;">
+                        <input type="text" id="daterange_cashout" />
+                    </div>
+                    <button class="btn-primary">🡅 Export</button>
+                </div>
+                <div class="pagination-container"></div>
             </div>
         </div>
 
@@ -331,7 +376,7 @@
                 <h2>New Transaction</h2>
                 <span class="close" onclick="closeModal('transactionModal')">&times;</span>
             </div>
-            <form class="modal-form" method="POST" action="{{ route('createTransaction') }}">
+            <form class="modal-form transactionCreateForm" method="POST" action="{{ route('createTransaction') }}">
                 @csrf
                 <div class="form-group">
                     <label for="playerID">Player ID</label>
@@ -384,7 +429,7 @@
                 <h2>New Cashout</h2>
                 <span class="close" onclick="closeModal('cashoutModal')">&times;</span>
             </div>
-            <form class="modal-form" method="POST" action="{{ route('createTransaction') }}">
+            <form class="modal-form cashoutCreateForm" method="POST" action="{{ route('createTransaction') }}">
                 @csrf
                 <div class="form-group">
                     <label>Player ID</label>
@@ -616,6 +661,11 @@
 
             // Add active class to clicked nav tab
             event.target.classList.add('active');
+
+            $('#daterange_transaction').data('daterangepicker').setStartDate(moment().format('MM/DD/YYYY'));
+            $('#daterange_transaction').data('daterangepicker').setEndDate(moment().format('MM/DD/YYYY'));
+            $('#daterange_cashout').data('daterangepicker').setStartDate(moment().format('MM/DD/YYYY'));
+            $('#daterange_cashout').data('daterangepicker').setEndDate(moment().format('MM/DD/YYYY'));
         }
 
         // Modal functionality
@@ -625,6 +675,11 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
+        }
+
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => modal.style.display = 'none');
         }
 
         // Close modal when clicking outside
@@ -653,7 +708,184 @@
                 }
             }
         @endif
+
+        $(document).ready(function() {
+           $('form').on('submit', function(event) {
+                if($(this).attr('id') === 'logoutForm') {
+                    return true; // Allow logout form to submit normally
+                }
+                // Prevent default form submission
+                event.preventDefault();
+
+                // Serialize form data
+                const formData = $(this).serialize();
+                const formTag = this;
+
+                // Submit the form via AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        $(formTag)[0].reset();
+                        var title = "";
+                        if($(formTag).hasClass('transactionCreateForm')){
+                            loadTransactions();
+                            title = "Transaction created successfully!";
+                        }
+                        if($(formTag).hasClass('cashoutCreateForm')){
+                            loadCashouts();
+                            title = "Cashout created successfully!";
+                        }
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: title,
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        closeAllModals();
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "error",
+                            text: xhr.responseJSON.message || 'An error occurred while submitting the form.',
+                            title: "Error Submitting Form",
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                });
+            });
+
+            $('#daterange_transaction').daterangepicker({
+                opens: 'right',
+                drops: 'up',
+                autoApply: true,
+            }, function(start, end, label) {
+                loadTransactions();
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            });
+            $('#daterange_cashout').daterangepicker({
+                opens: 'right',
+                drops: 'up',
+                autoApply: true,
+            }, function(start, end, label) {
+                loadCashouts();
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            });
+
+        });
+
+        function loadTransactions() {
+            let startDate = $('#daterange_transaction').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            let endDate = $('#daterange_transaction').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
+            endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
+            $('#transactions .pagination-container').pagination({
+                dataSource: `/transactions?start_date=${startDate}&end_date=${endDate}`,
+                locator: 'data',
+                totalNumberLocator: function(response) {
+                    return response.total; // Assuming the API returns total count in 'total'
+                },
+                pageSize: 10,
+                pageNumber: 1,
+                alias: {
+                    pageNumber: 'page'
+                },
+                className: 'paginationjs-theme-blue paginationjs-big',
+                showSizeChanger: true,
+                showNavigator: true,
+                formatNavigator: '<%= rangeStart %> - <%= rangeEnd %> of <%= totalNumber %> items',
+                ajax: {
+                    beforeSend: function() {
+                        const tbody = document.querySelector('#transactions tbody');
+                        tbody.innerHTML = '<tr><td colspan="10">Loading...</td></tr>'; // Show loading state
+                    }
+                },
+                callback: function(data, pagination) {
+                    const tbody = document.querySelector('#transactions tbody');
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="10">No transactions found.</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = ''; // Clear previous data
+                    data.forEach(transaction => {
+                        const row = `<tr>
+                            <td>${transaction.player_id}</td>
+                            <td>${transaction.game.name}</td>
+                            <td>$${transaction.amount}</td>
+                            <td>${transaction.handle.gateway.name} (${transaction.handle.account_handle})</td>
+                            <td>${transaction.player_handle}</td>
+                            <td>${transaction.points}</td>
+                            <td>${transaction.created_by ? transaction.created_by.name + ' (' + transaction.created_by.role + ')' : 'N/A'}</td>
+                            <td>${transaction.updated_by ? transaction.updated_by.name + ' (' + transaction.updated_by.role + ')' : 'N/A'}</td>
+                            <td>${new Date(transaction.created_at).toLocaleString()}</td>
+                            <td><span class="status ${transaction.status}">${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}</span></td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                }
+            })
+        }
+        function loadCashouts() {
+            let startDate = $('#daterange_cashout').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            let endDate = $('#daterange_cashout').data('daterangepicker').endDate.format('YYYY-MM-DD');
+            startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
+            endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
+            $('#cashouts .pagination-container').pagination({
+                dataSource: `/cashouts?start_date=${startDate}&end_date=${endDate}`,
+                locator: 'data',
+                totalNumberLocator: function(response) {
+                    return response.total; // Assuming the API returns total count in 'total'
+                },
+                pageSize: 10,
+                pageNumber: 1,
+                alias: {
+                    pageNumber: 'page'
+                },
+                className: 'paginationjs-theme-blue paginationjs-big',
+                showSizeChanger: true,
+                showNavigator: true,
+                formatNavigator: '<%= rangeStart %> - <%= rangeEnd %> of <%= totalNumber %> items',
+                ajax: {
+                    beforeSend: function() {
+                        const tbody = document.querySelector('#cashouts tbody');
+                        tbody.innerHTML = '<tr><td colspan="11">Loading...</td></tr>'; // Show loading state
+                    }
+                },
+                callback: function(data, pagination) {
+                    const tbody = document.querySelector('#cashouts tbody');
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="11">No Cashouts found.</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = ''; // Clear previous data
+                    data.forEach(cashout => {
+                        const row = `<tr>
+                            <td>${cashout.player_id}</td>
+                            <td>${cashout.game.name}</td>
+                            <td>${cashout.last_deposit}</td>
+                            <td>${cashout.deposit_handle.gateway.name} (${cashout.deposit_handle.account_handle})</td>
+                            <td>${cashout.handle.gateway.name} (${cashout.handle.account_handle})</td>
+                            <td>${cashout.player_handle}</td>
+                            <td>$${cashout.amount}</td>
+                            <td>${cashout.created_by ? cashout.created_by.name + ' (' + cashout.created_by.role + ')' : 'N/A'}</td>
+                            <td>${cashout.updated_by ? cashout.updated_by.name + ' (' + cashout.updated_by.role + ')' : 'N/A'}</td>
+                            <td>${new Date(cashout.created_at).toLocaleString()}</td>
+                            <td><span class="status ${cashout.status}">${cashout.status.charAt(0).toUpperCase() + cashout.status.slice(1)}</span></td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                }
+            })
+        }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.all.min.js"></script>
+    <script src="https://pagination.js.org/dist/2.6.0/pagination.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 </body>
 
 </html>

@@ -41,6 +41,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = ['role'];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -75,5 +77,10 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->name . ' ' . $this->lname;
+    }
+
+    public function getRoleAttribute()
+    {
+        return $this->roles()->pluck('name')->first();
     }
 }

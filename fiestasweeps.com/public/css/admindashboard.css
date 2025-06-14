@@ -31,7 +31,7 @@ body {
     border-radius: 24px;
     padding: 40px;
     margin-bottom: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
                 inset 0 1px 0 rgba(255, 255, 255, 0.15);
     position: relative;
     overflow: hidden;
@@ -200,20 +200,20 @@ body {
     margin: 0;
 }
 
-.stat-change.positive { 
-    color: #059669; 
+.stat-change.positive {
+    color: #059669;
     background: rgba(5, 150, 105, 0.1);
     padding: 6px 12px;
     border-radius: 12px;
 }
-.stat-change.negative { 
-    color: #dc2626; 
+.stat-change.negative {
+    color: #dc2626;
     background: rgba(220, 38, 38, 0.1);
     padding: 6px 12px;
     border-radius: 12px;
 }
-.stat-change.neutral { 
-    color: #6b7280; 
+.stat-change.neutral {
+    color: #6b7280;
     background: rgba(107, 114, 128, 0.1);
     padding: 6px 12px;
     border-radius: 12px;
@@ -567,103 +567,103 @@ body {
     .container {
         padding: 16px;
     }
-    
+
     .header {
         padding: 28px;
         text-align: center;
     }
-    
+
     .header h1 {
         font-size: 2.6rem;
     }
-    
+
     .nav-tabs {
         justify-content: center;
         gap: 12px;
     }
-    
+
     .nav-tab {
         padding: 14px 24px;
         font-size: 0.9rem;
     }
-    
+
     .stats-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .stat-card {
         padding: 28px;
         flex-direction: column;
         text-align: center;
         gap: 20px;
     }
-    
+
     .stat-icon {
         font-size: 2.8rem;
         width: 76px;
         height: 76px;
     }
-    
+
     .section-header {
         flex-direction: column;
         align-items: stretch;
         text-align: center;
         gap: 16px;
     }
-    
+
     .section-header h2 {
         font-size: 2rem;
     }
-    
+
     .table-container {
         overflow-x: auto;
         border-radius: 20px;
     }
-    
+
     .data-table {
         min-width: 900px;
     }
-    
+
     .data-table th,
     .data-table td {
         padding: 16px 12px;
         font-size: 0.88rem;
     }
-    
+
     .payment-methods-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .payment-method-card {
         padding: 28px;
         text-align: center;
     }
-    
+
     .modal-content {
         width: 96%;
         margin: 8% auto;
         border-radius: 24px;
     }
-    
+
     .modal-header {
         padding: 24px 28px;
     }
-    
+
     .modal-header h2 {
         font-size: 1.7rem;
     }
-    
+
     .modal-form {
         padding: 28px;
     }
-    
+
     .form-actions {
         flex-direction: column;
         gap: 12px;
     }
-    
+
     .btn-primary, .btn-secondary {
         padding: 16px 24px;
         width: 100%;
@@ -675,34 +675,34 @@ body {
     .header h1 {
         font-size: 2.2rem;
     }
-    
+
     .team-info {
         font-size: 1rem;
     }
-    
+
     .nav-tab {
         padding: 12px 20px;
         font-size: 0.85rem;
     }
-    
+
     .stat-value {
         font-size: 2.2rem;
     }
-    
+
     .section-header h2 {
         font-size: 1.8rem;
     }
-    
+
     .data-table th,
     .data-table td {
         padding: 14px 10px;
         font-size: 0.82rem;
     }
-    
+
     .modal-header {
         padding: 20px 24px;
     }
-    
+
     .modal-form {
         padding: 24px;
     }
@@ -825,13 +825,13 @@ body {
 }
 
 @keyframes modalSlideIn {
-    from { 
-        transform: translateY(-60px) scale(0.95); 
-        opacity: 0; 
+    from {
+        transform: translateY(-60px) scale(0.95);
+        opacity: 0;
     }
-    to { 
-        transform: translateY(0) scale(1); 
-        opacity: 1; 
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
     }
 }
 
@@ -935,4 +935,38 @@ body {
     margin-top: 40px;
     padding-top: 24px;
     border-top: 1px solid #f1f5f9;
+}
+
+.alert{
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.alert-success {
+    background: rgba(5, 150, 105, 0.1);
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+.alert-error {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    border: 1px solid #f87171;
+}
+.alert-warning {
+    background: rgba(234, 179, 8, 0.1);
+    color: #ca8a04;
+    border: 1px solid #f59e0b;
+}
+.alert-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+    border: 1px solid #3b82f6;
+}
+.pagination-container {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 10px;
+    color: #fff;
 }
