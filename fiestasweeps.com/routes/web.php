@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\PaymentHandleController;
 use App\Http\Controllers\CashoutController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -40,12 +41,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile-update', [AuthController::class, 'profileUpdate'])->name('profile.update');
     Route::post('/password-update', [AuthController::class, 'passwordUpdate'])->name('password.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/create-admin-user', [AuthController::class, 'createAdminUser'])->name('admin.user.create');
-    Route::post('/game-create', [AuthController::class, 'createGame'])->name('game.create');
-    Route::post('/payment-method', [AuthController::class, 'addPaymentMethod'])->name('paymentMethod.create');
+
+
     Route::post('/createTransaction', [AuthController::class, 'createTransaction'])->name('createTransaction');
-    Route::get('/update-user-handle', [AuthController::class, 'updateUserHandle'])->name('userHandle.update');
     Route::post('/update-status-transaction', [TransactionController::class, 'updateStatus'])->name('updateStatusTransaction');
+
+    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+    Route::delete('/cashouts/{id}', [CashoutController::class, 'destroy'])->name('cashouts.destroy');
+
+
 
     // Transaction Routes
     Route::resource('transactions', TransactionController::class)->only([

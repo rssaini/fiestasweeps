@@ -59,7 +59,7 @@ class CashoutController extends Controller
             $callback = function() use ($transactions, $timezone) {
                 $file = fopen('php://output', 'w');
                 // Add headings
-                fputcsv($file, ['ID','Player ID', 'Game','Last Deposit', 'Deposit Method', 'Deposit Handle' ,'AMOUNT', 'Payment Method', 'Payment Handle', 'Player Handle', 'Points Value', 'Created By','Updated By', 'Date', 'STATUS']);
+                fputcsv($file, ['ID','Player ID', 'Game','Last Deposit', 'Deposit Method', 'Deposit Handle' ,'AMOUNT', 'Payment Method', 'Payment Handle', 'Player Handle', 'Points Value', 'Created By', 'Created At', 'Updated By', 'Updated At', 'STATUS']);
 
                 foreach ($transactions as $transaction) {
                     fputcsv($file, [
@@ -75,8 +75,9 @@ class CashoutController extends Controller
                         $transaction->player_handle,
                         $transaction->points,
                         $transaction->createdBy ? $transaction->createdBy->name . '('. $transaction->createdBy->role .')': 'N/A',
-                        $transaction->updatedBy ? $transaction->updatedBy->name . '('. $transaction->updatedBy->role .')': 'N/A',
                         Carbon::parse($transaction->created_at)->timezone($timezone)->format('m-d-Y H:i:s'),
+                        $transaction->updatedBy ? $transaction->updatedBy->name . '('. $transaction->updatedBy->role .')': 'N/A',
+                        Carbon::parse($transaction->updated_at)->timezone($timezone)->format('m-d-Y H:i:s'),
                         $transaction->status,
                     ]);
                 }
@@ -142,9 +143,19 @@ class CashoutController extends Controller
     }
     public function destroy($id)
     {
-        $transaction = \App\Models\Transaction::findOrFail($id);
-        $transaction->delete();
+        try{
+            $transaction = \App\Models\Transaction::findOrFail($id);
+            $transaction->delete();
+        } catch(\Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Cashout not Found.'
+            ]);
+        }
 
-        return redirect()->route('transactions.index')->with('success', 'Transaction deleted successfully.');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cashout deleted successfully.'
+        ]);
     }
 }

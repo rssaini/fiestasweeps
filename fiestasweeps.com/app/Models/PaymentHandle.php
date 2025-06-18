@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentHandle extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'gateway_id',
         'account_name',

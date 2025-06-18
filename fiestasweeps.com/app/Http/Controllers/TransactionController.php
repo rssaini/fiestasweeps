@@ -59,7 +59,7 @@ class TransactionController extends Controller
             $callback = function() use ($transactions, $timezone) {
                 $file = fopen('php://output', 'w');
                 // Add headings
-                fputcsv($file, ['ID','Player ID', 'Game', 'AMOUNT', 'Payment Method', 'Payment Handle', 'Player Handle', 'Points Value', 'Created By','Updated By', 'Date', 'STATUS']);
+                fputcsv($file, ['ID','Player ID', 'Game', 'AMOUNT', 'Payment Method', 'Payment Handle', 'Player Handle', 'Points Value', 'Created By', 'Created At', 'Updated By', 'Updated At','STATUS']);
 
                 foreach ($transactions as $transaction) {
                     fputcsv($file, [
@@ -72,8 +72,9 @@ class TransactionController extends Controller
                         $transaction->player_handle,
                         $transaction->points,
                         $transaction->createdBy ? $transaction->createdBy->name . '('. $transaction->createdBy->role .')': 'N/A',
-                        $transaction->updatedBy ? $transaction->updatedBy->name . '('. $transaction->updatedBy->role .')': 'N/A',
                         Carbon::parse($transaction->created_at)->timezone($timezone)->format('m-d-Y H:i:s'),
+                        $transaction->updatedBy ? $transaction->updatedBy->name . '('. $transaction->updatedBy->role .')': 'N/A',
+                        Carbon::parse($transaction->updated_at)->timezone($timezone)->format('m-d-Y H:i:s'),
                         $transaction->status,
                     ]);
                 }
@@ -148,9 +149,19 @@ class TransactionController extends Controller
     }
     public function destroy($id)
     {
-        $transaction = \App\Models\Transaction::findOrFail($id);
-        $transaction->delete();
+        try{
+            $transaction = \App\Models\Transaction::findOrFail($id);
+            $transaction->delete();
+        } catch(\Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Transaction not Found.'
+            ]);
+        }
 
-        return redirect()->route('transactions.index')->with('success', 'Transaction deleted successfully.');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Transaction deleted successfully.'
+        ]);
     }
 }

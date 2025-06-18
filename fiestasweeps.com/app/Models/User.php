@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable , HasRoles;
+    use HasFactory, Notifiable , HasRoles, HasApiTokens, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -41,7 +43,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $appends = ['role'];
+    protected $appends = ['role', 'parent_name', 'status_name'];
 
     /**
      * Get the attributes that should be cast.
@@ -82,5 +84,13 @@ class User extends Authenticatable
     public function getRoleAttribute()
     {
         return $this->roles()->pluck('name')->first();
+    }
+    public function getParentNameAttribute()
+    {
+        return $this->parent()->pluck('name')->first();
+    }
+    public function getStatusNameAttribute()
+    {
+        return $this->status == 1 ? 'active' : 'inactive';
     }
 }

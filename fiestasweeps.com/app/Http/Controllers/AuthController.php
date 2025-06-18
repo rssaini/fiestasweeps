@@ -32,6 +32,15 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            $user = auth()->user();
+            if($user->status == 0){
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->withErrors([
+                    'status' => 'User is Disabled',
+                ]);
+            }
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
@@ -82,133 +91,14 @@ class AuthController extends Controller
         if (!$user) {
             return redirect()->route('login');
         }
-        $supervisors = User::role('Supervisor')->get();
-        $agents = null;
-        $games = Game::all();
-        $gateways = PaymentGateway::all();
-
-
-        $paymentHandles = [];
-
-        $userHandle = null;
-        if ($user->hasRole('Admin')){
-            $agents = User::role('Agent')->get();
-            $Handles = PaymentHandle::all();
-            foreach ($Handles as $handle) {
-                $paymentHandles[] = $handle;
-            }
-        }
-        if ($user->hasRole('Supervisor')) {
-            $userHandle = UserHandle::where('user_id', $user->id)->get();
-            $agents = User::role('Agent')->where('parent_id', $user->id)->get();
-
-            $user_ids = [];
-            $user_ids[] = $user->id; // Include the supervisor's own ID
-            $user->children->pluck('id')->each(function ($childId) use (&$user_ids) {
-                $user_ids[] = $childId;
-            });
-
-        }
-        if ($user->hasRole('Agent')) {
-            $userHandle = UserHandle::where('user_id', $user->parent->id)->get();
-        }
-        if ($user->hasRole('Supervisor') || $user->hasRole('Agent')) {
-            if($userHandle->count() > 0) {
-                foreach ($userHandle as $handle) {
-                    $paymentHandles[] = $handle->handle;
-                }
-            }
-        }
-
-
         if ($user->hasRole('Player')) {
             return view('pages.dashboard', compact('user'));
         }
-        return view('adash', compact('user','supervisors', 'agents', 'games', 'gateways', 'paymentHandles' ));
-    }
 
-    public function createAdminUser(Request $request)
-    {
+        $games = Game::all();
+        $gateways = PaymentGateway::all();
 
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-
-
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'parent_id' => $request->parent_id,
-            'password' => Hash::make($request->password),
-        ]);
-
-
-        $user->assignRole($request->role);
-
-        return redirect()->back()->with('success', 'Supervisor created successfully.');
-    }
-
-    public function createGame(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-
-        // Create the game record
-        $game = new Game();
-        $game->name = $request->name;
-        $game->description = $request->description;
-        $game->save();
-
-        return redirect()->back()->with('success', 'Game created successfully.');
-    }
-
-    public function addPaymentMethod(Request $request)
-    {
-        $request->validate([
-            'gateway_id' => 'required|exists:payment_gateways,id',
-            'account_handle' => 'required|string|max:255',
-        ]);
-
-        PaymentHandle::create([
-            'gateway_id' => $request->gateway_id,
-            'account_name' => $request->account_name,
-            'account_handle' => $request->account_handle,
-            'description' => $request->description,
-            'status' => $request->status,
-            'daily_limit' => $request->daily_limit,
-        ]);
-
-        return redirect()->back()->with('success', 'Payment method added successfully.');
-    }
-
-    public function updateUserHandle(Request $request)
-    {
-        $handle_id = $request->handle_id;
-        $user_id = $request->user_id;
-        $user = Auth::user();
-
-        if (!($user->hasRole('Admin'))) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'You are not authorized to update this handle.'
-            ], 403);
-        }
-        UserHandle::where('handle_id', $handle_id)->delete();
-        UserHandle::create([
-            'handle_id' => $handle_id,
-            'user_id' => $user_id,
-        ]);
-
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Your handle has been updated successfully.',
-            'handle' => $user->handle
-        ]);
+        return view('adash', compact('user', 'games', 'gateways'));
     }
 
     public function createTransaction(Request $request)

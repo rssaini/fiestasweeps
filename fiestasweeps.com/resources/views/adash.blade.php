@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/favicon-96x96.png') }}" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}" />
     <link rel="shortcut icon" href="{{ asset('assets/favicon.ico') }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/apple-touch-icon.png') }}" />
     <meta name="apple-mobile-web-app-title" content="Fiesta Sweeps" />
     <link rel="manifest" href="{{ asset('assets/site.webmanifest') }}" />
@@ -15,6 +16,7 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://pagination.js.org/dist/2.6.0/pagination.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <style>
         .paginationjs.paginationjs-theme-blue .paginationjs-pages li {
@@ -63,19 +65,8 @@
                 @csrf
                 <button class="nav-tab" style="background: #ca4c4c;" type="submit">Logout</button>
             </form>
-            @if ($user->hasRole('Admin'))
-                <div class="team-info">
-                <span>Admin</span> | <span>{{ count($supervisors)}} Active Supervisors</span> | <span>{{ count($agents)}} Active Agents</span>
-            </div>
-            @endif
-
-            @if ($user->hasRole('Supervisor'))
             <div class="team-info">
-                <span>{{ $user->name }}</span> | <span>5 Active Agents</span>
-            </div>
-            @endif
-            <div class="team-info">
-                {{ $user->id }} | {{ $user->name }} | {{ $user->email }} | {{ $user->getRoleNames()->first() }}
+                <span class="user_"></span><span class="totalSupervisors"></span><span class="totalAgents"></span>
             </div>
         </div>
 
@@ -101,13 +92,13 @@
             <button class="nav-tab active" onclick="showTab('overview')">Overview</button>
             <button class="nav-tab" onclick="showTab('transactions'); loadTransactions();">Transactions</button>
             <button class="nav-tab" onclick="showTab('cashouts'); loadCashouts();">Cashouts</button>
-            <button class="nav-tab" onclick="showTab('payment-methods')">Payment Methods</button>
+            <button class="nav-tab" onclick="showTab('payment-methods'); loadHandles();">Payment Methods</button>
             @if ($user->hasRole('Admin'))
-                <button class="nav-tab" onclick="showTab('games')">Games</button>
-                <button class="nav-tab" onclick="showTab('supervisors')">Supervisors</button>
+                <button class="nav-tab" onclick="showTab('games'); loadGames();">Games</button>
+                <button class="nav-tab" onclick="showTab('supervisors'); loadSupervisors();">Supervisors</button>
             @endif
             @if ($user->hasRole('Supervisor') || $user->hasRole('Admin'))
-                <button class="nav-tab" onclick="showTab('agents')">Agents</button>
+                <button class="nav-tab" onclick="showTab('agents'); loadAgents();">Agents</button>
             @endif
         </div>
 
@@ -167,8 +158,8 @@
                             <th>Points Value</th>
                             <th>Created By</th>
                             <th>Updated By</th>
-                            <th>Date</th>
                             <th>Payment Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -205,8 +196,9 @@
                             <th>Amount</th>
                             <th>Created By</th>
                             <th>Updated By</th>
-                            <th>Date</th>
                             <th>Status</th>
+
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -226,7 +218,7 @@
         <!-- Payment Methods Tab -->
         <div id="payment-methods" class="tab-content">
             <div class="section-header">
-                <h2>All Payment Method Handles</h2>
+                <h2>All Payment Handles</h2>
                 @if($user->hasRole('Admin'))
                     <button class="btn-primary" onclick="openModal('paymentModal')">+ New Payment Handle</button>
                 @endif
@@ -236,40 +228,19 @@
                     <table class="data-table">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Gateway</th>
                                 <th>Ac Name</th>
                                 <th>Handle</th>
                                 <th>Description</th>
                                 <th>Status</th>
                                 @if($user->hasRole('Admin'))
-                                    <th>Supervisor</th>
+                                <th>Supervisor</th>
+                                <th>Action</th>
                                 @endif
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($paymentHandles as $handle)
-                            <tr>
-                                <td>{{ $handle->gateway->name }}</td>
-                                <td>{{ $handle->account_name }}</td>
-                                <td>{{ $handle->account_handle }}</td>
-                                <td>{{ $handle->description }}</td>
-                                <td><span class="status-{{ $handle->status }}">{{ ucfirst($handle->status) }}</span></td>
-                                @if($user->hasRole('Admin'))
-                                    <td>
-                                        @php
-                                            $assigned = $handle->users->count() > 0 ? $handle->users->first()->id : null;
-                                        @endphp
-                                        <select onchange="asignUserToHandle({{ $handle->id }}, this.value)">
-                                            <option value="">Select Supervisor</option>
-                                            @foreach ($supervisors as $supervisor)
-                                                <option value="{{ $supervisor->id }}" {{ $assigned === $supervisor->id ? 'selected' : '' }}>{{ $supervisor->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                @endif
-                            </tr>
-                            @endforeach
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -286,19 +257,14 @@
                 <table class="data-table">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($supervisors as $supervisor)
-                            <tr>
-                                <td>{{ $supervisor->name }}</td>
-                                <td>{{ $supervisor->email }}</td>
-                            </tr>
-                        @endforeach
-
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -312,19 +278,13 @@
                 <table class="data-table">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Description</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($games as $game)
-                            <tr>
-                                <td>{{ $game->name }}</td>
-                                <td>{{ $game->description }}</td>
-                            </tr>
-                        @endforeach
-
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -341,34 +301,17 @@
                 <table class="data-table">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
-                            @if ($user->hasRole('Admin'))
+                            <th>Status</th>
+                            @if($user->hasRole('Admin'))
                                 <th>Supervisor</th>
                             @endif
+                            <th>Action</th>
                         </tr>
                     </thead>
-
-
-                    <tbody>
-
-                        @foreach ($agents as $agent)
-                            <tr>
-                                <td>{{ $agent->name }}</td>
-                                <td>{{ $agent->email }}</td>
-                                @if ($user->hasRole('Admin'))
-                                <td>
-                                    @if ($agent->parent)
-                                        {{ $agent->parent->name }}
-                                    @else
-                                        No Supervisor
-                                    @endif
-                                </td>
-                                @endif
-                            </tr>
-                        @endforeach
-
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -398,17 +341,12 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="number" id="amount" name="amount" step="0.01" min="0" required>
+                    <label>Amount</label>
+                    <input type="number" name="amount" step="0.01" min="0" required>
                 </div>
                 <div class="form-group">
                     <label>Payment Handle</label>
-                    <select name="payment_handle" required>
-                        <option value="">Select Payment Handle</option>
-                        @foreach ($paymentHandles as $handle)
-                            <option value="{{ $handle->id }}">{{ $handle->gateway->name }} ({{ $handle->account_handle }})</option>
-                        @endforeach
-                    </select>
+                    <select class="selectPaymentHandles" name="payment_handle" required></select>
                 </div>
                 <div class="form-group">
                     <label for="playerHandle">Player's Handle</label>
@@ -457,29 +395,19 @@
                 </div>
                 <div class="form-group">
                     <label>Deposit Method</label>
-                    <select name="deposit_handle_id" required>
-                        <option value="">Select Deposit Method</option>
-                        @foreach ($paymentHandles as $handle)
-                            <option value="{{ $handle->id }}">{{ $handle->account_name }} ({{ $handle->account_handle }})</option>
-                        @endforeach
-                    </select>
+                    <select class="selectPaymentHandles" name="deposit_handle_id" required></select>
                 </div>
                 <div class="form-group">
                     <label>Payout Method</label>
-                    <select name="payment_handle" required>
-                        <option value="">Select Payout Method</option>
-                        @foreach ($paymentHandles as $handle)
-                            <option value="{{ $handle->id }}">{{ $handle->gateway->name }} ({{ $handle->account_handle }})</option>
-                        @endforeach
-                    </select>
+                    <select class="selectPaymentHandles" name="payment_handle" required></select>
                 </div>
                 <div class="form-group">
                     <label>Player Payment Handle</label>
                     <input type="text" name="player_handle" required>
                 </div>
                 <div class="form-group">
-                    <label for="amount">Amount</label>
-                    <input type="number" id="amount" name="amount" step="0.01" min="0" required>
+                    <label>Amount</label>
+                    <input type="number" name="amount" step="0.01" min="0" required>
                 </div>
                 <input type="hidden" name="transaction_type" value="cashout">
                 <input type="hidden" name="points" value="100">
@@ -499,7 +427,7 @@
                     <h2>New Supervisor</h2>
                     <span class="close" onclick="closeModal('supervisorModal')">&times;</span>
                 </div>
-                <form class="modal-form" method="POST" action="{{ route('admin.user.create') }}">
+                <form class="modal-form supervisorform" method="POST" action="{{ route('supervisors.store') }}">
                     @csrf
                     <div class="form-group">
                         <label>Name</label>
@@ -517,12 +445,56 @@
                         <label>Confirm Password</label>
                         <input type="password" name="password_confirmation" required>
                     </div>
-                    <input type="hidden" name="parent_id" value="{{ $user->id }}">
-                    <input type="hidden" name="role" value="Supervisor">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status">
+                            <option value="1">Active</option>
+                            <option value="0">InActive</option>
+                        </select>
+                    </div>
                     <div class="form-actions">
                         <button type="button" class="btn-secondary"
                             onclick="closeModal('supervisorModal')">Cancel</button>
                         <button type="submit" class="btn-primary">Create Supervisor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="supervisorEditModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Supervisor</h2>
+                    <span class="close" onclick="closeModal('supervisorEditModal')">&times;</span>
+                </div>
+                <form class="modal-form supervisorform" method="PUT" action="{{ route('supervisors.update', '5') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" readonly name="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" name="password_confirmation">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" required>
+                            <option value="1">Active</option>
+                            <option value="0">InActive</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary"
+                            onclick="closeModal('supervisorEditModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Update Supervisor</button>
                     </div>
                 </form>
             </div>
@@ -534,7 +506,7 @@
                     <h2>New Game</h2>
                     <span class="close" onclick="closeModal('gameModal')">&times;</span>
                 </div>
-                <form class="modal-form" method="POST" action="{{ route('game.create') }}">
+                <form class="modal-form gameForm" method="POST" action="{{ route('games.store') }}">
                     @csrf
                     <div class="form-group">
                         <label>Name</label>
@@ -552,6 +524,30 @@
                 </form>
             </div>
         </div>
+        <div id="gameEditModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Game</h2>
+                    <span class="close" onclick="closeModal('gameEditModal')">&times;</span>
+                </div>
+                <form class="modal-form gameForm" method="PUT" action="{{ route('games.update', '1') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" name="description">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary"
+                            onclick="closeModal('gameEditModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Update Game</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div id="paymentModal" class="modal">
             <div class="modal-content">
@@ -559,7 +555,7 @@
                     <h2>New Payment Handle</h2>
                     <span class="close" onclick="closeModal('paymentModal')">&times;</span>
                 </div>
-                <form class="modal-form" method="POST" action="{{ route('paymentMethod.create') }}">
+                <form class="modal-form paymentHandleForm" method="POST" action="{{ route('handles.store') }}">
                     @csrf
                     <div class="form-group">
                         <label>Payment Method</label>
@@ -599,6 +595,56 @@
 
             </div>
         </div>
+        <div id="paymentEditModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Payment Handle</h2>
+                    <span class="close" onclick="closeModal('paymentEditModal')">&times;</span>
+                </div>
+                <form class="modal-form paymentHandleForm" method="PUT" action="{{ route('handles.update', '1') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <select name="gateway_id" required>
+                            <option value="">Select Method</option>
+                            @foreach ($gateways as $gateway)
+                                <option value="{{ $gateway->id }}">{{ $gateway->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Name</label>
+                        <input type="text" name="account_name">
+                    </div>
+                    <div class="form-group">
+                        <label>Account Handle</label>
+                        <input type="text" name="account_handle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" name="description">
+                    </div>
+                    <input type="hidden" name="daily_limit" value="1000">
+                    <div class="form-group">
+                        <label>Supervisor</label>
+                        <select class="activeSupervisorSelect" name="supervisor" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" required>
+                            <option selected value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary"
+                            onclick="closeModal('paymentEditModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Update Payment Handle</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
     @endif
 
     @if ($user->hasRole('Admin') || $user->hasRole('Supervisor'))
@@ -608,7 +654,7 @@
                     <h2>New Agent</h2>
                     <span class="close" onclick="closeModal('agentModal')">&times;</span>
                 </div>
-                <form class="modal-form" method="POST" action="{{ route('admin.user.create') }}">
+                <form class="modal-form agentForm" method="POST" action="{{ route('agents.store') }}">
                     @csrf
                     <div class="form-group">
                         <label>Name</label>
@@ -621,12 +667,7 @@
                     @if ($user->hasRole('Admin'))
                     <div class="form-group">
                         <label>Supervisor</label>
-                        <select name="parent_id" required>
-                            <option value="">Select Supervisor</option>
-                            @foreach ($supervisors as $supervisor)
-                                <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
-                            @endforeach
-                        </select>
+                        <select class="activeSupervisorSelect" name="parent_id" required></select>
                     </div>
                     @endif
                     @if ($user->hasRole('Supervisor'))
@@ -640,11 +681,66 @@
                         <label>Confirm Password</label>
                         <input type="password" name="password_confirmation" required>
                     </div>
-                    <input type="hidden" name="role" value="Agent">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" required>
+                            <option value="1">Active</option>
+                            <option value="0">InActive</option>
+                        </select>
+                    </div>
                     <div class="form-actions">
                         <button type="button" class="btn-secondary"
                             onclick="closeModal('agentModal')">Cancel</button>
                         <button type="submit" class="btn-primary">Create Agent</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div id="agentEditModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Agent</h2>
+                    <span class="close" onclick="closeModal('agentEditModal')">&times;</span>
+                </div>
+                <form class="modal-form agentForm" method="PUT" action="{{ route('agents.update', '1') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" readonly name="email" required>
+                    </div>
+                    @if ($user->hasRole('Admin'))
+                    <div class="form-group">
+                        <label>Supervisor</label>
+                        <select class="activeSupervisorSelect" name="parent_id" required></select>
+                    </div>
+                    @endif
+                    @if ($user->hasRole('Supervisor'))
+                        <input type="hidden" name="parent_id" value="{{ $user->id }}">
+                    @endif
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" name="password_confirmation">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" required>
+                            <option value="1">Active</option>
+                            <option value="0">InActive</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary"
+                            onclick="closeModal('agentEditModal')">Cancel</button>
+                        <button type="submit" class="btn-primary">Update Agent</button>
                     </div>
                 </form>
 
@@ -681,283 +777,25 @@
         </div>
     @endif
 
-    <script>
-        // Tab switching functionality
-        function showTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(tab => tab.classList.remove('active'));
+    <script src="/js/script.js"></script>
+    @if($user->hasRole('Admin'))
+        <script src="/js/admin.js"></script>
+    @endif
+    @if($user->hasRole('Admin') || $user->hasRole('Supervisor'))
+        <script src="/js/admin_supervisor.js"></script>
+    @endif
+    @if($user->hasRole('Supervisor'))
+        <script src="/js/supervisor.js"></script>
+    @endif
 
-            // Remove active class from all nav tabs
-            const navTabs = document.querySelectorAll('.nav-tab');
-            navTabs.forEach(tab => tab.classList.remove('active'));
-
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-
-            // Add active class to clicked nav tab
-            event.target.classList.add('active');
-            $('#daterange_transaction').data('daterangepicker').setStartDate(moment().subtract(7, 'days').format('MM/DD/YYYY'));
-            $('#daterange_transaction').data('daterangepicker').setEndDate(moment().format('MM/DD/YYYY'));
-            $('#daterange_cashout').data('daterangepicker').setStartDate(moment().subtract(7, 'days').format('MM/DD/YYYY'));
-            $('#daterange_cashout').data('daterangepicker').setEndDate(moment().format('MM/DD/YYYY'));
-        }
-
-        // Modal functionality
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function closeAllModals() {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => modal.style.display = 'none');
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        }
-
-        @if($user->hasRole('Admin'))
-            function asignUserToHandle(handleId, userId) {
-                if (userId) {
-                    fetch(`/update-user-handle?handle_id=${handleId}&user_id=${userId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert('Supervisor assigned successfully!');
-                        } else {
-                            alert('Error assigning supervisor.');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-                }
-            }
-        @endif
-
-        $(document).ready(function() {
-           $('form').on('submit', function(event) {
-                if($(this).attr('id') === 'logoutForm') {
-                    return true; // Allow logout form to submit normally
-                }
-                // Prevent default form submission
-                event.preventDefault();
-
-                // Serialize form data
-                const formData = $(this).serialize();
-                const formTag = this;
-
-                // Submit the form via AJAX
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: formData,
-                    success: function(response) {
-                        $(formTag)[0].reset();
-                        var title = "";
-                        if($(formTag).hasClass('transactionCreateForm')){
-                            loadTransactions();
-                            title = "Transaction created successfully!";
-                        }
-                        if($(formTag).hasClass('cashoutCreateForm')){
-                            loadCashouts();
-                            title = "Cashout created successfully!";
-                        }
-                        if($(formTag).hasClass('statusUpdateForm')){
-                            title = "Status updated successfully!";
-                            if(response.type == 'deposit'){
-                                loadTransactions();
-                            }
-                            if(response.type == 'cashout'){
-                                loadCashouts();
-                            }
-                        }
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: title,
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                        closeAllModals();
-                    },
-                    error: function(xhr) {
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "error",
-                            text: xhr.responseJSON.message || 'An error occurred while submitting the form.',
-                            title: "Error Submitting Form",
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                    }
-                });
-            });
-
-            $('#daterange_transaction').daterangepicker({
-                opens: 'right',
-                drops: 'up',
-                autoApply: true,
-            }, function(start, end, label) {
-                loadTransactions();
-                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-            });
-            $('#daterange_cashout').daterangepicker({
-                opens: 'right',
-                drops: 'up',
-                autoApply: true,
-            }, function(start, end, label) {
-                loadCashouts();
-                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-            });
-
-        });
-
-        function loadTransactions() {
-            let startDate = $('#daterange_transaction').data('daterangepicker').startDate.format('YYYY-MM-DD');
-            let endDate = $('#daterange_transaction').data('daterangepicker').endDate.format('YYYY-MM-DD');
-            startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            $('#transactions .pagination-container').pagination({
-                dataSource: `/transactions?start_date=${startDate}&end_date=${endDate}`,
-                locator: 'data',
-                totalNumberLocator: function(response) {
-                    return response.total; // Assuming the API returns total count in 'total'
-                },
-                pageSize: 10,
-                pageNumber: 1,
-                alias: {
-                    pageNumber: 'page'
-                },
-                className: 'paginationjs-theme-blue paginationjs-big',
-                showSizeChanger: true,
-                showNavigator: true,
-                formatNavigator: '<%= rangeStart %> - <%= rangeEnd %> of <%= totalNumber %> items',
-                ajax: {
-                    beforeSend: function() {
-                        const tbody = document.querySelector('#transactions tbody');
-                        tbody.innerHTML = '<tr><td colspan="10">Loading...</td></tr>'; // Show loading state
-                    }
-                },
-                callback: function(data, pagination) {
-                    const tbody = document.querySelector('#transactions tbody');
-                    if (data.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="10">No transactions found.</td></tr>';
-                        return;
-                    }
-                    tbody.innerHTML = ''; // Clear previous data
-                    data.forEach(transaction => {
-                        const row = `<tr>
-                            <td>${transaction.player_id}</td>
-                            <td>${transaction.game.name}</td>
-                            <td>$${transaction.amount}</td>
-                            <td>${transaction.handle.gateway.name} (${transaction.handle.account_handle})</td>
-                            <td>${transaction.player_handle}</td>
-                            <td>${transaction.points}</td>
-                            <td>${transaction.created_by ? transaction.created_by.name + ' (' + transaction.created_by.role + ')' : 'N/A'}</td>
-                            <td>${transaction.updated_by ? transaction.updated_by.name + ' (' + transaction.updated_by.role + ')' : 'N/A'}</td>
-                            <td>${new Date(transaction.created_at).toLocaleString()}</td>
-                            <td><span style="cursor:pointer;" onclick="updateStatusTransaction(${transaction.id}, '${transaction.status}')" class="status ${transaction.status}">${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}</span></td>
-                        </tr>`;
-                        tbody.innerHTML += row;
-                    });
-                }
-            })
-        }
-
-        function exportTransactions(){
-            let startDate = $('#daterange_transaction').data('daterangepicker').startDate.format('YYYY-MM-DD');
-            let endDate = $('#daterange_transaction').data('daterangepicker').endDate.format('YYYY-MM-DD');
-            startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            const userTimezone = moment.tz.guess();
-            window.open(`/transactions?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
-        }
-
-        function loadCashouts() {
-            let startDate = $('#daterange_cashout').data('daterangepicker').startDate.format('YYYY-MM-DD');
-            let endDate = $('#daterange_cashout').data('daterangepicker').endDate.format('YYYY-MM-DD');
-            startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            $('#cashouts .pagination-container').pagination({
-                dataSource: `/cashouts?start_date=${startDate}&end_date=${endDate}`,
-                locator: 'data',
-                totalNumberLocator: function(response) {
-                    return response.total; // Assuming the API returns total count in 'total'
-                },
-                pageSize: 10,
-                pageNumber: 1,
-                alias: {
-                    pageNumber: 'page'
-                },
-                className: 'paginationjs-theme-blue paginationjs-big',
-                showSizeChanger: true,
-                showNavigator: true,
-                formatNavigator: '<%= rangeStart %> - <%= rangeEnd %> of <%= totalNumber %> items',
-                ajax: {
-                    beforeSend: function() {
-                        const tbody = document.querySelector('#cashouts tbody');
-                        tbody.innerHTML = '<tr><td colspan="11">Loading...</td></tr>'; // Show loading state
-                    }
-                },
-                callback: function(data, pagination) {
-                    const tbody = document.querySelector('#cashouts tbody');
-                    if (data.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="11">No Cashouts found.</td></tr>';
-                        return;
-                    }
-                    tbody.innerHTML = ''; // Clear previous data
-                    data.forEach(cashout => {
-                        const row = `<tr>
-                            <td>${cashout.player_id}</td>
-                            <td>${cashout.game.name}</td>
-                            <td>${cashout.last_deposit}</td>
-                            <td>${cashout.deposit_handle.gateway.name} (${cashout.deposit_handle.account_handle})</td>
-                            <td>${cashout.handle.gateway.name} (${cashout.handle.account_handle})</td>
-                            <td>${cashout.player_handle}</td>
-                            <td>$${cashout.amount}</td>
-                            <td>${cashout.created_by ? cashout.created_by.name + ' (' + cashout.created_by.role + ')' : 'N/A'}</td>
-                            <td>${cashout.updated_by ? cashout.updated_by.name + ' (' + cashout.updated_by.role + ')' : 'N/A'}</td>
-                            <td>${new Date(cashout.created_at).toLocaleString()}</td>
-                            <td><span style="cursor:pointer;" onclick="updateStatusTransaction(${cashout.id}, '${cashout.status}')" class="status ${cashout.status}">${cashout.status.charAt(0).toUpperCase() + cashout.status.slice(1)}</span></td>
-                        </tr>`;
-                        tbody.innerHTML += row;
-                    });
-                }
-            })
-        }
-
-        function exportCashouts() {
-            let startDate = $('#daterange_cashout').data('daterangepicker').startDate.format('YYYY-MM-DD');
-            let endDate = $('#daterange_cashout').data('daterangepicker').endDate.format('YYYY-MM-DD');
-            startDate = moment(startDate).startOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            endDate = moment(endDate).endOf('day').utc().format('YYYY-MM-DD HH:mm:ss');
-            const userTimezone = moment.tz.guess();
-            window.open(`/cashouts?export=csv&start_date=${startDate}&end_date=${endDate}`, '_blank');
-        }
-
-        function updateStatusTransaction(id, status){
-            @if ($user->hasRole('Admin') || $user->hasRole('Supervisor'))
-                openModal('statusChangeModal');
-                $('form.statusUpdateForm input[name="id"]').val(id);
-                $('form.statusUpdateForm select[name="status"]').val(status);
-            @endif
-        }
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.all.min.js"></script>
     <script src="https://pagination.js.org/dist/2.6.0/pagination.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.40/builds/moment-timezone-with-data.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        var user = null;
+    </script>
 </body>
 
 </html>
