@@ -13,7 +13,7 @@
 
         <div class="contact-section">
             <h3>Visit Us</h3>
-            <p>Fiesta Sweeps HQ<br>811 W Comal St<br>Pearsall, TX 78061</p>
+            <p>Fiesta Sweeps HQ<br>120 Center Place Way<br>St Augustine, FL 32095</p>
         </div>
 
         <div class="contact-section">

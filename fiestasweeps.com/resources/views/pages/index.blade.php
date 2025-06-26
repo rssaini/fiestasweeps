@@ -6,7 +6,7 @@
 <section class="hero">
             <div class="hero-left">
                 <h1>Spin, win, repeat.</h1>
-                <p>Every game you play goes beyond entertainment — it fuels a meaningful mission. With each play, you're contributing to (charity name), a 501(c)(3) nonprofit that (their purpose). Fiesta Sweeps isn't just about excitement; it's about creating real change, one play at a time.</p>
+                <p>Every game you play goes beyond entertainment — it fuels a meaningful mission. With each play, you're contributing to Paradise Fellowship, a 501(c)(3) nonprofit that aims to feed, house, and clothe the underserved population. Fiesta Sweeps isn't just about excitement; it's about creating real change, one play at a time.</p>
                 <div class="hero-devices">
                     <img src="assets/gamingdevices.png" alt="Play on Any Device">
                 </div>
