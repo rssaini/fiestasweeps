@@ -9,7 +9,7 @@
                 <a href="{{ route('contact') }}" class="footer-button">Contact Us</a>
             </p>
         </div>
-        <div class="footer-images">
+        <div class="footer-images" style="display:none;">
             <img src="/assets/cards.png" class="cards">
             <div class="/age-verification">
                 <img src="/assets/age.png" alt="21+" class="age-icon">

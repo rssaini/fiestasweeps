@@ -3,22 +3,12 @@
 @section('title', 'Terms & Conditions')
 
 @section('content')
-    {{-- <section id="legal">
-    <h2>Terms & Conditions</h2>
-    <p class="effective">Last Updated: May 19, 2025</p>
-
-    <h3>Welcome to Fiesta Sweeps</h3>
-    <p>By accessing or using our services, you agree to be bound by these Terms & Conditions. Please read them carefully before proceeding.</p>
-
-    <h3>Eligibility</h3>
-    <p>You must be at least 18 years old to use our services. By using our platform, you represent and warrant that you meet all eligibility requirements.</p>
-</section> --}}
 
     <section id="legal">
         <h2>
             Official Rules & AMOE Instructions
         </h2>
-        <p class="effective">Last Updated: May 19, 2025</p>
+        <p class="effective">Last Updated: July 10, 2025</p>
 
         <h3>A. Eligibility</h3>
         <ul>
@@ -106,7 +96,7 @@
 
         <ul>
             <li>
-                <p>Limit: One AMOE request per person per day (regardless of method).</p>
+                <p>Participants may submit as many AMOE entries as they wish. Each must be submitted separately and comply with all requirements.</p>
             </li>
             <li>
                 <p>Free entries receive the same odds and prize access as paid entries.</p>
@@ -129,10 +119,10 @@
         <h3>E. Odds of Winning</h3>
         <ul>
             <li>
-                <p>Depend on total number of entries</p>
+                <p>Odds depend on number of total entries.</p>
             </li>
             <li>
-                <p>All entries (paid or free) have equal odds</p>
+                <p>All entries, paid or free, have equal chance of winning.</p>
             </li>
         </ul>
 
@@ -149,7 +139,7 @@
         <h3>G. General Terms</h3>
         <ul>
             <li>
-                <p>Fiesta Sweeps may disqualify accounts for fraud or AMOE abuse</p>
+                <p>Fiesta Sweeps reserves the right to disqualify entries suspected of fraud or multiple accounts.</p>
             </li>
             <li>
                 <p>Winners are responsible for all taxes</p>
@@ -165,7 +155,7 @@
         <h3>H. Governing Law</h3>
         <ul>
             <li>
-                <p>Governed by the laws of the State of Florida</p>
+                <p>Governed by the laws of the State of Texas</p>
             </li>
         </ul>
 

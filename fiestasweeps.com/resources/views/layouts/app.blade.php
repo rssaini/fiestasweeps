@@ -12,7 +12,6 @@
     <meta name="apple-mobile-web-app-title" content="Fiesta Sweeps" />
     <link rel="manifest" href="{{ asset('assets/site.webmanifest') }}" />
     <style>
-        .game-card img {display : none;}
           .sweepstakes-footer {
             background-color: #f8f9fa;
             padding: 15px 20px;
