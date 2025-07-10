@@ -73,6 +73,10 @@ class PageController extends Controller
     {
         return view('pages.terms');
     }
+    public function officialRules()
+    {
+        return view('pages.official-rules');
+    }
 
     public function contactSubmit(Request $request)
     {
@@ -83,7 +87,7 @@ class PageController extends Controller
         ]);
 
         // Add your email sending logic here
-        
+
         return redirect()->back()->with('success', 'Thank you for your message. We will contact you soon!');
     }
 }

@@ -24,6 +24,7 @@ Route::get('/responsible-gaming', function () {
     return view('pages.responsible-gaming');
 })->name('responsible-gaming');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
+Route::get('/official-rules', [PageController::class, 'officialRules'])->name('official.rules');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
