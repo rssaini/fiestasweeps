@@ -3,7 +3,7 @@
 @section('title', 'Terms & Conditions')
 
 @section('content')
-{{-- <section id="legal">
+    {{-- <section id="legal">
     <h2>Terms & Conditions</h2>
     <p class="effective">Last Updated: May 19, 2025</p>
 
@@ -14,91 +14,161 @@
     <p>You must be at least 18 years old to use our services. By using our platform, you represent and warrant that you meet all eligibility requirements.</p>
 </section> --}}
 
-<section id="legal">
-      <h2>
-        Terms & Conditions
-      </h2>
-      <p class="effective">Last Updated: May 19, 2025</p>
+    <section id="legal">
+        <h2>
+            Official Rules & AMOE Instructions
+        </h2>
+        <p class="effective">Last Updated: May 19, 2025</p>
 
-      <h3>Introduction</h3>
-      <p>
-        Welcome to Fiesta Sweeps! These Terms and Conditions ("Terms") govern your use of our online sweepstakes platform, Fiesta Sweeps, and all related services. By accessing or using our platform, whether as a visitor or registered user, you enter into a legally binding agreement with Fiesta Sweeps, agreeing to comply with these Terms.
-      </p>
-      <p>
-        Fiesta Sweeps is designed for entertainment and fair play. We operate in accordance with U.S. sweepstakes laws to provide a secure and transparent experience. By using our platform, you confirm that you understand and adhere to all applicable legal requirements.
-      </p>
+        <h3>A. Eligibility</h3>
+        <ul>
+            <li>
+                <p>Must be a legal resident of the United States</p>
+            </li>
+            <li>
+                <p>Must be 18 years or older</p>
+            </li>
+            <li>
+                <p>VOID in: Washington, Nevada, Idaho, and Wyoming</p>
+            </li>
+            <li>
+                <p>One account per individual</p>
+            </li>
+            <li>
+                <p>AMOE submissions must include valid date of birth and certification of age 18+</p>
+            </li>
+        </ul>
 
-      <h3>General Terms</h3>
-      <p>
-        Fiesta Sweeps reserves the right to modify these Terms at any time. Changes will take effect immediately upon posting on the website. It is your responsibility to review these Terms periodically, as continued use of the platform constitutes acceptance of revisions. If you do not agree with any modifications, you must discontinue use of Fiesta Sweeps.
-      </p>
+        <h3>B. Entry Methods</h3>
 
-      <h3>User Obligations</h3>
-      <p>To ensure a fair and responsible gaming experience, all users must comply with the following obligations:</p>
-      <ul>
-        <li><strong>Age Requirement:</strong> You must be at least 21 years old or the legal age for sweepstakes participation in your jurisdiction. Proof of age may be requested at any time.</li>
-        <li><strong>Legal Compliance:</strong> You are responsible for ensuring that your participation is lawful based on your jurisdiction.</li>
-        <li><strong>No Location Masking:</strong> The use of VPNs, proxies, or similar services to conceal your actual location is prohibited.</li>
-        <li><strong>Authorized Payment Methods:</strong> You must use payment methods that belong to you for any transactions.</li>
-        <li><strong>Fair Play Commitment:</strong> Attempting to manipulate the system, misrepresent information, or engage in fraudulent activities is strictly forbidden.</li>
-      </ul>
+        <h3>i. Paid Entry</h3>
+        <ul>
+            <li>
+                <p>Via sweepstakes credits purchased through FiestaSweeps.com.</p>
+            </li>
+        </ul>
 
-      <h3>Restricted Use</h3>
-      <p>Fiesta Sweeps enforces certain restrictions to maintain compliance with legal and ethical standards:</p>
-      <ul>
-        <li>Users from jurisdictions where sweepstakes participation is prohibited cannot use our platform.</li>
-        <li>Account transfers or sales to third parties are not allowed.</li>
-        <li>Attempts to tamper with the integrity of sweepstakes entries or disrupt user experience are strictly prohibited.</li>
-        <li>Employees of Fiesta Sweeps and affiliated partners must not engage in real-money play without prior approval.</li>
-      </ul>
-      <p>Violation of these policies may result in account suspension or termination without prior notice.</p>
+        <h3>ii. Free Entry (AMOE)</h3>
 
-      <h3>Registration</h3>
-      <p>
-        To access Fiesta Sweeps, you must complete the registration process and agree to these Terms. Account verification may include identity validation through legal documents. Providing false information may result in account suspension.
-      </p>
-      <p>
-        Each user is permitted to maintain only one account. Multiple accounts or unauthorized registrations will be closed immediately.
-      </p>
+        <h3>Option 1 – Mail-in Entry:</h3>
+        <ul>
+            <li>
+                <p>Send a hand-written, self-addressed postcard to:</p>
+            </li>
+            <li>
+                <p>Fiesta Sweeps – AMOE Request</p>
+            </li>
+            <li>
+                <p>Your Name</p>
+            </li>
+            <li>
+                <p>120 Center Place Way, Suite 100</p>
+            </li>
+            <li>
+                <p>St. Augustine, FL 32095</p>
+            </li>
+            <li>
+                <p>Include:</p>
+            </li>
+            <ul>
+                <li>
+                    <p>Full name</p>
+                </li>
+                <li>
+                    <p>Email address</p>
+                </li>
+                <li>
+                    <p>Mailing address</p>
+                </li>
+                <li>
+                    <p>Date of birth (must be 18 or older)</p>
+                </li>
+                <li>
+                    <p>A signed statement: “I certify that I am 18 years of age or older and meet the eligibility
+                        requirements outlined in the Official Rules.”</p>
+                </li>
+                <li>
+                    <p>The phrase “AMOE Entry Request”</p>
+                </li>
+                <li>
+                    <p>The name of the specific game you would like your AMOE entry applied to (e.g., Ultra Panda, Vegas
+                        Sweeps, Blue Dragon, etc.)</p>
+                </li>
+            </ul>
+        </ul>
 
-      <h3>Account Management</h3>
-      <p>
-        Fiesta Sweeps accounts operate solely in authorized currencies and do not provide credit. We reserve the right to suspend or close accounts due to non-compliance. Any erroneous transactions credited to an account must be reported and may be corrected accordingly.
-      </p>
+        <h3>Option 2 – Email Entry:</h3>
+        <ul>
+            <li>
+                <p>Email the same information to: entry@fiestasweeps.com</p>
+            </li>
+        </ul>
 
-      <h3>Deposits & Withdrawals</h3>
-      <p>
-        Deposits must originate from a valid payment source registered in your name. Withdrawals are subject to verification procedures, and minimum transaction limits apply. Unauthorized transactions or chargebacks may result in account suspension.
-      </p>
+        <ul>
+            <li>
+                <p>Limit: One AMOE request per person per day (regardless of method).</p>
+            </li>
+            <li>
+                <p>Free entries receive the same odds and prize access as paid entries.</p>
+            </li>
+            <li>
+                <p>All winners must verify age (18+) with a government-issued ID before prizes are released.</p>
+            </li>
+        </ul>
 
-      <h3>Sweepstakes Entries & Gameplay</h3>
-      <p>
-        Fiesta Sweeps reserves the right to refuse or limit entries at our discretion. Responsible play practices are encouraged, and tools are available for users who wish to manage their participation.
-      </p>
+        <h3>D. Prizes</h3>
+        <ul>
+            <li>
+                <p>May include sweepstakes credits, gift cards, or merchandise</p>
+            </li>
+            <li>
+                <p>Maximum prize value may be capped at $500 unless otherwise stated</p>
+            </li>
+        </ul>
 
-      <h3>Communication & Notices</h3>
-      <p>
-        Official notices and communications will be sent via the email registered to your account. Promotional emails are optional, and users can opt-out at any time.
-      </p>
+        <h3>E. Odds of Winning</h3>
+        <ul>
+            <li>
+                <p>Depend on total number of entries</p>
+            </li>
+            <li>
+                <p>All entries (paid or free) have equal odds</p>
+            </li>
+        </ul>
 
-      <h3>Fraud & Compliance</h3>
-      <p>
-        Any fraudulent or dishonest activities will result in immediate account action, including potential legal consequences. We actively monitor transactions for regulatory compliance and security measures.
-      </p>
+        <h3>F. Winner Selection</h3>
+        <ul>
+            <li>
+                <p>Selected randomly from the full pool of eligible entries</p>
+            </li>
+            <li>
+                <p>Notified via the sweepstakes platform as well as email within 5 business days</p>
+            </li>
+        </ul>
 
-      <h3>Intellectual Property</h3>
-      <p>
-        Fiesta Sweeps' brand, content, and system architecture are protected under intellectual property laws. Unauthorized use, reproduction, or distribution of our platform's assets is strictly prohibited.
-      </p>
+        <h3>G. General Terms</h3>
+        <ul>
+            <li>
+                <p>Fiesta Sweeps may disqualify accounts for fraud or AMOE abuse</p>
+            </li>
+            <li>
+                <p>Winners are responsible for all taxes</p>
+            </li>
+            <li>
+                <p>Age must be verified before paid entries are accepted and any prizes that are awarded</p>
+            </li>
+            <li>
+                <p>Sweepstakes void where prohibited</p>
+            </li>
+        </ul>
 
-      <h3>Termination & Liability</h3>
-      <p>
-        Fiesta Sweeps reserves the right to suspend or terminate accounts that violate these Terms. We are not liable for any business losses and will not compensate users for failures beyond our control.
-      </p>
+        <h3>H. Governing Law</h3>
+        <ul>
+            <li>
+                <p>Governed by the laws of the State of Florida</p>
+            </li>
+        </ul>
 
-      <p>
-        By using Fiesta Sweeps, you confirm that you have read, understood, and agreed to these Terms.
-      </p>
     </section>
 
 @endsection
