@@ -223,7 +223,7 @@
                 <div class="content-card">
                     <h2>Begin Verification</h2>
                     <p>Your identity is currently <strong>not</strong> verified.</p>
-                    <p>Please click <strong>here</strong> to begin the identity verification process.</p>
+                    <p>Please <button type="button" onclick="startVerification()">click here</button> to begin the identity verification process.</p>
                 </div>
             </div>
 
@@ -253,6 +253,51 @@
     </div>
 
     <script>
+        function startVerification(){
+            if ('geolocation' in navigator) {
+                try {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            console.log(position);
+                        },
+                        function(error) {
+                            // Handle different error types
+                            let errorMessage;
+                            let cardClass = 'status-card error';
+
+                            switch(error.code) {
+                                case error.PERMISSION_DENIED:
+                                    alert("GeoLocation Permission denied. Unable to verify Identity");
+                                    break;
+                                case error.POSITION_UNAVAILABLE:
+                                    alert("GeoLocation Unavialable. Unable to verify Identity");
+                                    break;
+                                case error.TIMEOUT:
+                                    alert("GeoLocation Service Timeout. Unable to verify Identity");
+                                    break;
+                                default:
+                                    alert("Error occured when trying to fetch geolocation service. Unable to verify Identity");
+                                    break;
+                            }
+
+                            permissionText.innerHTML = errorMessage;
+                            permissionCard.className = cardClass;
+                        },
+                        {
+                            enableHighAccuracy: false,
+                            timeout: 10000,
+                            maximumAge: 60000
+                        }
+                    );
+
+                } catch (error) {
+                    alert("GeoLocation Permission denied. Unable to verify Identity");
+                }
+            } else {
+                alert("GeoLocation Services not availabe, Unable to verify Identity.");
+            }
+        }
+
         function updateStat(stat, checkbox) {
             const isChecked = checkbox.checked ? 1 : 0;
             fetch(`/stats-update?stat_name=${stat}&value=${isChecked}`)
