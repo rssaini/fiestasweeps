@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Services\GidxCustomerIdentityService;
+use Illuminate\Support\Str;
 
 class GidxController extends Controller
 {
@@ -15,16 +16,13 @@ class GidxController extends Controller
         $gidx = new GidxCustomerIdentityService();
         $location = json_decode($req->location, true);
         dd($gidx->customerRegistration([
-            'merchant_customer_id' => '',
+            'merchant_customer_id' => 'CUST-0002',
             'first_name' => 'Rahul',
             'last_name' => 'Saini',
-            'date_of_birth' => '26/05/1992',
-            'email_address' => '26/05/1992',
-            'citizenship_country_code' => '26/05/1992',
-            'identification_type_code' => '26/05/1992',
-            'identification_number' => '26/05/1992',
-            'mobile_phone_number' => '26/05/1992',
-            'merchant_session_id' => '',
+            'date_of_birth' => '05/26/1992',
+            'email_address' => 'rssaini.26@gmail.com',
+            'mobile_phone_number' => '(999) 689-9025',
+            'merchant_session_id' => (string) Str::uuid(),
             'ip' => $req->ip(),
             'latitude' => $location['coords']['latitude'],
             'longitude' => $location['coords']['longitude'],
