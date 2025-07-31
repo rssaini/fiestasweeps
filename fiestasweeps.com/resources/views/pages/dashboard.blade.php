@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <title>Dashboard - Fiesta Sweeps</title>
     <link rel="stylesheet" href="/css/app.css" />
     <link rel="stylesheet" href="/css/dashboard.css" />
@@ -226,6 +227,10 @@
                     <p>Your identity is currently <strong>not</strong> verified.</p>
                     <p>Please <button type="button" onclick="startVerification()">click here</button> to begin the identity verification process.</p>
                 </div>
+                <div id="DepositAmountDisplay"></div>
+
+                <div id="GIDX_ServiceContainer"></div>
+
             </div>
 
             <div id="gameplay" class="content-section">
@@ -342,6 +347,40 @@
             // Add active class to clicked menu item
             event.target.classList.add('active');
         }
+        window.gidxServiceSettings = function() {
+        window.gidxBuildSteps = false;
+            //this is the dom object (div) where the cashier/registration service should be embedded on the page.
+            window.gidxContainer = "#GIDX_ServiceContainer";
+      };
+      window.gidxErrorReport = function(error, errorMsg){
+        //Error messages will be sent here by the GIDX Client Side Service
+      };
+      window.gidxNextStep = function(){
+        //Once the customer has completed this Session the GIDX Client Side Service will call this function.
+        //You should now make an "aJax" call or do a "document.location='a page on your server'" and call
+        //the the appropriate API Method.
+      };
+      window.gidxServiceStatus = function (service, action, json) {
+        //during each "step" within a Web Session process this function is called by the GIDX Client Side Service
+        //providing you the service action that was just performed, the start & stop time, and a JSON key/value
+        //that you can parse/loop to get more data control of the process.
+        //Here's an example of getting the deposit value selected and displaying it within an element on the page.
+           for (var i = 0; i < json.length; i++) {
+                for (var key in json[i]) {
+                if (json[i].hasOwnProperty(key)) {
+                //Here you can look at the key and value to make decisions on what you would
+                //like to do with the client side interface.
+                var sItem = key;
+                var sValue = json[i][key];
+              console.log(sItem +": ", sValue);
+                //Example
+                if(sItem == "TransactionAmount"){
+                    document.getElementById("DepositAmountDisplay").innerText(sValue);
+                }
+            }
+          }
+        }
+      };
     </script>
 </body>
 </html>
