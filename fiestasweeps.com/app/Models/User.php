@@ -58,6 +58,36 @@ class User extends Authenticatable
         ];
     }
 
+    public function setPhoneAttribute($value)
+    {
+        // Remove all non-digit characters
+        $digits = preg_replace('/\D/', '', $value);
+        // Format as (XXX) XXX-XXXX
+        if (strlen($digits) == 10) {
+            $formatted = sprintf('(%s) %s-%s',
+                substr($digits, 0, 3),
+                substr($digits, 3, 3),
+                substr($digits, 6));
+            $this->attributes['phone'] = $formatted;
+        } else {
+            // fallback if invalid length
+            $this->attributes['phone'] = $value;
+        }
+    }
+
+    // Mutator for date_of_birth
+    public function setDobAttribute($value)
+    {
+        // Parse various formats and convert to mm/dd/yyyy
+        $date = date_create($value);
+        if ($date) {
+            $this->attributes['dob'] = date_format($date, 'm/d/Y');
+        } else {
+            // fallback, store as is
+            $this->attributes['dob'] = $value;
+        }
+    }
+
     public function parent()
     {
         return $this->belongsTo(User::class, 'parent_id');

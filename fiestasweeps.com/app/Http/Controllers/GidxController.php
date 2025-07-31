@@ -13,15 +13,23 @@ use Illuminate\Support\Str;
 class GidxController extends Controller
 {
     public function customerRegistration(Request $req){
+        $user = auth()->user();
         $gidx = new GidxCustomerIdentityService();
         $location = json_decode($req->location, true);
+
+        $gidx->createSession([
+            'merchant_session_id' => (string) Str::uuid(),
+            'customer_id' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
+            'ip' => $req->ip()
+        ]);
+        /*
         dd($gidx->customerRegistration([
-            'merchant_customer_id' => 'CUST-0002',
-            'first_name' => 'Rahul',
-            'last_name' => 'Saini',
-            'date_of_birth' => '05/26/1992',
-            'email_address' => 'rssaini.26@gmail.com',
-            'mobile_phone_number' => '(999) 689-9025',
+            'merchant_customer_id' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
+            'first_name' => $user->name,
+            'last_name' => $user->lname,
+            'date_of_birth' => $user->dob,
+            'email_address' => $user->email,
+            'mobile_phone_number' => $user->phone,
             'merchant_session_id' => (string) Str::uuid(),
             'ip' => $req->ip(),
             'latitude' => $location['coords']['latitude'],
@@ -31,6 +39,7 @@ class GidxController extends Controller
             'speed' => $location['coords']['speed'],
             'datetime' => $location['timestamp'],
         ]));
+        */
         return response()->json([
             'location' => $req->location,
             'ip' => $req->ip()

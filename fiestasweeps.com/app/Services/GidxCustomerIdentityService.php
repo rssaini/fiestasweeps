@@ -25,6 +25,38 @@ class GidxCustomerIdentityService
         $this->activityId = config('gidx.activity_id');
     }
 
+    public function createSession($data){
+        $requestData = [
+            'ApiKey' => $this->apiKey,
+            'MerchantID' => $this->merchantId,
+            'ProductTypeID' => $this->productId,
+            'DeviceTypeID' => $this->deviceId,
+            'ActivityTypeID' => $this->activityId,
+            'MerchantSessionID' => $data['merchant_session_id'],
+            'MerchantCustomerID' => $data['customer_id'],
+            'CustomerIpAddress' => $data['ip']
+        ];
+        try {
+            $url = $this->baseUrl . '/WebReg/CreateSession';
+            $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ])
+                ->post($url, $requestData);
+
+            dd([
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+        } catch (Exception $e) {
+            dd([
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw new Exception("GIDX request failed: " . $e->getMessage());
+        }
+    }
+
 
 
     /**
