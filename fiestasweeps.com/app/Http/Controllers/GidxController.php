@@ -22,7 +22,7 @@ class GidxController extends Controller
             'customer_id' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
             'ip' => $req->ip()
         ]);
-        dd(urldecode($session['SessionURL']));
+        return response()->json($session);
         /*
         dd($gidx->customerRegistration([
             'merchant_customer_id' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
