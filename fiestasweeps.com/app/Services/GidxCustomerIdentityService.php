@@ -166,15 +166,15 @@ class GidxCustomerIdentityService
             'ProductTypeID' => $this->productId,
             'DeviceTypeID' => $this->deviceId,
             'ActivityTypeID' => $this->activityId,
-            'MerchantSessionID' => $data['merchant_session_id'] ?? $this->merchantSessionId ?? uniqid('gidx_'),
-            'DeviceIpAddress' => $this->activityTypeId,
+            'MerchantSessionID' => $data['merchant_session_id'],
+            'DeviceIpAddress' => $data['ip'],
             'DeviceGPS' => [
-                'Latitude' => 0,
-                'Longitude' => 0,
-                'Radius' => 0,
-                'Altitude' => 0,
-                'Speed' => 0,
-                'DateTime' => '',
+                'Latitude' => $data['latitude'],
+                'Longitude' => $data['longitude'],
+                'Radius' => $data['radius'],
+                'Altitude' => $data['altitude'],
+                'Speed' => $data['speed'],
+                'DateTime' => $data['datetime'],
             ],
         ];
 
