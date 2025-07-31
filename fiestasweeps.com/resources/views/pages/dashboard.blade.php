@@ -272,7 +272,7 @@
                                     _token: "{{ csrf_token() }}"
                                 }
                             }).done(function(data){
-                                $('body').append(data.SessionURL);
+                                $('body').append(data.url);
                                 console.log(data);
                             }).fail(function(err){
                                 console.log(err);
