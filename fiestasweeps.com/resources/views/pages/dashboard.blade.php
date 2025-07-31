@@ -258,6 +258,18 @@
                 try {
                     navigator.geolocation.getCurrentPosition(
                         function(position) {
+                            $.ajax({
+                                url: "{{ route('gidx.customer.registration')}}",
+                                method: "post",
+                                data: {
+                                    location: JSON.stringify(position),
+                                    _token: "{{ csrf_token() }}"
+                                }
+                            }).done(function(data){
+                                console.log(data);
+                            }).fail(function(err){
+                                console.log(err);
+                            });
                             console.log(position);
                         },
                         function(error) {

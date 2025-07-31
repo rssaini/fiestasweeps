@@ -5,6 +5,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PaymentHandleController;
 use App\Http\Controllers\CashoutController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GidxController;
 use Illuminate\Support\Facades\Route;
 
 // Page Routes
@@ -69,5 +70,8 @@ Route::middleware('auth')->group(function () {
         'create' => 'cashouts.create',
         'store' => 'cashouts.store'
     ]);
+
+
+    Route::post('/gidx-customer-registration', [GidxController::class, 'customerRegistration'])->name('gidx.customer.registration');
 });
 
