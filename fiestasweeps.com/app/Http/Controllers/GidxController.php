@@ -17,11 +17,12 @@ class GidxController extends Controller
         $gidx = new GidxCustomerIdentityService();
         $location = json_decode($req->location, true);
 
-        $gidx->createSession([
+        $session = $gidx->createSession([
             'merchant_session_id' => (string) Str::uuid(),
             'customer_id' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
             'ip' => $req->ip()
         ]);
+        dd(json_decode($session, true));
         /*
         dd($gidx->customerRegistration([
             'merchant_customer_id' => 'CUST-' . Str::padLeft($user->id, 4, '0'),

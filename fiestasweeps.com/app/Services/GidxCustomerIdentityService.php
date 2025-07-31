@@ -43,11 +43,7 @@ class GidxCustomerIdentityService
                     'Accept' => 'application/json',
                 ])
                 ->post($url, $requestData);
-
-            dd([
-                'status' => $response->status(),
-                'body' => $response->body()
-            ]);
+            return $response->json();
         } catch (Exception $e) {
             dd([
                 'message' => $e->getMessage(),
