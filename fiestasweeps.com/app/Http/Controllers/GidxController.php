@@ -47,24 +47,32 @@ class GidxController extends Controller
     }
 
     public function notification(Request $request){
-        Log::info('Complete Request:', [
-            'method' => $request->method(),
-            'url' => $request->fullUrl(),
-            'headers' => $request->headers->all(),
-            'inputs' => $request->all(),
-            'query' => $request->query(),
-            'rawContent' => $request->getContent(),
-        ]);
-        Notification::create(['raw' =>
-            json_encode([
+        try{
+            Log::info('Complete Request:', [
                 'method' => $request->method(),
                 'url' => $request->fullUrl(),
                 'headers' => $request->headers->all(),
                 'inputs' => $request->all(),
                 'query' => $request->query(),
                 'rawContent' => $request->getContent(),
-            ])
-        ]);
+            ]);
+        }catch(Exception $e){
+
+        }
+        try{
+            Notification::create(['raw' =>
+                json_encode([
+                    'method' => $request->method(),
+                    'url' => $request->fullUrl(),
+                    'headers' => $request->headers->all(),
+                    'inputs' => $request->all(),
+                    'query' => $request->query(),
+                    'rawContent' => $request->getContent(),
+                ])
+            ]);
+        } catch(Exception $e){
+
+        }
         return response()->json([
             'Accepted' => true
         ]);
