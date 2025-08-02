@@ -18,7 +18,7 @@ class GidxController extends Controller
         $user->dob = $req->dob;
         $user->save();
 
-        $gidx = new GidxCustomerIdentityService();
+        $gidx = new GidxService();
         $data = [
             'MerchantCustomerID' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
             'FirstName' => $user->name,
