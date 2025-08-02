@@ -88,7 +88,7 @@ class GidxController extends Controller
             }
             $user->save();
         } else {
-            Log::error('Gidx Response Error', ['' => 'Response Null']);
+            Log::error('Gidx Response Error', ['response' => 'Response Null']);
         }
         return response()->json(['status' => 'success', 'verified' => $verified]);
     }
@@ -108,6 +108,21 @@ class GidxController extends Controller
                     ])
                 ]);
                 if($notification_type == "CustomerProfile"){
+                    $gidx = new GidxService();
+                    $user = User::find((explode('-', $customer_id))[1]);
+                    $response = $gidx->customerProfile($customer_id);
+                    if($response) {
+                        Log::info('Gidx Response', $response);
+                        if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
+                            $user->verified = 1;
+                            $verified = true;
+                        } else {
+                            $user->verified = 0;
+                        }
+                        $user->save();
+                    } else {
+                        Log::error('Gidx Response Error', ['response' => 'Response Null']);
+                    }
                     // code to fetch customer profile
                 }
             }
