@@ -363,7 +363,36 @@
                     @if(auth()->user()->verified === null)
                         <h2>Begin Verification</h2>
                         <p>Your identity is currently <strong>not</strong> verified.</p>
-                        <p>Please <button type="button" onclick="startVerification()">click here</button> to begin the identity verification process.</p>
+                        <p>Please <button class="cta-button" type="button" onclick="$('#personal_details').css('display', 'block'); $(this).parent().css('display', 'none');">click here</button> to begin the identity verification process.</p>
+                        <div id="personal_details" style="display:none;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" name="name" value="{{ auth()->user()->name }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" name="lname" value="{{auth()->user()->lname }}">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" readonly value="{{ auth()->user()->email }}">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" name="phone" value="{{ auth()->user()->phone }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Date of Birth</label>
+                                    <input type="date" name="dob" value="{{ auth()->user()->dob }}">
+                                </div>
+                            </div>
+                            <button type="button" onclick="startVerification()" class="cta-button">Update & Next</button>
+                        </div>
                     @endif
                     @if(auth()->user()->verified === 0)
                         <h2>Begin Verification</h2>
