@@ -11,7 +11,13 @@ use Carbon\Carbon;
 class GidxController extends Controller
 {
     public function customerRegistration(Request $req){
-        $user = auth()->user();
+        $user = User::find(auth()->user()->id);
+        $user->name = $req->name;
+        $user->lname = $req->lname;
+        $user->phone = $req->phone;
+        $user->dob = $req->dob;
+        $user->save();
+
         $gidx = new GidxCustomerIdentityService();
         $data = [
             'MerchantCustomerID' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
@@ -53,14 +59,13 @@ class GidxController extends Controller
         $verified = false;
 
         if($response) {
-            $u = User::find($user->id);
             if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
-                $u->verified = 1;
+                $user->verified = 1;
                 $verified = true;
             } else {
-                $u->verified = 0;
+                $user->verified = 0;
             }
-            $u->save();
+            $user->save();
         }
         return response()->json(['status' => 'success', 'verified' => $verified]);
     }

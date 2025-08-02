@@ -368,6 +368,10 @@
                         </div>
                         <div id="personal_details" style="display:none;">
                             <h2>Please review your personal details before identity verification.</h2>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" readonly value="{{ auth()->user()->email }}">
+                            </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>First Name</label>
@@ -376,12 +380,6 @@
                                 <div class="form-group">
                                     <label>Last Name</label>
                                     <input type="text" name="lname" value="{{auth()->user()->lname }}">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Email Address</label>
-                                    <input type="email" readonly value="{{ auth()->user()->email }}">
                                 </div>
                             </div>
                             <div class="form-row">
@@ -399,9 +397,79 @@
                         </div>
                     @endif
                     @if(auth()->user()->verified === 0)
-                        <h2>Begin Verification</h2>
-                        <p>Your identity is currently <strong>not</strong> verified.</p>
-                        <p>Please update profile for identity verification process.</p>
+                        <h2>Sorry, We were unable to Verify Identity based on provided information.</h2>
+                        <p>Please provide following details also for further verification process.</p>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" readonly value="{{ auth()->user()->email }}">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" name="name" value="{{ auth()->user()->name }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" name="lname" value="{{auth()->user()->lname }}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" name="phone" value="{{ auth()->user()->phone }}">
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" name="dob" value="{{ auth()->user()->dob }}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Identification Type</label>
+                                <select name="IdentificationTypeCode">
+                                    <option value="1">Social Security Number</option>
+                                    <option value="2">Drivers License Number</option>
+                                    <option value="3">Global Passport Document</option>
+                                    <option value="4-US">National Identity Card</option>
+                                    <option value="999">Custom Document</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Identification Number</label>
+                                <input type="text" name="IdentificationNumber">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Address Line 1</label>
+                                <input type="text" name="address1">
+                            </div>
+                            <div class="form-group">
+                                <label>Address Line 2</label>
+                                <input type="text" name="address2">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" name="city">
+                            </div>
+                            <div class="form-group">
+                                <label>State</label>
+                                <input type="text" name="state">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Postal Code</label>
+                                <input type="text" name="zip">
+                            </div>
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input type="text" name="country" value="US" readonly>
+                            </div>
+                        </div>
+                        <button type="button" onclick="startVerification()" class="cta-button">Update & Next</button>
                     @endif
 
                 </div>
@@ -437,6 +505,53 @@
     </div>
 
     <script>
+        function postCustomer(position = null){
+            const firstName = $('#personal_details input[name="name"]').val();
+            const lastName = $('#personal_details input[name="lname"]').val();
+            const phone = $('#personal_details input[name="phone"]').val();
+            const dob = $('#personal_details input[name="dob"]').val();
+            if(firstName == ''){
+                alert('First Name is required.');
+                $('#personal_details input[name="name"]').focus();
+                return false;
+            }
+            if(lastName == ''){
+                alert('Last Name is required.');
+                $('#personal_details input[name="lname"]').focus();
+                return false;
+            }
+            if(phone == ''){
+                alert('Mobile phone number is required.');
+                $('#personal_details input[name="phone"]').focus();
+                return false;
+            }
+            if(dob == ''){
+                alert('Date of Birth is required.');
+                $('#personal_details input[name="dob"]').focus();
+                return false;
+            }
+            pageLoader.show('Verifying User Profile...', { dark: true});
+            $.ajax({
+                url: "{{ route('gidx.customer.registration')}}",
+                method: "post",
+                data: {
+                    location: position ? JSON.stringify(position) : '',
+                    _token: "{{ csrf_token() }}",
+                    firstName: firstName,
+                    lastName: lastName,
+                    phone: phone,
+                    dob: dob
+                }
+            }).done(function(data){
+                window.location.reload();
+                pageLoader.hide();
+                console.log(data);
+            }).fail(function(err){
+                pageLoader.hide();
+                alert('Something is wrong at our end. Please try again later.');
+                console.log(err);
+            });
+        }
         function beginVerification(button){
             $('#personal_details').css('display', 'block');
             $(button).parent().parent().css('display', 'none');
@@ -445,31 +560,11 @@
             }
         }
         function startVerification(){
-            pageLoader.show('Verifying User Profile...', { dark: true});
             if ('geolocation' in navigator) {
                 try {
                     navigator.geolocation.getCurrentPosition(
                         function(position) {
-                            $.ajax({
-                                url: "{{ route('gidx.customer.registration')}}",
-                                method: "post",
-                                data: {
-                                    location: JSON.stringify(position),
-                                    _token: "{{ csrf_token() }}"
-                                }
-                            }).done(function(data){
-                                if(data.verified){
-                                    window.location.reload();
-                                } else {
-
-                                }
-                                pageLoader.hide();
-                                console.log(data);
-                            }).fail(function(err){
-                                pageLoader.hide();
-                                console.log(err);
-                            });
-                            console.log(position);
+                            postCustomer(position);
                         },
                         function(error) {
                             // Handle different error types
@@ -490,9 +585,6 @@
                                     alert("Error occured when trying to fetch geolocation service. Unable to verify Identity");
                                     break;
                             }
-
-                            permissionText.innerHTML = errorMessage;
-                            permissionCard.className = cardClass;
                         },
                         {
                             enableHighAccuracy: false,
@@ -505,7 +597,7 @@
                     alert("GeoLocation Permission denied. Unable to verify Identity");
                 }
             } else {
-                alert("GeoLocation Services not availabe, Unable to verify Identity.");
+                postCustomer();
             }
         }
 
