@@ -224,6 +224,7 @@
                 </div>
                 <div class="content-card">
                     <h2>Begin Verification</h2>
+                    {{ auth()->user()->verified }}
                     <p>Your identity is currently <strong>not</strong> verified.</p>
                     <p>Please <button type="button" onclick="startVerification()">click here</button> to begin the identity verification process.</p>
                 </div>
