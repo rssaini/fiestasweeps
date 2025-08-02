@@ -492,6 +492,9 @@
             // Remove active class from all menu items
             document.querySelectorAll('.menu-item').forEach(item => {
                 item.classList.remove('active');
+                if($(item).attr('href') == '#' + sectionId){
+                    item.classList.add('active');
+                }
             });
 
             // Show selected section
