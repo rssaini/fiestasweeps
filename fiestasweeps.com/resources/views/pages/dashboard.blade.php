@@ -534,8 +534,7 @@
           }
         }
       };
-    </script>
-    <script>
+
     class FullPageLoader {
         constructor() {
             this.loader = document.getElementById('pageLoader');
@@ -657,7 +656,7 @@
         }
     }
     const pageLoader = new FullPageLoader();
-    window.addEventListener('load', () => {
+    $(document).ready(function(){
         pageLoader.hide();
         let parts = window.location.href.split('#');
         if(parts.length > 2){
