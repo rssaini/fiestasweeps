@@ -826,10 +826,10 @@
         }
 
         function getAdditionalValues(data){
-            debugger;
             $('#notifications').find('input,select').each(function(index, item){
                 data[$(item).attr('name')] = $(item).val();
             });
+            return data;
         }
         function postCustomer(position = null){
             if(!(validateFields())){
