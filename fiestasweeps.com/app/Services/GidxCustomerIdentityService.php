@@ -14,15 +14,16 @@ class GidxCustomerIdentityService
     private $productId;
     private $deviceId;
     private $activityId;
+    private $timeout;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->baseUrl = config('gidx.base_url');
         $this->apiKey = config('gidx.api_key');
         $this->merchantId = config('gidx.merchant_id');
         $this->productId = config('gidx.product_id');
         $this->deviceId = config('gidx.device_id');
         $this->activityId = config('gidx.activity_id');
+        $this->timeout = config('gidx.timeout', 30);
     }
 
     public function createSession($data){
@@ -53,11 +54,6 @@ class GidxCustomerIdentityService
         }
     }
 
-
-
-    /**
-     * Register customer within GIDX system and verify identity
-     */
     public function customerRegistration(array $customerData): GidxResponse
     {
         $url = $this->baseUrl . '/CustomerIdentity/CustomerRegistration';
@@ -88,9 +84,6 @@ class GidxCustomerIdentityService
         return $this->makeRequest($url, $requestData, 'CustomerRegistration');
     }
 
-    /**
-     * Get profile information for verified customer
-     */
     public function customerProfile(string $merchantCustomerId): GidxResponse
     {
         $url = $this->baseUrl . '/CustomerIdentity/CustomerProfile';
@@ -103,10 +96,7 @@ class GidxCustomerIdentityService
         return $this->makeRequest($url, $requestData, 'CustomerProfile');
     }
 
-    /**
-     * Get compliance status of customer profile
-     */
-    public function customerCompliance(string $merchantCustomerId, array $complianceFilters = []): GidxResponse
+    public function customerMonitor(string $merchantCustomerId, array $complianceFilters = []): GidxResponse
     {
         $url = $this->baseUrl . '/CustomerIdentity/CustomerCompliance';
         $requestData = $this->buildStandardizedRequest([
@@ -120,12 +110,9 @@ class GidxCustomerIdentityService
         return $this->makeRequest($url, $requestData, 'CustomerCompliance');
     }
 
-    /**
-     * Update customer information
-     */
     public function customerUpdate(array $customerData): GidxResponse
     {
-        $url = $this->baseUrl . '/CustomerIdentity/CustomerUpdate';
+        $url = '/CustomerIdentity/CustomerUpdate';
         $requestData = $this->buildStandardizedRequest($customerData, [
             'MerchantCustomerID' => 'merchant_customer_id',
             'ForceIDVerified' => 'force_id_verified',
@@ -150,38 +137,18 @@ class GidxCustomerIdentityService
             'PostalCode' => 'postal_code',
             'CountryCode' => 'country_code',
         ]);
-
-        return $this->makeRequest($url, $requestData, 'CustomerUpdate');
+        return $this->requestToGidx($url, $customerData, 'post');
     }
 
-    /**
-     * Remove customer from merchant account
-     */
-    public function customerRemove(string $merchantCustomerId): GidxResponse
-    {
-        $url = $this->baseUrl . '/CustomerIdentity/CustomerRemove';
-        $requestData = $this->buildStandardizedRequest([
-            'merchant_customer_id' => $merchantCustomerId
-        ], [
-            'MerchantCustomerID' => 'merchant_customer_id'
-        ]);
+    public function removeCustomer(){}
 
-        return $this->makeRequest($url, $requestData, 'CustomerRemove');
-    }
+    public function documentRegistration(){}
 
-    /**
-     * Location lookup based on IP address/Device GPS
-     */
-    public function locationRequest(array $locationData): GidxResponse
-    {
-        $url = $this->baseUrl . '/CustomerIdentity/LocationRequest';
-        $requestData = $this->buildStandardizedRequest($locationData, [
-            'MerchantCustomerID' => 'merchant_customer_id',
-            'DeviceGPS' => 'device_gps'
-        ]);
 
-        return $this->makeRequest($url, $requestData, 'LocationRequest');
-    }
+
+
+
+
 
     /**
      * Build standardized request with common parameters
@@ -215,94 +182,48 @@ class GidxCustomerIdentityService
         return $request;
     }
 
-    /**
-     * Make HTTP request to GIDX API
-     */
-    private function makeRequest(string $url, array $requestData, string $method): GidxResponse
-    {
-        try {
-            if (config('gidx.log_requests', false)) {
-                Log::info("GIDX {$method} Request", ['url' => $url, 'data' => $requestData]);
-            }
+    private function requestToGidx(string $url, array $data, string $method){
+        try{
+            $http = Http::timeout($this->timeout)->withHeaders([
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ]);
+            $url = $this->baseUrl . $url;
+            $request = [
+                'ApiKey' => $this->apiKey,
+                'MerchantID' => $this->merchantId,
+                'ProductTypeID' => $this->productId,
+                'DeviceTypeID' => $this->deviceId,
+                'ActivityTypeID' => $this->activityId
+            ];
 
-            $response = Http::timeout(config('gidx.timeout', 30))
-                ->withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ])
-                ->post($url, $requestData);
+            $requestData = array_merge($request, $data);
 
-            if (config('gidx.log_responses', false)) {
-                Log::info("GIDX {$method} Response", [
-                    'status' => $response->status(),
-                    'body' => $response->body()
-                ]);
-            }
-
-            if ($response->successful()) {
-                return new GidxResponse($response->json(), true, $method);
+            $response = null;
+            if($method == 'post'){
+                $response = $http->post($url, $requestData);
             } else {
-                Log::error("GIDX {$method} Failed", [
-                    'status' => $response->status(),
-                    'response' => $response->body()
-                ]);
-
-                return new GidxResponse(
-                    json_decode($response->body(), true) ?: [],
-                    false,
-                    $method,
-                    $response->status()
-                );
+                if($method == 'get'){
+                    $response = $http->get($url, $requestData);
+                }
             }
-        } catch (Exception $e) {
-            Log::error("GIDX {$method} Exception", [
+            if($response != null){
+                if($response->successful()){
+                    return $response->json();
+                } else {
+                    Log::error("GIDX Request Failed", [
+                        'status' => $response->status(),
+                        'response' => $response->body()
+                    ]);
+                }
+            }
+        }catch(Exception $e){
+            Log::error("GIDX Exception", [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-
-            throw new Exception("GIDX {$method} request failed: " . $e->getMessage());
-        }
-    }
-
-
-    /**
-     * Handle profile notification webhook
-     */
-    public function handleProfileNotification(array $notificationData): array
-    {
-        try {
-            // Log the notification
-            Log::info('GIDX Profile Notification Received', $notificationData);
-
-            // Validate notification structure
-            if (!isset($notificationData['MerchantCustomerID']) || !isset($notificationData['NotificationType'])) {
-                throw new Exception('Invalid notification structure');
-            }
-
-            // Process notification based on type
-            $merchantCustomerId = $notificationData['MerchantCustomerID'];
-            $notificationType = $notificationData['NotificationType'];
-
-            // You can add custom logic here to handle different notification types
-            // For example, update local database, trigger events, etc.
-
-            return [
-                'success' => true,
-                'merchant_customer_id' => $merchantCustomerId,
-                'notification_type' => $notificationType,
-                'processed_at' => now()->toISOString()
-            ];
-
-        } catch (Exception $e) {
-            Log::error('GIDX Profile Notification Error', [
-                'message' => $e->getMessage(),
-                'data' => $notificationData
-            ]);
-
-            return [
-                'success' => false,
-                'error' => $e->getMessage()
-            ];
+        }finally {
+            return null;
         }
     }
 }

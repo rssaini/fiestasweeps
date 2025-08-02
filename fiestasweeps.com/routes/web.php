@@ -6,6 +6,7 @@ use App\Http\Controllers\PaymentHandleController;
 use App\Http\Controllers\CashoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GidxController;
+use App\Http\Controllers\LogViewerController;
 use Illuminate\Support\Facades\Route;
 
 // Page Routes
@@ -35,6 +36,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/signin', [AuthController::class, 'login'])->name('signin.post');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+});
+
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/logs', [LogViewerController::class, 'index'])->name('logs.index');
+    Route::get('/logs/download', [LogViewerController::class, 'download'])->name('logs.download');
+    Route::delete('/logs/delete', [LogViewerController::class, 'delete'])->name('logs.delete');
+    Route::delete('/logs/clear', [LogViewerController::class, 'clear'])->name('logs.clear');
 });
 
 // Add inside auth middleware group
