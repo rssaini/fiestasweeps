@@ -98,6 +98,7 @@ class GidxController extends Controller
         $customer_id = "";
         $notification_type = "";
         try{
+            Log::info('Gidx Notification', $request->all());
             if(isset($inputs['MerchantCustomerID'])){
                 $customer_id = $inputs['MerchantCustomerID'];
                 $notification_type = $inputs['NotificationType'];
