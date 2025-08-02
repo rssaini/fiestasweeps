@@ -55,6 +55,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'dob' => 'date',
         ];
     }
 
@@ -75,6 +76,7 @@ class User extends Authenticatable
         }
     }
 
+    /*
     // Mutator for date_of_birth
     public function setDobAttribute($value)
     {
@@ -88,6 +90,7 @@ class User extends Authenticatable
             $this->attributes['dob'] = $value;
         }
     }
+        */
 
     public function parent()
     {
