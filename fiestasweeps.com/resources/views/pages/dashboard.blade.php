@@ -812,15 +812,18 @@
 
     <script>
         function validateFields(){
+            let isValid = true;
             $('#notifications').find('input[required],select[required]').each(function(index, item){
                 if($(item).val() == ''){
                     alert("All fields are required");
                     $(item).focus();
+                    isValid = false;
                     return false;
                 }
             });
-            return true;
+            return isValid;
         }
+
         function getAdditionalValues(data){
             $('#notifications').find('input,select').each(function(index, item){
                 data[$(item).attr('name')] = $(item).val();
