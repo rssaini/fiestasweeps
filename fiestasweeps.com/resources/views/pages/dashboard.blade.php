@@ -658,9 +658,8 @@
     const pageLoader = new FullPageLoader();
     $(document).ready(function(){
         pageLoader.hide();
-        debugger;
         let parts = window.location.href.split('#');
-        if(parts.length > 2){
+        if(parts.length > 1){
             showSection((parts[1].split('?'))[0]);
         }
     });
