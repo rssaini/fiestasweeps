@@ -31,9 +31,9 @@ class GidxService
         return $this->requestToGidx($url, $customerData, 'post');
     }
 
-    public function customerProfile(string $merchantCustomerId) {
+    public function customerProfile(array $customerData) {
         $url = '/CustomerIdentity/CustomerProfile';
-        return $this->requestToGidx($url, [ 'MerchantCustomerID' => $merchantCustomerId], 'get');
+        return $this->requestToGidx($url, $customerData, 'get');
     }
 
     public function customerMonitor(string $merchantCustomerId, array $complianceFilters = []) {

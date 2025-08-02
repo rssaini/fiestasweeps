@@ -105,7 +105,10 @@ class GidxController extends Controller
                 if($notification_type == "CustomerProfile"){
                     $gidx = new GidxService();
                     $user = User::find(intval((explode('-', $customer_id))[1]));
-                    $response = $gidx->customerProfile($customer_id);
+                    $response = $gidx->customerProfile([
+                        'MerchantCustomerID' => $customer_id,
+                        'MerchantSessionID' => (string) Str::uuid(),
+                    ]);
                     if($response) {
                         Log::info('Gidx Response', $response);
                         if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
