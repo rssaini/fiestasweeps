@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Services\GidxCustomerIdentityService;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 
 class GidxController extends Controller
 {
@@ -47,30 +46,24 @@ class GidxController extends Controller
     }
 
     public function notification(Request $request){
+        $inputs = $request->all();
+        $customer_id = "";
+        $notification_type = "";
         try{
-            Log::info('Complete Request:', [
-                'method' => $request->method(),
-                'url' => $request->fullUrl(),
-                'headers' => $request->headers->all(),
-                'inputs' => $request->all(),
-                'query' => $request->query(),
-                'rawContent' => $request->getContent(),
-            ]);
+            if(isset($inputs['MerchantCustomerID'])){
+                $customer_id = $inputs['MerchantCustomerID'];
+                $notification_type = $inputs['NotificationType'];
+                Notification::create(['raw' =>
+                    json_encode([
+                        'customer_id' => $customer_id,
+                        'notification_type' => $notification_type
+                    ])
+                ]);
+                if($notification_type == "CustomerProfile"){
+                    // code to fetch customer profile
+                }
+            }
         }catch(Exception $e){
-
-        }
-        try{
-            Notification::create(['raw' =>
-                json_encode([
-                    'method' => $request->method(),
-                    'url' => $request->fullUrl(),
-                    'headers' => $request->headers->all(),
-                    'inputs' => $request->all(),
-                    'query' => $request->query(),
-                    'rawContent' => $request->getContent(),
-                ])
-            ]);
-        } catch(Exception $e){
 
         }
         return response()->json([
