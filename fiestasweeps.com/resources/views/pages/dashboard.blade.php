@@ -775,7 +775,7 @@
                                 </select>-->
                             </div>
                         </div>
-                        <button type="button" onclick="startVerification()" class="cta-button">Update & Next</button>
+                        <button type="button" onclick="startVerification()" class="cta-button">Verify Identity</button>
                     @endif
 
                 </div>
@@ -811,7 +811,19 @@
     </div>
 
     <script>
+        function validateFields(){
+            $('#notifications').find('input,select').each(function(index, item){
+                if($(item).val() == ''){
+                    alert("All fields are required");
+                    $(item).focus();
+                    break;
+                }
+            });
+        }
         function postCustomer(position = null){
+            @if(auth()->user()->verified === 0)
+            validateFields();
+            @endif
             const firstName = $('#personal_details input[name="name"]').val();
             const lastName = $('#personal_details input[name="lname"]').val();
             const phone = $('#personal_details input[name="phone"]').val();
@@ -836,7 +848,7 @@
                 $('#personal_details input[name="dob"]').focus();
                 return false;
             }
-            pageLoader.show('Verifying User Profile...', { dark: true});
+            pageLoader.show('Verifying Identity...', { dark: true});
             $.ajax({
                 url: "{{ route('gidx.customer.registration')}}",
                 method: "post",
