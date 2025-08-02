@@ -80,8 +80,7 @@ class User extends Authenticatable
     {
         // Parse various formats and convert to mm/dd/yyyy
         $date = date_create($value);
-        \Illuminate\Support\Facades\Log::info('DOB: ', $value);
-        \Illuminate\Support\Facades\Log::info('DOB Formatted: ', $date);
+        \Illuminate\Support\Facades\Log::info('DOB: ', ['raw' => $value, 'formatted' => $date]);
         if ($date) {
             $this->attributes['dob'] = date_format($date, 'm/d/Y');
         } else {
