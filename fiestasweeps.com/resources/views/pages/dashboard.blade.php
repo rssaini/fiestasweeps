@@ -365,6 +365,7 @@
                         <p>Your identity is currently <strong>not</strong> verified.</p>
                         <p>Please <button class="cta-button" type="button" onclick="$('#personal_details').css('display', 'block'); $(this).parent().css('display', 'none');">click here</button> to begin the identity verification process.</p>
                         <div id="personal_details" style="display:none;">
+                            <h4>Please review your personal details before identity verification.</h4>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>First Name</label>
@@ -528,9 +529,6 @@
 
             // Show selected section
             document.getElementById(sectionId).classList.add('active');
-
-            // Add active class to clicked menu item
-            event.target.classList.add('active');
         }
         window.gidxServiceSettings = function() {
         window.gidxBuildSteps = false;
