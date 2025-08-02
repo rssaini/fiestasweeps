@@ -101,12 +101,6 @@ class GidxController extends Controller
             if(isset($inputs['MerchantCustomerID'])){
                 $customer_id = $inputs['MerchantCustomerID'];
                 $notification_type = $inputs['NotificationType'];
-                Notification::create(['raw' =>
-                    json_encode([
-                        'customer_id' => $customer_id,
-                        'notification_type' => $notification_type
-                    ])
-                ]);
                 if($notification_type == "CustomerProfile"){
                     $gidx = new GidxService();
                     $user = User::find((explode('-', $customer_id))[1]);
