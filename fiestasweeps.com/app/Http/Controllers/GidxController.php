@@ -4,45 +4,65 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Notification;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Services\GidxCustomerIdentityService;
+use App\Services\GidxService;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class GidxController extends Controller
 {
     public function customerRegistration(Request $req){
         $user = auth()->user();
         $gidx = new GidxCustomerIdentityService();
-        $location = json_decode($req->location, true);
+        $data = [
+            'MerchantCustomerID' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
+            'FirstName' => $user->name,
+            'LastName' => $user->lname,
+            'EmailAddress' => $user->email,
+            'MerchantSessionID' => (string) Str::uuid(),
+            'DeviceIpAddress' => $req->ip()
+        ];
 
-        /*
-        $session = $gidx->createSession([
-            'merchant_session_id' => (string) Str::uuid(),
-            'customer_id' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
-            'ip' => $req->ip()
-        ]);
-        return response()->json(["response" => $session, "url" => urldecode($session['SessionURL'])]);
-        */
+        if($user->dob != null && $user->dob != ''){
+            $date = Carbon::parse($user->dob);
+            $data['DateOfBirth'] = $date->format('m/d/Y');
+        }
 
-        dd($gidx->customerRegistration([
-            'merchant_customer_id' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
-            'first_name' => $user->name,
-            'last_name' => $user->lname,
-            'date_of_birth' => $user->dob,
-            'email_address' => $user->email,
-            'mobile_phone_number' => $user->phone,
-            'merchant_session_id' => (string) Str::uuid(),
-            'ip' => $req->ip(),
-            'latitude' => $location['coords']['latitude'],
-            'longitude' => $location['coords']['longitude'],
-            'radius' => $location['coords']['accuracy'],
-            'altitude' => $location['coords']['altitude'],
-            'speed' => $location['coords']['speed'],
-            'datetime' => $location['timestamp'],
-        ]));
+        if($user->phone != null && $user->phone != ''){
+            $data['MobilePhoneNumber'] = $user->phone;
+        }
+
+        if($req->location != '' && $req->location != null){
+            $location = json_decode($req->location, true);
+            $timestampInSeconds = $location['timestamp'] / 1000;
+            $date = Carbon::createFromTimestamp($timestampInSeconds, 'GMT');
+            $data['DeviceGPS'] = [
+                'Latitude' => $location['coords']['latitude'],
+                'Longitude' => $location['coords']['longitude'],
+                'Radius' => $location['coords']['accuracy'],
+                'Altitude' => $location['coords']['altitude'],
+                'Speed' => $location['coords']['speed'],
+                'DateTime' => $date->format('m/d/Y H:i:s T'),
+            ];
+        }
+
+        if($user->verified == null || $user->verified == ''){
+            $response = $gidx->customerRegistration($data);
+        } else {
+            $response = $gidx->customerUpdate($data);
+        }
+        $verified = false;
+
+        if($response) {
+            $u = User::find($user->id);
+            if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
+                $u->verified = 1;
+                $verified = true;
+            } else {
+                $u->verified = 0;
+            }
+            $u->save();
+        }
+        return response()->json(['status' => 'success', 'verified' => $verified]);
     }
 
     public function notification(Request $request){

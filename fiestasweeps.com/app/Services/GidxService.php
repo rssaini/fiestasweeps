@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 use App\DataObjects\Gidx\GidxResponse;
 use Exception;
 
-class GidxCustomerIdentityService
+class GidxService
 {
     private $baseUrl;
     private $apiKey;
@@ -26,66 +26,12 @@ class GidxCustomerIdentityService
         $this->timeout = config('gidx.timeout', 30);
     }
 
-    public function createSession($data){
-        $requestData = [
-            'ApiKey' => $this->apiKey,
-            'MerchantID' => $this->merchantId,
-            'ProductTypeID' => $this->productId,
-            'DeviceTypeID' => $this->deviceId,
-            'ActivityTypeID' => $this->activityId,
-            'MerchantSessionID' => $data['merchant_session_id'],
-            'MerchantCustomerID' => $data['customer_id'],
-            'CustomerIpAddress' => $data['ip']
-        ];
-        try {
-            $url = $this->baseUrl . '/WebReg/CreateSession';
-            $response = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ])
-                ->post($url, $requestData);
-            return $response->json();
-        } catch (Exception $e) {
-            dd([
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            throw new Exception("GIDX request failed: " . $e->getMessage());
-        }
+    public function customerRegistration(array $customerData) {
+        $url = '/CustomerIdentity/CustomerRegistration';
+        return $this->makeRequest($url, $customerData, 'post');
     }
 
-    public function customerRegistration(array $customerData): GidxResponse
-    {
-        $url = $this->baseUrl . '/CustomerIdentity/CustomerRegistration';
-        $requestData = $this->buildStandardizedRequest($customerData, [
-            'MerchantCustomerID' => 'merchant_customer_id',
-            'Salutation' => 'salutation',
-            'FirstName' => 'first_name',
-            'MiddleName' => 'middle_name',
-            'LastName' => 'last_name',
-            'Suffix' => 'suffix',
-            'FullName' => 'full_name',
-            'DateOfBirth' => 'date_of_birth',
-            'EmailAddress' => 'email_address',
-            'CitizenshipCountryCode' => 'citizenship_country_code',
-            'IdentificationTypeCode' => 'identification_type_code',
-            'IdentificationNumber' => 'identification_number',
-            'MobilePhoneNumber' => 'mobile_phone_number',
-            'PhoneNumber' => 'phone_number',
-            'AddressLine1' => 'address_line_1',
-            'AddressLine2' => 'address_line_2',
-            'City' => 'city',
-            'StateCode' => 'state_code',
-            'PostalCode' => 'postal_code',
-            'CountryCode' => 'country_code',
-            'CustomerIpAddressCountryCode' => 'customer_ip_address_country_code',
-        ]);
-
-        return $this->makeRequest($url, $requestData, 'CustomerRegistration');
-    }
-
-    public function customerProfile(string $merchantCustomerId): GidxResponse
-    {
+    public function customerProfile(string $merchantCustomerId) {
         $url = $this->baseUrl . '/CustomerIdentity/CustomerProfile';
         $requestData = $this->buildStandardizedRequest([
             'merchant_customer_id' => $merchantCustomerId
@@ -96,8 +42,7 @@ class GidxCustomerIdentityService
         return $this->makeRequest($url, $requestData, 'CustomerProfile');
     }
 
-    public function customerMonitor(string $merchantCustomerId, array $complianceFilters = []): GidxResponse
-    {
+    public function customerMonitor(string $merchantCustomerId, array $complianceFilters = []) {
         $url = $this->baseUrl . '/CustomerIdentity/CustomerCompliance';
         $requestData = $this->buildStandardizedRequest([
             'merchant_customer_id' => $merchantCustomerId,
@@ -110,8 +55,7 @@ class GidxCustomerIdentityService
         return $this->makeRequest($url, $requestData, 'CustomerCompliance');
     }
 
-    public function customerUpdate(array $customerData): GidxResponse
-    {
+    public function customerUpdate(array $customerData){
         $url = '/CustomerIdentity/CustomerUpdate';
         $requestData = $this->buildStandardizedRequest($customerData, [
             'MerchantCustomerID' => 'merchant_customer_id',
@@ -143,6 +87,24 @@ class GidxCustomerIdentityService
     public function removeCustomer(){}
 
     public function documentRegistration(){}
+
+    public function customerDocuments(){}
+
+    public function downloadDocument(){}
+
+    public function createSession(){}
+
+    public function completeSession(){}
+
+    public function sessionCallback(){}
+
+    public function paymentDetail(){}
+
+    public function paymentUpdate(){}
+
+    public function savePaymentMethod(){}
+
+
 
 
 

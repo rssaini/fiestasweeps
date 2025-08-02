@@ -11,8 +11,142 @@
     <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}" />
     <link rel="shortcut icon" href="{{ asset('assets/favicon.ico') }}" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+/* ===============================
+   FULL PAGE LOADER STYLES
+   =============================== */
+
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.3s ease;
+}
+
+.page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-content {
+    text-align: center;
+    max-width: 300px;
+}
+
+/* Spinner Animation */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+.loader-text {
+    margin-top: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+}
+
+/* Progress Bar */
+.progress-container {
+    margin-top: 20px;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+.progress-percentage {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #777;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Dark Theme */
+.page-loader.dark {
+    background: rgba(26, 32, 44, 0.95);
+}
+
+.page-loader.dark .spinner {
+    border-color: #4a5568;
+    border-top-color: #3182ce;
+}
+
+.page-loader.dark .loader-text {
+    color: #e2e8f0;
+}
+
+.page-loader.dark .progress-percentage {
+    color: #cbd5e0;
+}
+
+/* Animations */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .progress-bar {
+        width: 150px;
+    }
+
+    .loader-text {
+        font-size: 14px;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border-width: 3px;
+    }
+}
+</style>
 </head>
 <body>
+    <div id="pageLoader" class="page-loader hidden">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <div class="loader-text" id="loaderText">Loading...</div>
+            <div class="progress-container" id="progressContainer" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-percentage" id="progressPercentage">0%</div>
+            </div>
+        </div>
+    </div>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -394,5 +528,131 @@
         }
       };
     </script>
+    <script>
+    class FullPageLoader {
+        constructor() {
+            this.loader = document.getElementById('pageLoader');
+            this.loaderText = document.getElementById('loaderText');
+            this.progressContainer = document.getElementById('progressContainer');
+            this.progressFill = document.getElementById('progressFill');
+            this.progressPercentage = document.getElementById('progressPercentage');
+            this.isVisible = false;
+            this.progressInterval = null;
+        }
+
+        /**
+        * Show the full page loader
+        * @param {string} text - Loading message
+        * @param {Object} options - Configuration options
+        */
+        show(text = 'Loading...', options = {}) {
+            if (!this.loader) return this;
+
+            // Set loading text
+            if (this.loaderText) {
+                this.loaderText.textContent = text;
+            }
+
+            // Apply dark theme if specified
+            if (options.dark) {
+                this.loader.classList.add('dark');
+            } else {
+                this.loader.classList.remove('dark');
+            }
+
+            // Show progress bar if specified
+            if (options.showProgress && this.progressContainer) {
+                this.progressContainer.style.display = 'block';
+                this.setProgress(0);
+            } else if (this.progressContainer) {
+                this.progressContainer.style.display = 'none';
+            }
+
+            // Show the loader
+            this.loader.classList.remove('hidden');
+            this.isVisible = true;
+
+            // Auto-hide after specified duration
+            if (options.duration) {
+                setTimeout(() => this.hide(), options.duration);
+            }
+
+            return this;
+        }
+
+        /**
+        * Hide the full page loader
+        */
+        hide() {
+            if (!this.loader) return this;
+
+            this.loader.classList.add('hidden');
+            this.isVisible = false;
+            this.clearProgress();
+
+            return this;
+        }
+
+        /**
+        * Set progress percentage
+        * @param {number} percentage - Progress value (0-100)
+        */
+        setProgress(percentage) {
+            if (!this.progressFill || !this.progressPercentage) return this;
+
+            const progress = Math.max(0, Math.min(100, percentage));
+            this.progressFill.style.width = `${progress}%`;
+            this.progressPercentage.textContent = `${Math.round(progress)}%`;
+
+            return this;
+        }
+
+        /**
+        * Show loader with animated progress
+        * @param {string} text - Loading message
+        * @param {number} duration - Duration in milliseconds
+        */
+        showWithProgress(text = 'Loading...', duration = 3000) {
+            this.show(text, { showProgress: true });
+
+            let progress = 0;
+            const increment = 100 / (duration / 50); // Update every 50ms
+
+            this.progressInterval = setInterval(() => {
+                progress += increment;
+                this.setProgress(progress);
+
+                if (progress >= 100) {
+                    this.clearProgress();
+                    setTimeout(() => this.hide(), 500);
+                }
+            }, 50);
+
+            return this;
+        }
+
+        /**
+        * Clear progress interval
+        */
+        clearProgress() {
+            if (this.progressInterval) {
+                clearInterval(this.progressInterval);
+                this.progressInterval = null;
+            }
+            return this;
+        }
+
+        /**
+        * Check if loader is currently visible
+        */
+        isLoading() {
+            return this.isVisible;
+        }
+    }
+    const pageLoader = new FullPageLoader();
+    window.addEventListener('load', () => {
+        hideLoader();
+    });
+</script>
 </body>
 </html>
