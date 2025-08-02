@@ -70,7 +70,7 @@ class GidxController extends Controller
         if($req->CountryCode != null && $req->CountryCode != ''){
             $data['CountryCode'] = $req->CountryCode;
         }
-
+        $response = null;
         if($user->verified == null || $user->verified == ''){
             $response = $gidx->customerRegistration($data);
         } else {
@@ -88,7 +88,7 @@ class GidxController extends Controller
             }
             $user->save();
         } else {
-            Log::info('Gidx Response', $response);
+            Log::error('Gidx Response Error', ['' => 'Response Null']);
         }
         return response()->json(['status' => 'success', 'verified' => $verified]);
     }
