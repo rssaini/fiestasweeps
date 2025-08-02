@@ -26,6 +26,7 @@ Route::get('/responsible-gaming', function () {
 })->name('responsible-gaming');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 Route::get('/official-rules', [PageController::class, 'officialRules'])->name('official.rules');
+Route::post('/gidx-notification', [GidxController::class, 'notification'])->name('gidx.notification');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -73,6 +74,5 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/gidx-customer-registration', [GidxController::class, 'customerRegistration'])->name('gidx.customer.registration');
-    Route::post('/gidx-notification', [GidxController::class, 'notification'])->name('gidx.notification');
 });
 
