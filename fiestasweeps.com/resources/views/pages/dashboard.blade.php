@@ -364,6 +364,7 @@
                         <div>
                             <h2>Begin Verification</h2>
                             <p>Your identity is currently <strong>not</strong> verified.</p>
+                            <p>Identity Verification is only for <strong>US</strong> users.</p>
                             <p>Please <button class="cta-button" type="button" onclick="beginVerification(this)">click here</button> to begin the identity verification process.</p>
                         </div>
                         <div id="personal_details" style="display:none;">

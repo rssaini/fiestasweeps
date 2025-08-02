@@ -51,6 +51,25 @@ class GidxController extends Controller
             ];
         }
 
+        if($req->AddressLine1 != null && $req->AddressLine1 != ''){
+            $data['AddressLine1'] = $req->AddressLine1;
+        }
+        if($req->AddressLine2 != null && $req->AddressLine2 != ''){
+            $data['AddressLine2'] = $req->AddressLine2;
+        }
+        if($req->City != null && $req->City != ''){
+            $data['City'] = $req->City;
+        }
+        if($req->StateCode != null && $req->StateCode != ''){
+            $data['StateCode'] = $req->StateCode;
+        }
+        if($req->PostalCode != null && $req->PostalCode != ''){
+            $data['PostalCode'] = $req->PostalCode;
+        }
+        if($req->CountryCode != null && $req->CountryCode != ''){
+            $data['CountryCode'] = $req->CountryCode;
+        }
+
         if($user->verified == null || $user->verified == ''){
             $response = $gidx->customerRegistration($data);
         } else {

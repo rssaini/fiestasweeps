@@ -28,7 +28,7 @@ class GidxService
 
     public function customerRegistration(array $customerData) {
         $url = '/CustomerIdentity/CustomerRegistration';
-        return $this->makeRequest($url, $customerData, 'post');
+        return $this->requestToGidx($url, $customerData, 'post');
     }
 
     public function customerProfile(string $merchantCustomerId) {
@@ -57,30 +57,6 @@ class GidxService
 
     public function customerUpdate(array $customerData){
         $url = '/CustomerIdentity/CustomerUpdate';
-        $requestData = $this->buildStandardizedRequest($customerData, [
-            'MerchantCustomerID' => 'merchant_customer_id',
-            'ForceIDVerified' => 'force_id_verified',
-            'ForceIDBlock' => 'force_id_block',
-            'Salutation' => 'salutation',
-            'FirstName' => 'first_name',
-            'MiddleName' => 'middle_name',
-            'LastName' => 'last_name',
-            'Suffix' => 'suffix',
-            'FullName' => 'full_name',
-            'DateOfBirth' => 'date_of_birth',
-            'EmailAddress' => 'email_address',
-            'CitizenshipCountryCode' => 'citizenship_country_code',
-            'IdentificationTypeCode' => 'identification_type_code',
-            'IdentificationNumber' => 'identification_number',
-            'MobilePhoneNumber' => 'mobile_phone_number',
-            'PhoneNumber' => 'phone_number',
-            'AddressLine1' => 'address_line_1',
-            'AddressLine2' => 'address_line_2',
-            'City' => 'city',
-            'StateCode' => 'state_code',
-            'PostalCode' => 'postal_code',
-            'CountryCode' => 'country_code',
-        ]);
         return $this->requestToGidx($url, $customerData, 'post');
     }
 
