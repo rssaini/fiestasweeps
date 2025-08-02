@@ -361,11 +361,13 @@
                         <h2>Your profile is Verified.</h2>
                     @endif
                     @if(auth()->user()->verified === null)
-                        <h2>Begin Verification</h2>
-                        <p>Your identity is currently <strong>not</strong> verified.</p>
-                        <p>Please <button class="cta-button" type="button" onclick="$('#personal_details').css('display', 'block'); $(this).parent().css('display', 'none');">click here</button> to begin the identity verification process.</p>
+                        <div>
+                            <h2>Begin Verification</h2>
+                            <p>Your identity is currently <strong>not</strong> verified.</p>
+                            <p>Please <button class="cta-button" type="button" onclick="beginVerification(this)">click here</button> to begin the identity verification process.</p>
+                        </div>
                         <div id="personal_details" style="display:none;">
-                            <h4>Please review your personal details before identity verification.</h4>
+                            <h2>Please review your personal details before identity verification.</h2>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>First Name</label>
@@ -393,6 +395,7 @@
                                 </div>
                             </div>
                             <button type="button" onclick="startVerification()" class="cta-button">Update & Next</button>
+                            <p>We require your GPS location for identity verification process. Please allow location service for this.</p>
                         </div>
                     @endif
                     @if(auth()->user()->verified === 0)
@@ -434,6 +437,13 @@
     </div>
 
     <script>
+        function beginVerification(button){
+            $('#personal_details').css('display', 'block');
+            $(button).parent().parent().css('display', 'none');
+            if (!('geolocation' in navigator)) {
+                $('#personal_details > p:last-child').css('display', 'none');
+            }
+        }
         function startVerification(){
             pageLoader.show('Verifying User Profile...', { dark: true});
             if ('geolocation' in navigator) {
