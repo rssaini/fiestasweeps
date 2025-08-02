@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -53,6 +54,16 @@ class GidxController extends Controller
             'inputs' => $request->all(),
             'query' => $request->query(),
             'rawContent' => $request->getContent(),
+        ]);
+        Notification::create(['raw' =>
+            json_encode([
+                'method' => $request->method(),
+                'url' => $request->fullUrl(),
+                'headers' => $request->headers->all(),
+                'inputs' => $request->all(),
+                'query' => $request->query(),
+                'rawContent' => $request->getContent(),
+            ])
         ]);
         return response()->json([
             'Accepted' => true
