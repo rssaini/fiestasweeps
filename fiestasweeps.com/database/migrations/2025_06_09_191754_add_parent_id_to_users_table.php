@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('parent_id')->references('id')->on('users')->onDelete('set null');
             $table->string('lname')->nullable()->after('parent_id');
             $table->string('phone')->nullable()->after('parent_id');
-            $table->string('dob')->nullable()->after('parent_id');
+            $table->date('dob')->nullable()->after('parent_id');
             $table->tinyInteger('game_stats')->default(0)->after('parent_id');
             $table->tinyInteger('marketting_stats')->default(0)->after('parent_id');
             $table->tinyInteger('online_stats')->default(0)->after('parent_id');
