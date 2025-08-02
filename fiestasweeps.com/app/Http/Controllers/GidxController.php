@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\GidxService;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class GidxController extends Controller
 {
@@ -78,6 +79,7 @@ class GidxController extends Controller
         $verified = false;
 
         if($response) {
+            Log::info('Gidx Response', $response);
             if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
                 $user->verified = 1;
                 $verified = true;
@@ -85,6 +87,8 @@ class GidxController extends Controller
                 $user->verified = 0;
             }
             $user->save();
+        } else {
+            Log::info('Gidx Response', $response);
         }
         return response()->json(['status' => 'success', 'verified' => $verified]);
     }
