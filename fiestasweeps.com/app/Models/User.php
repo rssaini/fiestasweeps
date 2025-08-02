@@ -59,6 +59,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function getDobAttribute(){
+        return $this->dob ? $this->dob->format('Y-m-d') : null;
+    }
+
     public function setPhoneAttribute($value)
     {
         // Remove all non-digit characters
@@ -75,22 +79,6 @@ class User extends Authenticatable
             $this->attributes['phone'] = $value;
         }
     }
-
-    /*
-    // Mutator for date_of_birth
-    public function setDobAttribute($value)
-    {
-        // Parse various formats and convert to mm/dd/yyyy
-        $date = date_create($value);
-        \Illuminate\Support\Facades\Log::info('DOB: ', ['raw' => $value, 'formatted' => $date]);
-        if ($date) {
-            $this->attributes['dob'] = date_format($date, 'm/d/Y');
-        } else {
-            // fallback, store as is
-            $this->attributes['dob'] = $value;
-        }
-    }
-        */
 
     public function parent()
     {
