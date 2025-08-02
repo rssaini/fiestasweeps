@@ -19,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
             headers: Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PORT
 
         );
+        $middleware->validateCsrfTokens(except: [
+            'gidx-notification'
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
