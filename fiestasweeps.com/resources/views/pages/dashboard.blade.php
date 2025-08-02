@@ -816,7 +816,7 @@
                 if($(item).val() == ''){
                     alert("All fields are required");
                     $(item).focus();
-                    break;
+                    return false;
                 }
             });
         }
