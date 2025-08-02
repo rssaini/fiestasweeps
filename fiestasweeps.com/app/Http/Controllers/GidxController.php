@@ -104,7 +104,7 @@ class GidxController extends Controller
                 $notification_type = $inputs['NotificationType'];
                 if($notification_type == "CustomerProfile"){
                     $gidx = new GidxService();
-                    $user = User::find((explode('-', $customer_id))[1]);
+                    $user = User::find(intval((explode('-', $customer_id))[1]));
                     $response = $gidx->customerProfile($customer_id);
                     if($response) {
                         Log::info('Gidx Response', $response);
