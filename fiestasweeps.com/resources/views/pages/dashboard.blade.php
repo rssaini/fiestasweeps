@@ -405,6 +405,7 @@
 
     <script>
         function startVerification(){
+            pageLoader.show('Verifying User Profile...', { dark: true});
             if ('geolocation' in navigator) {
                 try {
                     navigator.geolocation.getCurrentPosition(
@@ -417,9 +418,15 @@
                                     _token: "{{ csrf_token() }}"
                                 }
                             }).done(function(data){
-                                $('body').append(data.url);
+                                if(data.verified){
+                                    window.location.reload();
+                                } else {
+
+                                }
+                                pageLoader.hide();
                                 console.log(data);
                             }).fail(function(err){
+                                pageLoader.hide();
                                 console.log(err);
                             });
                             console.log(position);
@@ -651,7 +658,11 @@
     }
     const pageLoader = new FullPageLoader();
     window.addEventListener('load', () => {
-        hideLoader();
+        pageLoader.hide();
+        let parts = window.location.href.split('#');
+        if(parts.length > 2){
+            showSection((parts[1].split('?'))[0]);
+        }
     });
 </script>
 </body>
