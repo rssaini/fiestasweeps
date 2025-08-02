@@ -370,26 +370,26 @@
                             <h2>Please review your personal details before identity verification.</h2>
                             <div class="form-group">
                                 <label>Email Address</label>
-                                <input type="email" readonly value="{{ auth()->user()->email }}">
+                                <input type="email" readonly required value="{{ auth()->user()->email }}">
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <input type="text" name="name" value="{{ auth()->user()->name }}">
+                                    <input type="text" name="name" required value="{{ auth()->user()->name }}">
                                 </div>
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <input type="text" name="lname" value="{{auth()->user()->lname }}">
+                                    <input type="text" name="lname" required value="{{auth()->user()->lname }}">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Phone Number</label>
-                                    <input type="tel" name="phone" value="{{ auth()->user()->phone }}">
+                                    <input type="tel" name="phone" required value="{{ auth()->user()->phone }}">
                                 </div>
                                 <div class="form-group">
                                     <label>Date of Birth</label>
-                                    <input type="date" name="dob" value="{{ auth()->user()->dob }}">
+                                    <input type="date" name="dob" required value="{{ auth()->user()->dob }}">
                                 </div>
                             </div>
                             <button type="button" onclick="startVerification()" class="cta-button">Update & Next</button>
@@ -401,26 +401,26 @@
                         <p>Please provide following details also for further verification process.</p>
                         <div class="form-group">
                             <label>Email Address</label>
-                            <input type="email" readonly value="{{ auth()->user()->email }}">
+                            <input type="email" readonly required value="{{ auth()->user()->email }}">
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>First Name</label>
-                                <input type="text" name="name" value="{{ auth()->user()->name }}">
+                                <input type="text" name="name" required value="{{ auth()->user()->name }}">
                             </div>
                             <div class="form-group">
                                 <label>Last Name</label>
-                                <input type="text" name="lname" value="{{auth()->user()->lname }}">
+                                <input type="text" name="lname" required value="{{auth()->user()->lname }}">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Phone Number</label>
-                                <input type="tel" name="phone" value="{{ auth()->user()->phone }}">
+                                <input type="tel" name="phone" required value="{{ auth()->user()->phone }}">
                             </div>
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="date" name="dob" value="{{ auth()->user()->dob }}">
+                                <input type="date" name="dob" required value="{{ auth()->user()->dob }}">
                             </div>
                         </div>
                         <!--
@@ -444,7 +444,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Address Line 1</label>
-                                <input type="text" name="AddressLine1">
+                                <input type="text" name="AddressLine1" required>
                             </div>
                             <div class="form-group">
                                 <label>Address Line 2</label>
@@ -454,11 +454,11 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label>City</label>
-                                <input type="text" name="City">
+                                <input type="text" name="City" required>
                             </div>
                             <div class="form-group">
                                 <label>State</label>
-                                <select name="StateCode">
+                                <select required name="StateCode">
                                     <option value="">Select State</option>
                                     <option value="AL">Alabama</option>
                                     <option value="AK">Alaska</option>
@@ -517,11 +517,11 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Postal Code</label>
-                                <input type="text" name="PostalCode">
+                                <input type="text" name="PostalCode" required>
                             </div>
                             <div class="form-group">
                                 <label>Country</label>
-                                <input type="text" name="CountryCode" value="US" readonly>
+                                <input type="text" name="CountryCode" value="US" readonly required>
                                 <!--<select name="CountryCode">
                                     <option value="AF">Afghanistan</option>
                                     <option value="AX">Åland Islands</option>
@@ -812,54 +812,33 @@
 
     <script>
         function validateFields(){
-            $('#notifications').find('input,select').each(function(index, item){
+            $('#notifications').find('input[required],select[required]').each(function(index, item){
                 if($(item).val() == ''){
                     alert("All fields are required");
                     $(item).focus();
                     return false;
                 }
             });
+            return true;
+        }
+        function getAdditionalValues(data){
+            $('#notifications').find('input,select').each(function(index, item){
+                data[$(item).attr('name')] = $(item).val();
+            });
         }
         function postCustomer(position = null){
-            @if(auth()->user()->verified === 0)
-            validateFields();
-            @endif
-            const firstName = $('#personal_details input[name="name"]').val();
-            const lastName = $('#personal_details input[name="lname"]').val();
-            const phone = $('#personal_details input[name="phone"]').val();
-            const dob = $('#personal_details input[name="dob"]').val();
-            if(firstName == ''){
-                alert('First Name is required.');
-                $('#personal_details input[name="name"]').focus();
-                return false;
-            }
-            if(lastName == ''){
-                alert('Last Name is required.');
-                $('#personal_details input[name="lname"]').focus();
-                return false;
-            }
-            if(phone == ''){
-                alert('Mobile phone number is required.');
-                $('#personal_details input[name="phone"]').focus();
-                return false;
-            }
-            if(dob == ''){
-                alert('Date of Birth is required.');
-                $('#personal_details input[name="dob"]').focus();
-                return false;
+            if(!(validateFields())){
+                return;
             }
             pageLoader.show('Verifying Identity...', { dark: true});
+            const requestData = getAdditionalValues({
+                location: position ? JSON.stringify(position) : '',
+                _token: "{{ csrf_token() }}"
+            });
             $.ajax({
                 url: "{{ route('gidx.customer.registration')}}",
                 method: "post",
-                data: {
-                    location: position ? JSON.stringify(position) : '',
-                    _token: "{{ csrf_token() }}",
-                    firstName: firstName,
-                    lastName: lastName,
-                    phone: phone,
-                    dob: dob
-                }
+                data: requestData
             }).done(function(data){
                 window.location.reload();
                 pageLoader.hide();
