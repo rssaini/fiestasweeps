@@ -59,8 +59,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function getDobAttribute(){
-        return $this->dob ? $this->dob->format('Y-m-d') : null;
+    public function getDobAttribute($value){
+        return $value ? \Carbon\Carbon::parse($value)->format('Y-m-d') : null;
     }
 
     public function setPhoneAttribute($value)
