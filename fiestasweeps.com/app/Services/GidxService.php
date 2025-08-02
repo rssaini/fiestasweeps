@@ -153,6 +153,7 @@ class GidxService
                         'status' => $response->status(),
                         'response' => $response->body()
                     ]);
+                    return null;
                 }
             }
         }catch(Exception $e){
@@ -160,7 +161,6 @@ class GidxService
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-        }finally {
             return null;
         }
     }
