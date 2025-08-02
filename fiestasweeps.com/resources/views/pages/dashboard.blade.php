@@ -826,6 +826,7 @@
         }
 
         function getAdditionalValues(data){
+            debugger;
             $('#notifications').find('input,select').each(function(index, item){
                 data[$(item).attr('name')] = $(item).val();
             });
@@ -839,6 +840,7 @@
                 location: position ? JSON.stringify(position) : '',
                 _token: "{{ csrf_token() }}"
             });
+            console.log(requestData);
             $.ajax({
                 url: "{{ route('gidx.customer.registration')}}",
                 method: "post",
