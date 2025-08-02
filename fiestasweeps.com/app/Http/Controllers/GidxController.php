@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Services\GidxCustomerIdentityService;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class GidxController extends Controller
 {
@@ -42,5 +43,19 @@ class GidxController extends Controller
             'speed' => $location['coords']['speed'],
             'datetime' => $location['timestamp'],
         ]));
+    }
+
+    public function notification(Request $request){
+        Log::info('Complete Request:', [
+            'method' => $request->method(),
+            'url' => $request->fullUrl(),
+            'headers' => $request->headers->all(),
+            'inputs' => $request->all(),
+            'query' => $request->query(),
+            'rawContent' => $request->getContent(),
+        ]);
+        return response()->json([
+            'Accepted' => true
+        ]);
     }
 }

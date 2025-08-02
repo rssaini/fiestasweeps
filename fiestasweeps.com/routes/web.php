@@ -73,5 +73,6 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/gidx-customer-registration', [GidxController::class, 'customerRegistration'])->name('gidx.customer.registration');
+    Route::post('/gidx-notification', [GidxController::class, 'notification'])->name('gidx.notification');
 });
 
