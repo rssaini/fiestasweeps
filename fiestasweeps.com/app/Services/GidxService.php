@@ -32,7 +32,7 @@ class GidxService
     }
 
     public function customerProfile(string $merchantCustomerId) {
-        $url = $this->baseUrl . '/CustomerIdentity/CustomerProfile';
+        $url = '/CustomerIdentity/CustomerProfile';
         return $this->requestToGidx($url, [ 'MerchantCustomerID' => $merchantCustomerId], 'post');
     }
 
