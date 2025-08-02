@@ -223,10 +223,20 @@
                     <p>We require identity verification for deposits, withdrawals, and general gameplay.</p>
                 </div>
                 <div class="content-card">
-                    <h2>Begin Verification</h2>
-                    {{ auth()->user()->verified }}
-                    <p>Your identity is currently <strong>not</strong> verified.</p>
-                    <p>Please <button type="button" onclick="startVerification()">click here</button> to begin the identity verification process.</p>
+                    @if(auth()->user()->verified === 1)
+                        <h2>Your profile is Verified.</h2>
+                    @endif
+                    @if(auth()->user()->verified === null)
+                        <h2>Begin Verification</h2>
+                        <p>Your identity is currently <strong>not</strong> verified.</p>
+                        <p>Please <button type="button" onclick="startVerification()">click here</button> to begin the identity verification process.</p>
+                    @endif
+                    @if(auth()->user()->verified === 0)
+                        <h2>Begin Verification</h2>
+                        <p>Your identity is currently <strong>not</strong> verified.</p>
+                        <p>Please update profile for identity verification process.</p>
+                    @endif
+
                 </div>
                 <div id="DepositAmountDisplay"></div>
 
