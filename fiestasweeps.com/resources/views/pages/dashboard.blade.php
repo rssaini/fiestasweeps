@@ -1099,5 +1099,33 @@
         }
     });
 </script>
+<script>
+    let devToolsOpen = false;
+    (function() {
+  function detectDevTools() {
+    const widthThreshold = window.outerWidth - window.innerWidth > 160;
+    const heightThreshold = window.outerHeight - window.innerHeight > 160;
+    const isDebuggerActive = detectDebugger();
+
+    if (widthThreshold || heightThreshold || isDebuggerActive) {
+      devToolsOpen = true;
+      console.log("Developer tools may be open");
+    } else {
+      devToolsOpen = false;
+    }
+  }
+
+  function detectDebugger() {
+    let start = new Date();
+    debugger; // pausing execution potentially
+    let end = new Date();
+    return end - start > 100; // if paused, delay increases
+  }
+
+  // Run detection periodically
+  setInterval(detectDevTools, 1000);
+
+})();
+</script>
 </body>
 </html>
