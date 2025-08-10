@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Customer;
 use App\Services\GidxService;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -18,10 +19,18 @@ class GidxController extends Controller
         $user->phone = $req->phone;
         $user->dob = $req->dob;
         $user->save();
-
+        $customer = null;
+        try{
+            $customer = Customer::findOrfail->where('users', $user->id);
+        }catch(Exception $e){
+            $customer = Customer::create([
+                'customer_id' => (string) Str::uuid(),
+                'users' => $user->id
+            ]);
+        }
         $gidx = new GidxService();
         $data = [
-            'MerchantCustomerID' => 'CUST-' . Str::padLeft($user->id, 4, '0'),
+            'MerchantCustomerID' => $customer->customer_id,
             'FirstName' => $user->name,
             'LastName' => $user->lname,
             'EmailAddress' => $user->email,
@@ -131,4 +140,6 @@ class GidxController extends Controller
             'Accepted' => true
         ]);
     }
+
+
 }
