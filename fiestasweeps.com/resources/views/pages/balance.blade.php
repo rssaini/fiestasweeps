@@ -154,7 +154,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <img src="assets/logo.png" alt="Fiesta Sweeps Logo" style="height: 80px;">
+                    <img src="/assets/logo.png" alt="Fiesta Sweeps Logo" style="height: 80px;">
                 </div>
                 <h2>Dashboard</h2>
                 <p>Welcome back, {{ auth()->user()->name }}!</p>
