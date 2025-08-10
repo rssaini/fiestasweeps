@@ -114,16 +114,35 @@ class User extends Authenticatable
     public function getCurrentBalanceAttribute()
     {
         $balance = 0;
+        try{
+            $customer = Customer::where('users', $user->id)->firstOrFail();
+            $balance = $customer->balance;
+        }catch(\Exception $e){
+
+        }
+
         return '$' . number_format($balance, 2);
     }
     public function getTotalDepositsAttribute()
     {
         $balance = 0;
+        try{
+            $customer = Customer::where('users', $user->id)->firstOrFail();
+            $balance = $customer->total_deposited;
+        }catch(\Exception $e){
+
+        }
         return '$' . number_format($balance, 2);
     }
     public function getTotalWinningsAttribute()
     {
         $balance = 0;
+        try{
+            $customer = Customer::where('users', $user->id)->firstOrFail();
+            $balance = $customer->total_winnings;
+        }catch(\Exception $e){
+
+        }
         return '$' . number_format($balance, 2);
     }
     public function getStatusNameAttribute()
