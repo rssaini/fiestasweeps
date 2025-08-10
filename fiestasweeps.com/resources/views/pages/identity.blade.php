@@ -159,10 +159,10 @@
             </div>
 
             <nav class="sidebar-menu">
-                <a href="#account" class="menu-item active" onclick="showSection('account')">Account</a>
+                <a href="#account" class="menu-item" onclick="showSection('account')">Account</a>
                 <a href="#privacy" class="menu-item" onclick="showSection('privacy')">Privacy</a>
                 <a href="#security" class="menu-item" onclick="showSection('security')">Security</a>
-                <a href="#notifications" class="menu-item" onclick="showSection('notifications')">Identity</a>
+                <a href="#notifications" class="menu-item active" onclick="showSection('notifications')">Identity</a>
                 <a href="#gameplay" class="menu-item" onclick="showSection('gameplay')">Gameplay</a>
                 <a href="#history" class="menu-item" onclick="showSection('history')">Game History</a>
                 <a href="#balance" class="menu-item" onclick="showSection('balance')">Balance</a>
@@ -172,7 +172,7 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <div id="notifications" class="content-section">
+            <div id="notifications" class="content-section active">
                 <div class="content-header">
                     <h1>Identity</h1>
                     <p>We require identity verification for deposits, withdrawals, and general gameplay.</p>
