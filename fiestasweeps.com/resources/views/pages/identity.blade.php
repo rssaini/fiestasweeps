@@ -145,6 +145,7 @@
             background: #b22234;
             align-items: center;
             color: #fff;
+            z-index: 99;
         }
         #mainErrorBlock button{
             background-color: #dcdcdc; /* Green background */
@@ -155,7 +156,6 @@
             cursor: pointer; /* Cursor on hover */
             font-size: 16px; /* Text size */
             transition: background-color 0.3s, transform 0.2s;
-            z-index: 99;
         }
         #mainErrorBlock button:hover{
             background-color: #ebebeb;
@@ -165,7 +165,7 @@
 </head>
 <body>
     <div id="mainErrorBlock">
-        <p>Something is broken, please click button to reload page</p>
+        <p>Developer Tools Detected. Please close & reload page again</p>
         <button onclick="window.location.reload();">Reload</button>
     </div>
     <div id="pageLoader" class="page-loader hidden">
