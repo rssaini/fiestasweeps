@@ -19,9 +19,11 @@ export default {
   mounted() {
     devtoolsListener((isOpen) => {
       this.showApp = !isOpen;
-      setTimeout(() => {
-        document.getElementById('mainErrorBlock').style.display = "flex";
-      }, 1000);
+      if(isOpen){
+        setTimeout(() => {
+            document.getElementById('mainErrorBlock').style.display = "flex";
+        }, 1000);
+      }
     });
   }
 };
