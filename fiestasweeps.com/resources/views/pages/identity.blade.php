@@ -155,6 +155,7 @@
             cursor: pointer; /* Cursor on hover */
             font-size: 16px; /* Text size */
             transition: background-color 0.3s, transform 0.2s;
+            z-index: 99;
         }
         #mainErrorBlock button:hover{
             background-color: #ebebeb;
@@ -167,7 +168,6 @@
         <p>Something is broken, please click button to reload page</p>
         <button onclick="window.location.reload();">Reload</button>
     </div>
-    <div id="vue-root"></div>
     <div id="pageLoader" class="page-loader hidden">
         <div class="loader-content">
             <div class="spinner"></div>
@@ -211,6 +211,7 @@
                     <p>We require identity verification for deposits, withdrawals, and general gameplay.</p>
                 </div>
                 <div class="content-card">
+                    <div id="vue-root"></div>
                     @if(auth()->user()->verified === 1)
                         <h2>Your profile is Verified.</h2>
                     @endif
