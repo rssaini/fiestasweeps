@@ -413,7 +413,6 @@
         }
 
         $(document).ready(function(){
-            pageLoader.hide();
             let parts = window.location.href.split('#');
             if(parts.length > 1){
                 showSection((parts[1].split('?'))[0]);
