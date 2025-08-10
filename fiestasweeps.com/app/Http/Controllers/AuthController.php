@@ -107,7 +107,7 @@ class AuthController extends Controller
             return redirect()->route('login');
         }
         if ($user->hasRole('Player')) {
-            return view('pages.dashboard', compact('user'));
+            return view('pages.identity', compact('user'));
         }
     }
 
