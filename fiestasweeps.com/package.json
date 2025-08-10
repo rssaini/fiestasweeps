@@ -22,6 +22,7 @@
         "bootstrap": "^5.3.7",
         "bootstrap-vue-next": "^0.30.4",
         "devtools-detector": "^2.0.23",
+        "sweetalert2": "^11.22.3",
         "vue": "^3.5.18",
         "vue-router": "4",
         "vuex": "4"

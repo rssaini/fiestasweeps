@@ -26,6 +26,9 @@ importers:
       devtools-detector:
         specifier: ^2.0.23
         version: 2.0.23
+      sweetalert2:
+        specifier: ^11.22.3
+        version: 11.22.3
       vue:
         specifier: ^3.5.18
         version: 3.5.18
@@ -1012,6 +1015,9 @@ packages:
     resolution: {integrity: sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==}
     engines: {node: '>=10'}
 
+  sweetalert2@11.22.3:
+    resolution: {integrity: sha512-//WtZEvs9XRmyQVs77tz02ERu2JUTATQvrec+MjJYtKtnYSYDDgAmDdWzRWMkcxClj828EQgfHrpM+tI6qcMOg==}
+
   tailwindcss@4.1.11:
     resolution: {integrity: sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==}
 
@@ -1894,6 +1900,8 @@ snapshots:
   supports-color@8.1.1:
     dependencies:
       has-flag: 4.0.0
+
+  sweetalert2@11.22.3: {}
 
   tailwindcss@4.1.11: {}
 
