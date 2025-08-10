@@ -115,7 +115,7 @@ class User extends Authenticatable
     {
         $balance = 0;
         try{
-            $customer = Customer::where('users', $user->id)->firstOrFail();
+            $customer = Customer::where('users', $this->id)->firstOrFail();
             $balance = $customer->balance;
         }catch(\Exception $e){
 
@@ -127,7 +127,7 @@ class User extends Authenticatable
     {
         $balance = 0;
         try{
-            $customer = Customer::where('users', $user->id)->firstOrFail();
+            $customer = Customer::where('users', $this->id)->firstOrFail();
             $balance = $customer->total_deposited;
         }catch(\Exception $e){
 
@@ -138,7 +138,7 @@ class User extends Authenticatable
     {
         $balance = 0;
         try{
-            $customer = Customer::where('users', $user->id)->firstOrFail();
+            $customer = Customer::where('users', $this->id)->firstOrFail();
             $balance = $customer->total_winnings;
         }catch(\Exception $e){
 
