@@ -1,0 +1,31 @@
+// Brand Colors (from your current theme)
+$primary-red: #da5446;
+$primary-dark: #13212b;
+$primary-light: #f9f0e4;
+$secondary-dark: #1a3040;
+$accent-text: #25304e;
+
+// Bootstrap Variable Overrides
+$primary: $primary-red;
+$secondary: $secondary-dark;
+$dark: $primary-dark;
+$light: $primary-light;
+$body-bg: $primary-light;
+$body-color: $accent-text;
+
+// Custom spacing
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: $spacer * 4
+);
+
+// Border radius
+$border-radius: 0.625rem;
+$border-radius-lg: 1.25rem;
+$border-radius-xl: 1.875rem;

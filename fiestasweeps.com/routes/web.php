@@ -10,6 +10,9 @@ use App\Http\Controllers\LogViewerController;
 use Illuminate\Support\Facades\Route;
 
 // Page Routes
+Route::get('/player', function(){
+    return view('player');
+});
 Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
@@ -48,6 +51,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 // Add inside auth middleware group
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard/identity-verification', [AuthController::class, 'identity_verification'])->name('dashboard.identity.verification');
     Route::get('/stats-update', [AuthController::class, 'statsUpdate'])->name('stats.update');
     Route::post('/profile-update', [AuthController::class, 'profileUpdate'])->name('profile.update');
     Route::post('/password-update', [AuthController::class, 'passwordUpdate'])->name('password.update');

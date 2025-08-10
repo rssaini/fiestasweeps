@@ -100,6 +100,16 @@ class AuthController extends Controller
 
         return view('adash', compact('user', 'games', 'gateways'));
     }
+    public function identity_verification()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+        if ($user->hasRole('Player')) {
+            return view('pages.dashboard', compact('user'));
+        }
+    }
 
     public function createTransaction(Request $request)
     {

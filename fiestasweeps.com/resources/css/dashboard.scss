@@ -1,0 +1,192 @@
+@import 'variables';
+
+.dashboard-container {
+  @extend .d-flex;
+  min-height: 100vh;
+}
+
+.sidebar-custom {
+  width: 280px;
+  background-color: $primary-dark;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+
+  @extend .p-4;
+}
+
+.sidebar-header {
+  @extend .text-center;
+  @extend .pb-4;
+  @extend .mb-4;
+  border-bottom: 2px solid $secondary-dark;
+
+  h2 {
+    color: $primary-red;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    @extend .mb-2;
+  }
+
+  p {
+    color: $primary-light;
+    font-size: 0.9rem;
+    font-weight: 500;
+    @extend .mb-0;
+  }
+}
+
+.sidebar-menu {
+  @extend .nav;
+  @extend .flex-column;
+
+  .nav-link {
+    color: $primary-light;
+    text-decoration: none;
+    @extend .px-3;
+    @extend .py-3;
+    @extend .mb-2;
+    border-radius: $border-radius;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+
+    &:hover {
+      background-color: $secondary-dark;
+      color: $primary-red;
+      border-color: $primary-red;
+    }
+
+    &.active {
+      background-color: $primary-red;
+      color: $primary-light;
+      font-weight: 900;
+
+      &:hover {
+        background-color: darken($primary-red, 10%);
+        border-color: darken($primary-red, 10%);
+        color: $primary-light;
+      }
+    }
+  }
+}
+
+.main-content {
+  margin-left: 280px;
+  @extend .p-5;
+  flex: 1;
+  max-width: calc(100% - 280px);
+}
+
+.content-header {
+  @extend .mb-5;
+
+  h1 {
+    color: $primary-red;
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    @extend .mb-2;
+  }
+
+  p {
+    color: $accent-text;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+.stats-grid {
+  @extend .row;
+  @extend .g-4;
+  @extend .mb-4;
+}
+
+.stat-card-custom {
+  @extend .card;
+  @extend .text-center;
+  @extend .p-4;
+  background-color: $secondary-dark;
+  border: none;
+  border-radius: $border-radius;
+
+  .stat-number {
+    color: $primary-red;
+    font-size: 2.5rem;
+    font-weight: 900;
+    @extend .d-block;
+  }
+
+  .stat-label {
+    color: $primary-light;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    @extend .mt-2;
+  }
+}
+
+// Responsive Design
+@media (max-width: 992px) {
+  .sidebar-custom {
+    margin-left: -280px;
+    transition: margin-left 0.3s ease;
+
+    &.show {
+      margin-left: 0;
+    }
+  }
+
+  .main-content {
+    margin-left: 0;
+    max-width: 100%;
+  }
+}
+
+// Page Loader
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .justify-content-center;
+  z-index: 999999;
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s ease;
+
+  &.d-none {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+.loader-content {
+  @extend .text-center;
+  max-width: 300px;
+}
+
+.spinner-custom {
+  @extend .spinner-border;
+  color: $primary-red;
+  width: 3rem;
+  height: 3rem;
+}
+
+.loader-text {
+  @extend .mt-3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}

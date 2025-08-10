@@ -1,0 +1,79 @@
+@import 'variables';
+@import 'bootstrap/scss/bootstrap';
+@import '@fortawesome/fontawesome-free/css/all.css';
+
+// Custom global styles using Bootstrap classes
+body {
+  font-family: 'Karla', sans-serif;
+  background-color: $primary-light;
+  color: $accent-text;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.btn-primary-custom {
+  @extend .btn;
+  @extend .btn-primary;
+  background-color: $primary-red;
+  border-color: $primary-red;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: $border-radius-lg;
+
+  &:hover {
+    background-color: darken($primary-red, 10%);
+    border-color: darken($primary-red, 10%);
+  }
+}
+
+.btn-secondary-custom {
+  @extend .btn;
+  @extend .btn-outline-primary;
+  border-color: $primary-red;
+  color: $primary-red;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: $border-radius-lg;
+
+  &:hover {
+    background-color: $primary-red;
+    border-color: $primary-red;
+  }
+}
+
+.form-control-custom {
+  @extend .form-control;
+  border: 2px solid transparent;
+  border-radius: $border-radius;
+  background-color: $primary-light;
+  color: $primary-dark;
+
+  &:focus {
+    border-color: $primary-red;
+    box-shadow: 0 0 0 0.2rem rgba($primary-red, 0.25);
+  }
+}
+
+.card-custom {
+  @extend .card;
+  background-color: $primary-dark;
+  border: none;
+  border-radius: $border-radius-xl;
+
+  .card-header {
+    background-color: transparent;
+    border-bottom: 2px solid $secondary-dark;
+
+    h2, h3 {
+      color: $primary-red;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+  }
+
+  .card-body {
+    color: $primary-light;
+  }
+}
