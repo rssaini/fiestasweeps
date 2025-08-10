@@ -395,6 +395,10 @@
                 window.location.href = "/dashboard/identity-verification";
                 return;
             }
+            if(sectionId == 'balance'){
+                window.location.href = "/dashboard/customer-balance";
+                return;
+            }
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');

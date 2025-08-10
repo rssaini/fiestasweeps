@@ -52,6 +52,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/identity-verification', [AuthController::class, 'identity_verification'])->name('dashboard.identity.verification');
+    Route::get('/dashboard/customer-balance', [AuthController::class, 'customer_balance'])->name('dashboard.customer.balance');
     Route::get('/stats-update', [AuthController::class, 'statsUpdate'])->name('stats.update');
     Route::post('/profile-update', [AuthController::class, 'profileUpdate'])->name('profile.update');
     Route::post('/password-update', [AuthController::class, 'passwordUpdate'])->name('password.update');

@@ -11,7 +11,7 @@
     <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicon.svg') }}" />
     <link rel="shortcut icon" href="{{ asset('assets/favicon.ico') }}" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    @vite('resources/js/identity.js')
+    @vite('resources/js/main.js')
     <style>
 /* ===============================
    FULL PAGE LOADER STYLES
@@ -133,41 +133,9 @@
         border-width: 3px;
     }
 }
-#mainErrorBlock{
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            background: #b22234;
-            align-items: center;
-            color: #fff;
-            z-index: 99;
-        }
-        #mainErrorBlock button{
-            background-color: #dcdcdc; /* Green background */
-            color: #b22234; /* Text color */
-            padding: 12px 24px; /* Top & Bottom, Left & Right padding */
-            border: none; /* Remove border */
-            border-radius: 4px; /* Rounded corners */
-            cursor: pointer; /* Cursor on hover */
-            font-size: 16px; /* Text size */
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        #mainErrorBlock button:hover{
-            background-color: #ebebeb;
-            color: #c23749;
-        }
 </style>
 </head>
 <body>
-    <div id="mainErrorBlock">
-        <p>Developer Tools Detected. Please close & reload page again</p>
-        <button onclick="window.location.reload();">Reload</button>
-    </div>
     <div id="pageLoader" class="page-loader hidden">
         <div class="loader-content">
             <div class="spinner"></div>
@@ -751,6 +719,10 @@
         }
 
         function showSection(sectionId) {
+            if(sectionId == 'balance'){
+                window.location.href = "/dashboard/customer-balance";
+                return;
+            }
             if(sectionId != 'notifications'){
                 window.location.href = "/dashboard#" + sectionId;
             }

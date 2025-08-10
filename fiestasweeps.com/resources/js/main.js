@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 import { launch } from 'devtools-detector';
-import Identity from './Identity.vue';
+import Main from './Main.vue';
 
-const app = createApp(Identity)
+const app = createApp(Main)
 
 app.mount('#vue-root')
 

@@ -110,6 +110,17 @@ class AuthController extends Controller
             return view('pages.identity', compact('user'));
         }
     }
+    public function customer_balance()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+        if ($user->hasRole('Player')) {
+            return view('pages.balance', compact('user'));
+        }
+    }
+
 
     public function createTransaction(Request $request)
     {

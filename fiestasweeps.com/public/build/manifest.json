@@ -1,8 +1,11 @@
 {
-  "resources/js/identity.js": {
-    "file": "assets/identity-DmO6ZnN7.js",
-    "name": "identity",
-    "src": "resources/js/identity.js",
-    "isEntry": true
+  "resources/js/main.js": {
+    "file": "assets/main-CfRsvanp.js",
+    "name": "main",
+    "src": "resources/js/main.js",
+    "isEntry": true,
+    "css": [
+      "assets/main-BcwJqjaL.css"
+    ]
   }
 }
