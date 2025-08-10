@@ -5,4 +5,4 @@ import Identity from './Identity.vue';
 const app = createApp(Identity)
 
 app.mount('#vue-root')
-launch();
+//launch();

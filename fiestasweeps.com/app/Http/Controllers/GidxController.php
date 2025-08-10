@@ -22,7 +22,7 @@ class GidxController extends Controller
         $customer = null;
         try{
             $customer = Customer::where('users', $user->id)->firstOrFail();
-        }catch(Exception $e){
+        }catch(\Exception $e){
             $customer = Customer::create([
                 'customer_id' => (string) Str::uuid(),
                 'users' => $user->id
