@@ -279,15 +279,15 @@
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <span class="stat-number">$47.50</span>
+                        <span class="stat-number">{{ $user->current_balance }}</span>
                         <span class="stat-label">Current Balance</span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-number">$250.00</span>
+                        <span class="stat-number">{{ $user->total_deposits }}</span>
                         <span class="stat-label">Total Deposited</span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-number">$125.75</span>
+                        <span class="stat-number">{{ $user->total_winnings }}</span>
                         <span class="stat-label">Total Winnings</span>
                     </div>
                 </div>

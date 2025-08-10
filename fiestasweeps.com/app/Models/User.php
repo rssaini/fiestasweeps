@@ -43,7 +43,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $appends = ['role', 'parent_name', 'status_name'];
+    protected $appends = ['role', 'parent_name', 'status_name', 'current_balance', 'total_deposits', 'total_winnings'];
 
     /**
      * Get the attributes that should be cast.
@@ -110,6 +110,21 @@ class User extends Authenticatable
     public function getParentNameAttribute()
     {
         return $this->parent()->pluck('name')->first();
+    }
+    public function getCurrentBalanceAttribute()
+    {
+        $balance = 0;
+        return '$' . number_format($balance, 2);
+    }
+    public function getTotalDepositsAttribute()
+    {
+        $balance = 0;
+        return '$' . number_format($balance, 2);
+    }
+    public function getTotalWinningsAttribute()
+    {
+        $balance = 0;
+        return '$' . number_format($balance, 2);
     }
     public function getStatusNameAttribute()
     {
