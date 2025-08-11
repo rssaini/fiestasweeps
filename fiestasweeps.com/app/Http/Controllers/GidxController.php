@@ -118,7 +118,7 @@ class GidxController extends Controller
                 if($notification_type == "CustomerProfile"){
                     try{
                         $customer = Customer::where('customer_id', $customer_id)->firstOrFail();
-                        $user = $customer->user;
+                        $user = $customer->user();
                         $gidx = new GidxService();
                         $response = $gidx->customerProfile([
                             'MerchantCustomerID' => $customer_id,
