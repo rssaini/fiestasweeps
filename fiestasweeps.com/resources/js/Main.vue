@@ -12,7 +12,60 @@
                 </p>
             </div>
             <div v-else>
-                <p>Geo location Services are active.</p>
+                <div v-if="balancePage"></div>
+                <div v-if="IdentityPage">
+                    <h2 v-if="profileStatus === 1">Your profile is Verified.</h2>
+                    <div v-if="profileStatus === 0">
+                        <h2 >Your Profile already submitted for verification.</h2>
+                        <p>Profile Compliance:</p>
+                        <ul>
+                            <li style="color: #3ed1ed" v-for="(item, index) in profile.reasons.split(',')" :key="index">{{ item }}</li>
+                        </ul>
+                    </div>
+                    <div v-if="profileStatus === null">
+                        <div v-if="!verificationBegin">
+                            <h2>Begin Verification</h2>
+                            <p>Your identity is currently <strong>not</strong> verified.</p>
+                            <p>Identity Verification is only for <strong>US</strong> users.</p>
+                            <p>Please <button class="cta-button" @click="this.verificationBegin = true">click here</button> to begin the identity verification process.</p>
+                        </div>
+                        <div v-else>
+                            <h2>Please review your personal details before identity verification.</h2>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" readonly required v-model="this.profile.email">
+                                <span v-if="!profile.email" style="color: #ff8787">Required Field</span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" name="name" required v-model="this.profile.fname">
+                                    <span v-if="!profile.fname" style="color: #ff8787">Required Field</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" name="lname" required v-model="this.profile.lname">
+                                    <span v-if="!profile.lname" style="color: #ff8787">Required Field</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" name="phone" required v-model="this.profile.phone">
+                                    <span v-if="!profile.phone" style="color: #ff8787">Required Field</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date of Birth</label>
+                                    <input type="date" name="dob" required v-model="this.profile.dob">
+                                    <span v-if="!profile.dob" style="color: #ff8787">Required Field</span>
+                                </div>
+                            </div>
+                            <button :disabled="verificationProcess" @click="startVerification" class="cta-button">Update & Verify
+                                <span v-if="verificationProcess" class="fa fa-spin fa-spinner"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div v-else>
@@ -48,6 +101,20 @@ export default {
         qrCodeMessage: "",
         statusInterval: null,
         isLoggedIn: false,
+        balancePage: false,
+        IdentityPage: true,
+        profileStatus: null,
+        profile: {
+            fname: "",
+            lname: "",
+            email: "",
+            dob: "",
+            phone: "",
+            location: "",
+            reasons:""
+        },
+        verificationBegin: false,
+        verificationProcess: false,
     };
   },
   methods: {
@@ -55,6 +122,7 @@ export default {
         try {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    this.profile.location = position;
                     this.locationDisabled = false;
                 },
                 (error) => {
@@ -83,6 +151,60 @@ export default {
         } catch (error) {
             this.locationDisabled = true;
             this.locationMessage = "GeoLocation Permission denied.";
+        }
+    },
+    async startVerification(){
+        if(!(this.profile.email && this.profile.fname && this.profile.lname && this.profile.dob && this.profile.phone)){
+            return;
+        }
+        this.verificationProcess = true;
+        this.allowLocation();
+        try{
+            const response = await fetch("/gidx-customer-registration", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(this.profile)
+            });
+            const data = await response.json();
+            await this.getprofileStatus();
+            this.verificationProcess = false;
+        }catch(err){
+            console.log(err);
+            this.verificationProcess = false;
+        }
+    },
+    async getprofileStatus(){
+        try {
+            const response = await fetch(`/user/profile`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.verified === null) {
+                this.profileStatus = null;
+            }
+            if (data.verified === 0) {
+                this.profileStatus = 0;
+            }
+            if (data.verified === 1) {
+                this.profileStatus = 1;
+            }
+            this.profile.dob = data.dob;
+            this.profile.fname = data.fname;
+            this.profile.lname = data.lname;
+            this.profile.email = data.email;
+            this.profile.phone = data.phone;
+            this.profile.reasons = data.reasons;
+        } catch (error) {
+            console.error('Error generating QR code:', error);
         }
     },
     async generateQR() {
@@ -134,6 +256,7 @@ export default {
     },
   },
   mounted() {
+    this.getprofileStatus();
     devtoolsListener((isOpen) => {
       this.showError = isOpen;
       setTimeout(()=>{ debugger;}, 100);
@@ -143,6 +266,10 @@ export default {
         this.allowLocation();
     } else {
         this.generateQR();
+    }
+    if(window.location.href.includes("customer-balance")){
+        this.balancePage = true;
+        this.IdentityPage = false;
     }
   }
 };

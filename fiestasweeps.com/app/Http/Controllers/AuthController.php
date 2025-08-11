@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Customer;
 use App\Models\Game;
 use App\Models\PaymentGateway;
 use App\Models\PaymentHandle;
@@ -200,5 +201,27 @@ class AuthController extends Controller
         $user->save();
 
         return redirect()->back()->with('status', 'Password updated successfully.');
+    }
+
+    public function user_profile(){
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        $reasons = '';
+        try{
+            $customer = Customer::where('users', auth()->user()->id)->firstOrFail();
+            $reasons = $customer->reasons;
+        }catch(\Exception $e){
+
+        }
+        return response()->json([
+            'verified' => auth()->user()->verified,
+            'fname' => auth()->user()->name,
+            'lname' => auth()->user()->lname,
+            'email' => auth()->user()->email,
+            'phone' => auth()->user()->phone,
+            'dob' => auth()->user()->dob,
+            'reasons' => $reasons,
+        ]);
     }
 }

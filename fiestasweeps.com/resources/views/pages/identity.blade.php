@@ -182,46 +182,7 @@
                 </div>
                 <div class="content-card">
                     <div id="vue-root"></div>
-                    @if(auth()->user()->verified === 1)
-                        <h2>Your profile is Verified.</h2>
-                    @endif
-                    @if(auth()->user()->verified === null)
-                        <div>
-                            <h2>Begin Verification</h2>
-                            <p>Your identity is currently <strong>not</strong> verified.</p>
-                            <p>Identity Verification is only for <strong>US</strong> users.</p>
-                            <p>Please <button class="cta-button" type="button" onclick="beginVerification(this)">click here</button> to begin the identity verification process.</p>
-                        </div>
-                        <div id="personal_details" style="display:none;">
-                            <h2>Please review your personal details before identity verification.</h2>
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="email" readonly required value="{{ auth()->user()->email }}">
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>First Name</label>
-                                    <input type="text" name="name" required value="{{ auth()->user()->name }}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Last Name</label>
-                                    <input type="text" name="lname" required value="{{auth()->user()->lname }}">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input type="tel" name="phone" required value="{{ auth()->user()->phone }}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Date of Birth</label>
-                                    <input type="date" name="dob" required value="{{ auth()->user()->dob }}">
-                                </div>
-                            </div>
-                            <button type="button" onclick="startVerification()" class="cta-button">Update & Next</button>
-                            <p>We require your GPS location for identity verification process. Please allow location service for this.</p>
-                        </div>
-                    @endif
+                    {{--
                     @if(auth()->user()->verified === 0)
                         <h2>Sorry, We were unable to Verify Identity based on provided information.</h2>
                         <p>Please provide following details also for further verification process.</p>
@@ -603,7 +564,7 @@
                         </div>
                         <button type="button" onclick="startVerification()" class="cta-button">Verify Identity</button>
                     @endif
-
+                    --}}
                 </div>
                 <div id="DepositAmountDisplay"></div>
 

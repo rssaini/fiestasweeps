@@ -14,7 +14,7 @@ class GidxController extends Controller
 {
     public function customerRegistration(Request $req){
         $user = User::find(auth()->user()->id);
-        $user->name = $req->name;
+        $user->name = $req->fname;
         $user->lname = $req->lname;
         $user->phone = $req->phone;
         $user->dob = $req->dob;
@@ -48,7 +48,7 @@ class GidxController extends Controller
         }
 
         if($req->location != '' && $req->location != null){
-            $location = json_decode($req->location, true);
+            $location = $req->location;
             $timestampInSeconds = $location['timestamp'] / 1000;
             $date = Carbon::createFromTimestamp($timestampInSeconds, 'GMT');
             $data['DeviceGPS'] = [
@@ -89,13 +89,17 @@ class GidxController extends Controller
 
         if($response) {
             Log::info('Gidx Response', $response);
-            if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
-                $user->verified = 1;
-                $verified = true;
-            } else {
-                $user->verified = 0;
+            if(array_key_exists('ReasonCodes', $response)){
+                $customer->reasons = implode(',', $response['ReasonCodes']);
+                $customer->save();
+                if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
+                    $user->verified = 1;
+                    $verified = true;
+                } else {
+                    $user->verified = 0;
+                }
+                $user->save();
             }
-            $user->save();
         } else {
             Log::error('Gidx Response Error', ['response' => 'Response Null']);
         }
@@ -139,6 +143,36 @@ class GidxController extends Controller
         return response()->json([
             'Accepted' => true
         ]);
+    }
+
+    public function cashierCreateSession(Request $req){
+        $gidx = new GidxService();
+        $data = [
+            'MerchantCustomerID' => $customer->customer_id,
+            'MerchantOrderID' => $user->name,
+            'MerchantTransactionID' => $user->lname,
+            'PayActionCode' => 'PAY',// PAYOUT, LOG
+            'Recurring' => false,
+            'RedirectURL' => '',
+            'CallbackURL' => '',
+            'MerchantSessionID' => (string) Str::uuid(),
+            'CustomerIpAddress' => $req->ip()
+        ];
+
+        if($req->location != '' && $req->location != null){
+            $location = json_decode($req->location, true);
+            $timestampInSeconds = $location['timestamp'] / 1000;
+            $date = Carbon::createFromTimestamp($timestampInSeconds, 'GMT');
+            $data['DeviceGPS'] = [
+                'Latitude' => $location['coords']['latitude'],
+                'Longitude' => $location['coords']['longitude'],
+                'Radius' => $location['coords']['accuracy'],
+                'Altitude' => $location['coords']['altitude'],
+                'Speed' => $location['coords']['speed'],
+                'DateTime' => $date->format('m/d/Y H:i:s T'),
+            ];
+        }
+
     }
 
 

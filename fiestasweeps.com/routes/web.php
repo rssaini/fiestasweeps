@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
 
 // Add inside auth middleware group
 Route::middleware('auth')->group(function () {
+    Route::get('/user/profile', [AuthController::class, 'user_profile'])->name('user.profile');
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/identity-verification', [AuthController::class, 'identity_verification'])->name('dashboard.identity.verification');
     Route::get('/dashboard/customer-balance', [AuthController::class, 'customer_balance'])->name('dashboard.customer.balance');
