@@ -23,7 +23,6 @@
                     <img :src="qrCode" alt="QR Code">
                 </div>
                 <p>{{ qrCodeMessage }}</p>
-                <p>Scan this QR code with your mobile device to log in</p>
                 <button class="cta-button" @click="generateQR">Generate New QR Code</button>
             </div>
             <div v-else>
