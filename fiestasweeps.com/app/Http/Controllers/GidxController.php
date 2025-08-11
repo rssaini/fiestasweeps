@@ -116,25 +116,31 @@ class GidxController extends Controller
                 $customer_id = $inputs['MerchantCustomerID'];
                 $notification_type = $inputs['NotificationType'];
                 if($notification_type == "CustomerProfile"){
-                    $gidx = new GidxService();
-                    $user = User::find(intval((explode('-', $customer_id))[1]));
-                    $response = $gidx->customerProfile([
-                        'MerchantCustomerID' => $customer_id,
-                        'MerchantSessionID' => (string) Str::uuid(),
-                    ]);
-                    if($response) {
-                        Log::info('Gidx Response', $response);
-                        if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
-                            $user->verified = 1;
-                            $verified = true;
+                    try{
+                        $customer = Customer::where('customer_id', $customer_id)->firstOrFail();
+                        $user = $customer->user;
+                        $gidx = new GidxService();
+                        $response = $gidx->customerProfile([
+                            'MerchantCustomerID' => $customer_id,
+                            'MerchantSessionID' => (string) Str::uuid(),
+                        ]);
+                        if($response) {
+                            Log::info('Gidx Response', $response);
+                            if(array_key_exists('ReasonCodes', $response)){
+                                $customer->reasons = implode(',', $response['ReasonCodes']);
+                                $customer->save();
+                                if(in_array('ID-VERIFIED', $response['ReasonCodes'])){
+                                    $user->verified = 1;
+                                    $verified = true;
+                                } else {
+                                    $user->verified = 0;
+                                }
+                                $user->save();
+                            }
                         } else {
-                            $user->verified = 0;
+                            Log::error('Gidx Response Error', ['response' => 'Response Null']);
                         }
-                        $user->save();
-                    } else {
-                        Log::error('Gidx Response Error', ['response' => 'Response Null']);
-                    }
-                    // code to fetch customer profile
+                    }catch(\Exception $e){}
                 }
             }
         }catch(Exception $e){
