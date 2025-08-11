@@ -16,7 +16,7 @@
             </div>
         </div>
         <div v-else>
-            <div>
+            <div v-if="!isLoggedIn">
                 <h2>Geo Location Services are Unavailable in this device.</h2>
                 <p>Please Scan this QR Code to login or use your credentials from your mobile device.</p>
                 <div v-if="qrCode != ''">
@@ -25,6 +25,9 @@
                 <p>{{ qrCodeMessage }}</p>
                 <p>Scan this QR code with your mobile device to log in</p>
                 <button class="cta-button" @click="generateQR">Generate New QR Code</button>
+            </div>
+            <div v-else>
+                <p>{{ qrCodeMessage }}</p>
             </div>
         </div>
     </div>
@@ -45,6 +48,7 @@ export default {
         qrCode: "",
         qrCodeMessage: "",
         statusInterval: null,
+        isLoggedIn: false,
     };
   },
   methods: {
@@ -119,6 +123,7 @@ export default {
                 if (data.status === 'used') {
                     clearInterval(this.statusInterval);
                     this.qrCodeMessage = '✅ Successfully logged in on mobile device!';
+                    this.isLoggedIn = true;
                 } else if (data.status === 'expired' || data.status === 'invalid') {
                     clearInterval(this.statusInterval);
                     this.qrCodeMessage ='❌ QR code expired. Please generate a new one.';
