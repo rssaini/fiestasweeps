@@ -182,11 +182,12 @@
                 <div class="content-header">
                     <h1>Account Balance</h1>
                     <p>View your current balance and transaction history</p>
+                    <p style="color: #da5446">Geo Location Mandatory for Game Play & entering into any contest.</p>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <span class="stat-number">{{ $user->current_balance }}</span>
+                        <span class="stat-number" style="color:#46c8da">{{ $user->current_balance }}</span>
                         <span class="stat-label">Current Balance</span>
                     </div>
                     <div class="stat-card">
@@ -194,7 +195,7 @@
                         <span class="stat-label">Total Deposited</span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-number">{{ $user->total_winnings }}</span>
+                        <span class="stat-number" style="color: #1bc914">{{ $user->total_winnings }}</span>
                         <span class="stat-label">Total Winnings</span>
                     </div>
                 </div>
