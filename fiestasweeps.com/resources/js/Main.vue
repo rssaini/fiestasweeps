@@ -138,7 +138,7 @@ export default {
       this.showError = isOpen;
       setTimeout(()=>{ debugger;}, 100);
     });
-    if (!('geolocation' in navigator)) {
+    if ('geolocation' in navigator) {
         this.geolocation = true;
         this.allowLocation();
     } else {
