@@ -6,4 +6,4 @@ const app = createApp(Main)
 
 app.mount('#vue-root')
 
-launch();
+//launch();

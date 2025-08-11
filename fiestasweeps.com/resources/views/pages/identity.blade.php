@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <title>Dashboard - Fiesta Sweeps</title>
     <link rel="stylesheet" href="/css/app.css" />
@@ -177,6 +178,7 @@
                 <div class="content-header">
                     <h1>Identity</h1>
                     <p>We require identity verification for deposits, withdrawals, and general gameplay.</p>
+                    <p style="color: #da5446">Geo Location Mandatory for Game Play & entering into any contest.</p>
                 </div>
                 <div class="content-card">
                     <div id="vue-root"></div>

@@ -7,6 +7,7 @@ use App\Http\Controllers\CashoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GidxController;
 use App\Http\Controllers\LogViewerController;
+use App\Http\Controllers\QRAuthController;
 use Illuminate\Support\Facades\Route;
 
 // Page Routes
@@ -39,6 +40,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/signin', [AuthController::class, 'login'])->name('signin.post');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+    Route::get('/qr-login/{token}', [QRAuthController::class, 'loginWithQR'])->name('qr.login');
 });
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
@@ -46,6 +48,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/logs/download', [LogViewerController::class, 'download'])->name('logs.download');
     Route::delete('/logs/delete', [LogViewerController::class, 'delete'])->name('logs.delete');
     Route::delete('/logs/clear', [LogViewerController::class, 'clear'])->name('logs.clear');
+});
+Route::middleware('auth')->group(function () {
+    Route::post('/qr-auth/generate', [QRAuthController::class, 'generateQR'])->name('qr.generate');
+    Route::get('/qr-auth/status/{token}', [QRAuthController::class, 'checkQRStatus'])->name('qr.status');
 });
 
 // Add inside auth middleware group
