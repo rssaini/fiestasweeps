@@ -12,7 +12,9 @@
                 </p>
             </div>
             <div v-else>
-                <div v-if="balancePage"></div>
+                <div v-if="balancePage">
+                    <button @click="addFunds" class="cta-button">Add Funds</button>
+                </div>
                 <div v-if="IdentityPage">
                     <h2 v-if="profileStatus === 1">Your profile is Verified.</h2>
                     <div v-if="profileStatus === 0">
@@ -118,6 +120,23 @@ export default {
     };
   },
   methods: {
+    async addFunds(){
+        this.allowLocation();
+        try{
+            const response = await fetch("/gidx-pay", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(this.profile)
+            });
+            const data = await response.json();
+            console.log(data);
+        }catch(err){
+            console.log(err);
+        }
+    },
     allowLocation() {
         try {
             navigator.geolocation.getCurrentPosition(

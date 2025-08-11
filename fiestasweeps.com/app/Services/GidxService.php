@@ -62,9 +62,15 @@ class GidxService
 
     public function downloadDocument(){}
 
-    public function createSession(){}
+    public function createSession($data){
+        $url = '/DirectCashier/CreateSession';
+        return $this->requestToGidx($url, $data, 'post');
+    }
 
-    public function completeSession(){}
+    public function completeSession($data){
+        $url = '/DirectCashier/CompleteSession';
+        return $this->requestToGidx($url, $data, 'post');
+    }
 
     public function sessionCallback(){}
 
@@ -73,46 +79,6 @@ class GidxService
     public function paymentUpdate(){}
 
     public function savePaymentMethod(){}
-
-
-
-
-
-
-
-
-
-    /**
-     * Build standardized request with common parameters
-     */
-    private function buildStandardizedRequest(array $data, array $fieldMapping): array
-    {
-        $request = [
-            'ApiKey' => $this->apiKey,
-            'MerchantID' => $this->merchantId,
-            'ProductTypeID' => $this->productId,
-            'DeviceTypeID' => $this->deviceId,
-            'ActivityTypeID' => $this->activityId,
-            'MerchantSessionID' => $data['merchant_session_id'],
-            'DeviceIpAddress' => $data['ip'],
-            'DeviceGPS' => [
-                'Latitude' => $data['latitude'],
-                'Longitude' => $data['longitude'],
-                'Radius' => $data['radius'],
-                'Altitude' => $data['altitude'],
-                'Speed' => $data['speed'],
-                'DateTime' => $data['datetime'],
-            ],
-        ];
-
-        foreach ($fieldMapping as $gidxField => $dataField) {
-            if (isset($data[$dataField]) && $data[$dataField] !== null && $data[$dataField] !== '') {
-                $request[$gidxField] = $data[$dataField];
-            }
-        }
-
-        return $request;
-    }
 
     private function requestToGidx(string $url, array $data, string $method){
         try{

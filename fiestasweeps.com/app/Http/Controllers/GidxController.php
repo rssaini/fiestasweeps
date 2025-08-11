@@ -151,22 +151,24 @@ class GidxController extends Controller
         ]);
     }
 
-    public function cashierCreateSession(Request $req){
+    public function cashierPay(Request $req){
+        $session_id = (string) Str::uuid();
+        $transaction_id = (string) Str::uuid();
+        $customer = Customer::where('users', auth()->user()->id)->firstOrFail();
         $gidx = new GidxService();
         $data = [
             'MerchantCustomerID' => $customer->customer_id,
-            'MerchantOrderID' => $user->name,
-            'MerchantTransactionID' => $user->lname,
+            'MerchantOrderID' => $transaction_id,
+            'MerchantTransactionID' => $transaction_id,
             'PayActionCode' => 'PAY',// PAYOUT, LOG
-            'Recurring' => false,
-            'RedirectURL' => '',
-            'CallbackURL' => '',
-            'MerchantSessionID' => (string) Str::uuid(),
+            'RedirectURL' => route('gidx.redirect', ['sessionId' => $session_id]),
+            'CallbackURL' => route('gidx.callback', ['sessionId' => $session_id]),
+            'MerchantSessionID' => $session_id,
             'CustomerIpAddress' => $req->ip()
         ];
 
         if($req->location != '' && $req->location != null){
-            $location = json_decode($req->location, true);
+            $location = $req->location;
             $timestampInSeconds = $location['timestamp'] / 1000;
             $date = Carbon::createFromTimestamp($timestampInSeconds, 'GMT');
             $data['DeviceGPS'] = [
@@ -178,6 +180,35 @@ class GidxController extends Controller
                 'DateTime' => $date->format('m/d/Y H:i:s T'),
             ];
         }
+        $response = $gidx->createSession($data);
+        Log::info('Gidx Create Session Response: ', $response);
+
+        // complete session call
+        $response2 = $gidx->completeSession([
+            'MerchantTransactionID' => $transaction_id,
+            'MerchantSessionID' => $session_id,
+        ]);
+        Log::info('Gidx Complete Session Response: ', $response2);
+        return response()->json($response2);
+    }
+
+    public function gidx_redirect(Request $req, $sessionId){
+        Log::info('Gidx Redirect: ', [
+            "Request" => $req,
+            "Session" => $sessionId,
+        ]);
+        return response()->json([
+            'Accepted' => true
+        ]);
+    }
+    public function gidx_callback(Request $req, $sessionId){
+        Log::info('Gidx Callback: ', [
+            "Request" => $req,
+            "Session" => $sessionId,
+        ]);
+        return response()->json([
+            'Accepted' => true
+        ]);
 
     }
 
