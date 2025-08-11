@@ -63,13 +63,14 @@ class QRAuthController extends Controller
             return response()->json(['status' => 'invalid']);
         }
 
+        if ($authToken->used) {
+            return response()->json(['status' => 'used']);
+        }
         if (!$authToken->isValid()) {
             return response()->json(['status' => 'expired']);
         }
 
-        if ($authToken->used) {
-            return response()->json(['status' => 'used']);
-        }
+
 
         return response()->json(['status' => 'pending']);
     }
