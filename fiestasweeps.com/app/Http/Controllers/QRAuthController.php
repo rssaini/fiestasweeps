@@ -47,8 +47,8 @@ class QRAuthController extends Controller
         // Log in the user
         Auth::login($authToken->user);
 
-        if($request->has('page')){
-            return redirect($request->page)->with('success', 'Successfully logged in via QR code!');
+        if($request->has('redirect')){
+            return redirect(urldecode($request->redirect))->with('success', 'Successfully logged in via QR code!');
         }
 
         // Optionally, redirect to a specific page
