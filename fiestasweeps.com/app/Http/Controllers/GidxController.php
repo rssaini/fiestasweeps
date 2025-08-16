@@ -187,6 +187,18 @@ class GidxController extends Controller
         $response2 = $gidx->completeSession([
             'MerchantTransactionID' => $transaction_id,
             'MerchantSessionID' => $session_id,
+            'PaymentAmount' => [
+                'PaymentAmount' => 10.0,
+                'BonusAmount' => 0.0,
+                'BonusDetails' => "No Bonus",
+                'FeeAmount' => 0.50,
+                'TaxAmount' => 0.0,
+                'OverrideLimit' => false,
+                'CurrencyCode' => 'USD'
+            ],
+            'PaymentMethod' => [
+
+            ],
         ]);
         Log::info('Gidx Complete Session Response: ', $response2);
         return response()->json($response2);
@@ -210,6 +222,44 @@ class GidxController extends Controller
             'Accepted' => true
         ]);
 
+    }
+
+    public function createSession(Request $req){
+        $session_id = (string) Str::uuid();
+        $transaction_id = (string) Str::uuid();
+        $customer = Customer::where('users', auth()->user()->id)->firstOrFail();
+        $gidx = new GidxService();
+        $data = [
+            'MerchantCustomerID' => $customer->customer_id,
+            'MerchantOrderID' => $transaction_id,
+            'MerchantTransactionID' => $transaction_id,
+            'PayActionCode' => 'PAY',// PAYOUT, LOG
+            'RedirectURL' => route('gidx.redirect', ['sessionId' => $session_id]),
+            'CallbackURL' => route('gidx.callback', ['sessionId' => $session_id]),
+            'MerchantSessionID' => $session_id,
+            'CustomerIpAddress' => $req->ip()
+        ];
+
+        if($req->location != '' && $req->location != null){
+            $location = $req->location;
+            $timestampInSeconds = $location['timestamp'] / 1000;
+            $date = Carbon::createFromTimestamp($timestampInSeconds, 'GMT');
+            $data['DeviceGPS'] = [
+                'Latitude' => $location['coords']['latitude'],
+                'Longitude' => $location['coords']['longitude'],
+                'Radius' => $location['coords']['accuracy'],
+                'Altitude' => $location['coords']['altitude'],
+                'Speed' => $location['coords']['speed'],
+                'DateTime' => $date->format('m/d/Y H:i:s T'),
+            ];
+        }
+        $response = $gidx->createSession($data);
+        Log::info('Gidx Create Session Response: ', $response);
+        return response()->json($response);
+    }
+
+    public function paymentMethods(){
+        return view('payment');
     }
 
 

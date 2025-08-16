@@ -100,3 +100,6 @@ Route::any('/gidx-redirect/{sessionId}', [GidxController::class, 'gidx_redirect'
 Route::post('/gidx-callback/{sessionId}', [GidxController::class, 'gidx_callback'])->name('gidx.callback');
 Route::post('/gidx-pay', [GidxController::class, 'cashierPay'])->name('gidx.pay');
 
+Route::get('/payment' , [GidxController::class, 'paymentMethods']);
+Route::post('/gidx-create-session' , [GidxController::class, 'createSession'])->name('gidx.create.session');
+

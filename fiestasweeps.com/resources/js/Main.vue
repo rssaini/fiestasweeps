@@ -14,6 +14,7 @@
             <div v-else>
                 <div v-if="balancePage">
                     <button @click="addFunds" class="cta-button">Add Funds</button>
+                    <payment-component :showModal="addFundsStarted" :toggleShowModal="toggleFundsStart" :session-object="sessionData" />
                 </div>
                 <div v-if="IdentityPage">
                     <h2 v-if="profileStatus === 1">Your profile is Verified.</h2>
@@ -90,10 +91,14 @@
 
 <script>
 import { addListener as devtoolsListener } from 'devtools-detector';
+import PaymentComponent from './PaymentComponent.vue';
+
 export default {
+  components: { PaymentComponent },
   name: 'Main',
   data() {
     return {
+        sessionData: null,
         showError: false,
         geolocation: false,
         locationDisabled: true,
@@ -117,13 +122,17 @@ export default {
         },
         verificationBegin: false,
         verificationProcess: false,
+        addFundsStarted: false,
     };
   },
   methods: {
+    async toggleFundsStart(){
+        this.addFundsStarted = !this.addFundsStarted;
+    },
     async addFunds(){
         this.allowLocation();
         try{
-            const response = await fetch("/gidx-pay", {
+            const response = await fetch("/gidx-create-session", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,6 +141,8 @@ export default {
                 body: JSON.stringify(this.profile)
             });
             const data = await response.json();
+            this.sessionData = data;
+            this.toggleFundsStart();
             console.log(data);
         }catch(err){
             console.log(err);

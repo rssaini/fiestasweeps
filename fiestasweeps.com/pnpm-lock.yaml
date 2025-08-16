@@ -26,6 +26,9 @@ importers:
       devtools-detector:
         specifier: ^2.0.23
         version: 2.0.23
+      gidx-js:
+        specifier: ^0.5.0
+        version: 0.5.0
       sweetalert2:
         specifier: ^11.22.3
         version: 11.22.3
@@ -767,6 +770,9 @@ packages:
   get-proto@1.0.1:
     resolution: {integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==}
     engines: {node: '>= 0.4'}
+
+  gidx-js@0.5.0:
+    resolution: {integrity: sha512-l9o8ym0tB8xjKk0hx9PAPVRrRLOmXy/5v3vkpMRcUKwiA2Go8yIvTXIH4RneijXTUW+IW9vu+fw1Lf3fK+GS7w==}
 
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
@@ -1697,6 +1703,8 @@ snapshots:
     dependencies:
       dunder-proto: 1.0.1
       es-object-atoms: 1.1.1
+
+  gidx-js@0.5.0: {}
 
   gopd@1.2.0: {}
 
