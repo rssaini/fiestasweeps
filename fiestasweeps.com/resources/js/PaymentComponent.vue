@@ -44,8 +44,8 @@
                                 <label :for="`payment-method-${index}`">
                                     <div class="payment-icon card-icon">💳</div>
                                     <div class="payment-info">
-                                        <div class="payment-title">{{ method.name }}</div>
-                                        <div class="payment-details">Expires 12/26 • Primary card</div>
+                                        <div class="payment-title">{{ method.Network }} {{ method.DisplayName }}</div>
+                                        <div class="payment-details">Expires {{ method.ExpirationDate }} {{ method.Type }}</div>
                                     </div>
                                     <div class="radio-indicator"></div>
                                 </label>
@@ -152,17 +152,41 @@ export default {
                             postalCode: '77001'
                         };
                     },
-                    onSaved: function (paymentMethod) {
+                    onSaved: async (paymentMethod) => {
                         console.log("Final:", paymentMethod);
                         //The full PaymentMethod object returned from our API is passed to this function.
                         //Use it to populate your CompleteSession request and finalize the transaction.
                         let completeSessionRequest = {
+                            MerchantTransactionID: this.sessionObject.MerchantTransactionID,
                             MerchantSessionID: this.sessionObject.MerchantSessionID,
-                            PaymentMethod: {
-                                Type: paymentMethod.Type,
-                                Token: paymentMethod.Token
-                            }
+                            PaymentMethod: paymentMethod,
+                            PaymentAmount: {
+                                PaymentAmount: 10.0,
+                                BonusAmount: 0.0,
+                                BonusDetails: "No Bonus",
+                                FeeAmount: 0.0,
+                                TaxAmount: 0.0,
+                                OverrideLimit: false,
+                                CurrencyCode: 'USD'
+                            },
                         };
+                        console.log(completeSessionRequest);
+                        try{
+                            const response = await fetch("/gidx-complete-session", {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify(completeSessionRequest)
+                            });
+                            const data = await response.json();
+                            //this.sessionData = data;
+                            // this.toggleFundsStart();
+                            console.log("complete: ", data);
+                        }catch(err){
+                            console.log(err);
+                        }
                     },
                     theme: 'material'
                 });

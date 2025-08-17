@@ -102,4 +102,5 @@ Route::post('/gidx-pay', [GidxController::class, 'cashierPay'])->name('gidx.pay'
 
 Route::get('/payment' , [GidxController::class, 'paymentMethods']);
 Route::post('/gidx-create-session' , [GidxController::class, 'createSession'])->name('gidx.create.session');
+Route::post('/gidx-complete-session' , [GidxController::class, 'completeSession'])->name('gidx.complete.session');
 

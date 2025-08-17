@@ -258,6 +258,13 @@ class GidxController extends Controller
         return response()->json($response);
     }
 
+    public function completeSession(Request $req){
+        Log::info('Gidx Complete Session Request: ', $req->all());
+        $response = $gidx->completeSession($req->all());
+        Log::info('Gidx Complete Session Response: ', $response);
+        return response()->json($response);
+    }
+
     public function paymentMethods(){
         return view('payment');
     }
