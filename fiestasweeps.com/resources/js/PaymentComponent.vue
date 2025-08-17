@@ -140,7 +140,7 @@ export default {
                 document.getElementById('payment-form-fields').innerHTML = '';
                 this.formObject = null;
                 this.formObject = GIDX.showPaymentMethodForm('payment-form-fields',{
-                    merchantSessionId: this.sessionObject.SessionID, //Must be the same MerchantSessionID provided to the CreateSession API.
+                    merchantSessionId: this.sessionObject.MerchantSessionID, //Must be the same MerchantSessionID provided to the CreateSession API.
                     paymentMethodTypes: [this.sessionObject.PaymentMethodSettings[methodArray[1]].Type],
                     tokenizer: this.sessionObject.PaymentMethodSettings[methodArray[1]].Tokenizer,
                     onSaved: function (paymentMethod) {
@@ -148,7 +148,7 @@ export default {
                         //The full PaymentMethod object returned from our API is passed to this function.
                         //Use it to populate your CompleteSession request and finalize the transaction.
                         let completeSessionRequest = {
-                            MerchantSessionID: '1234',
+                            MerchantSessionID: this.sessionObject.MerchantSessionID,
                             PaymentMethod: {
                                 Type: paymentMethod.Type,
                                 Token: paymentMethod.Token
