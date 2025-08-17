@@ -82,7 +82,7 @@
                 <div class="summary" v-if="showSummary">
                     <div class="summary-item">
                         <span>Amount:</span>
-                        <span>{{ formatCurrency(finalAmount) }}</span>
+                        <span>${{ finalAmount.toFixed(2) }}</span>
                     </div>
                     <div class="summary-item">
                         <span>Payment Method:</span>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="summary-item summary-total">
                         <span>Total:</span>
-                        <span>{{ formatCurrency(finalAmount) }}</span>
+                        <span>{{ finalAmount.toFixed(2) }}</span>
                     </div>
                 </div>
 
