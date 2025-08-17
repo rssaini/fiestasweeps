@@ -127,6 +127,7 @@ export default {
             selectedAmount: '',
             customAmount: '',
             selectedPaymentMethod: '',
+            formObject: null,
         }
     },
     watch: {
@@ -137,7 +138,8 @@ export default {
             } else {
                 console.log("New Method: " ,this.sessionObject.PaymentMethodSettings[methodArray[1]]);
                 document.getElementById('payment-form-fields').innerHTML = '';
-                const form = GIDX.showPaymentMethodForm('payment-form-fields',{
+                this.formObject = null;
+                this.formObject = GIDX.showPaymentMethodForm('payment-form-fields',{
                     merchantSessionId: this.sessionObject.SessionID, //Must be the same MerchantSessionID provided to the CreateSession API.
                     paymentMethodTypes: [this.sessionObject.PaymentMethodSettings[methodArray[1]].Type],
                     tokenizer: this.sessionObject.PaymentMethodSettings[methodArray[1]].Tokenizer,
@@ -152,9 +154,9 @@ export default {
                                 Token: paymentMethod.Token
                             }
                         };
-                    }
+                    },
+                    theme: 'material'
                 });
-                form.submit();
             }
         },
         showSummary(newVal) {
@@ -200,6 +202,7 @@ export default {
                 alert('Please select both an amount and payment method');
                 return;
             }
+            this.formObject.submit();
 
             let message = `Processing payment of ${this.formatCurrency(this.finalAmount)} via ${this.paymentMethodName}`;
             console.log(this.sessionObject, message);
