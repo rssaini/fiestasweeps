@@ -204,7 +204,7 @@ export default {
             }
             this.formObject.submit();
 
-            let message = `Processing payment of ${this.formatCurrency(this.finalAmount)} via ${this.paymentMethodName}`;
+            let message = `Processing payment of $${this.finalAmount.toFixed(2)} via ${this.paymentMethodName}`;
             console.log(this.sessionObject, message);
         }
     },
