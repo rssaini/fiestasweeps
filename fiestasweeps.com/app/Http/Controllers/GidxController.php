@@ -260,6 +260,7 @@ class GidxController extends Controller
 
     public function completeSession(Request $req){
         Log::info('Gidx Complete Session Request: ', $req->all());
+        $gidx = new GidxService();
         $response = $gidx->completeSession($req->all());
         Log::info('Gidx Complete Session Response: ', $response);
         return response()->json($response);
