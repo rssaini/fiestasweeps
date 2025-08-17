@@ -143,6 +143,15 @@ export default {
                     merchantSessionId: this.sessionObject.MerchantSessionID, //Must be the same MerchantSessionID provided to the CreateSession API.
                     paymentMethodTypes: [this.sessionObject.PaymentMethodSettings[methodArray[1]].Type],
                     tokenizer: this.sessionObject.PaymentMethodSettings[methodArray[1]].Tokenizer,
+                    onSaving: function (request) {
+                        console.log(request);
+                        request.paymentMethod.billingAddress = {
+                            addressLine1: '123 Main St.',
+                            city: 'Houston',
+                            stateCode: 'TX',
+                            postalCode: '77001'
+                        };
+                    },
                     onSaved: function (paymentMethod) {
                         console.log("Final:", paymentMethod);
                         //The full PaymentMethod object returned from our API is passed to this function.
