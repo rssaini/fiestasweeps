@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showModal" class="payment-container-modal" id="paymentModal">
+    <div v-if="showModal && sessionObject" class="payment-container-modal" id="paymentModal">
         <div class="payment-container">
             <div class="payment-header">
                 <button class="close-btn" @click="closeModal" aria-label="Close modal">×</button>
