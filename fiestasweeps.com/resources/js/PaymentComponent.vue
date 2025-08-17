@@ -13,8 +13,8 @@
                     <h3 class="section-title">Payment Amount</h3>
                     <div class="amount-options">
                         <div v-for="(amount, index) in sessionObject.PaymentAmounts" class="amount-option" :key="`amount-${index}`">
-                            <input type="radio" :id="`amount-${amount}`" name="amount" :value="amount.PaymentAmount" v-model="selectedAmount">
-                            <label :for="`amount-${amount}`">${{ amount.PaymentAmount }}</label>
+                            <input type="radio" :id="`amount-${amount.PaymentAmount}`" name="amount" :value="amount.PaymentAmount" v-model="selectedAmount">
+                            <label :for="`amount-${amount.PaymentAmount}`">${{ amount.PaymentAmount }}</label>
                         </div>
                         <div class="amount-option">
                             <input id="custom-amount" type="radio" name="amount" value="custom" v-model="selectedAmount">
@@ -74,7 +74,7 @@
                         </div>
 
                         <!-- Payment Forms (span full width) -->
-                        <div class="payment-form" style="grid-column: 1 / -1;"></div>
+                        <div class="payment-form" id="payment-form-fields" style="grid-column: 1 / -1;"></div>
                     </div>
                 </div>
 
@@ -133,9 +133,26 @@ export default {
         selectedPaymentMethod(newVal) {
             const methodArray = newVal.split('-');
             if(methodArray[0] == 'saved'){
-                console.log("Saved Method: " + this.sessionObject.PaymentMethods[methodArray[1]]);
+                console.log("Saved Method: " ,this.sessionObject.PaymentMethods[methodArray[1]]);
             } else {
-                console.log("New Method: " + this.sessionObject.PaymentMethodSettings[methodArray[1]]);
+                console.log("New Method: " ,this.sessionObject.PaymentMethodSettings[methodArray[1]]);
+                GIDX.showPaymentMethodForm('payment-form-fields',{
+                    merchantSessionId: this.sessionObject.SessionID, //Must be the same MerchantSessionID provided to the CreateSession API.
+                    paymentMethodTypes: [this.sessionObject.PaymentMethodSettings[methodArray[1]].Type],
+                    tokenizer: this.sessionObject.PaymentMethodSettings[methodArray[1]].Tokenizer,
+                    onSaved: function (paymentMethod) {
+                        console.log("Final:", paymentMethod);
+                        //The full PaymentMethod object returned from our API is passed to this function.
+                        //Use it to populate your CompleteSession request and finalize the transaction.
+                        let completeSessionRequest = {
+                            MerchantSessionID: '1234',
+                            PaymentMethod: {
+                                Type: paymentMethod.Type,
+                                Token: paymentMethod.Token
+                            }
+                        };
+                    }
+                });
             }
         },
         showSummary(newVal) {
