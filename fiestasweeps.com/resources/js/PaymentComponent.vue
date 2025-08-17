@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showModal && sessionObject" class="payment-container-modal" id="paymentModal">
+    <div v-if="sessionObject !== null" class="payment-container-modal" id="paymentModal">
         <div class="payment-container">
             <div class="payment-header">
                 <button class="close-btn" @click="closeModal" aria-label="Close modal">×</button>
@@ -113,11 +113,6 @@ import * as GIDX from 'gidx-js';
 export default {
     name: 'PaymentMethodModal',
     props: {
-        showModal: {
-            type: Boolean,
-            default: false,
-            required: true
-        },
         toggleShowModal: {
             type: Function,
             required: true

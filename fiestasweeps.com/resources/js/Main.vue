@@ -14,7 +14,7 @@
             <div v-else>
                 <div v-if="balancePage">
                     <button @click="addFunds" class="cta-button">Add Funds</button>
-                    <payment-component :showModal="addFundsStarted" :toggleShowModal="toggleFundsStart" :session-object="sessionData" />
+                    <payment-component v-if="addFundsStarted" :toggleShowModal="toggleFundsStart" :session-object="sessionData" />
                 </div>
                 <div v-if="IdentityPage">
                     <h2 v-if="profileStatus === 1">Your profile is Verified.</h2>
