@@ -136,7 +136,8 @@ export default {
                 console.log("Saved Method: " ,this.sessionObject.PaymentMethods[methodArray[1]]);
             } else {
                 console.log("New Method: " ,this.sessionObject.PaymentMethodSettings[methodArray[1]]);
-                GIDX.showPaymentMethodForm('payment-form-fields',{
+                document.getElementById('payment-form-fields').innerHTML = '';
+                const form = GIDX.showPaymentMethodForm('payment-form-fields',{
                     merchantSessionId: this.sessionObject.SessionID, //Must be the same MerchantSessionID provided to the CreateSession API.
                     paymentMethodTypes: [this.sessionObject.PaymentMethodSettings[methodArray[1]].Type],
                     tokenizer: this.sessionObject.PaymentMethodSettings[methodArray[1]].Tokenizer,
@@ -153,6 +154,7 @@ export default {
                         };
                     }
                 });
+                form.submit();
             }
         },
         showSummary(newVal) {
