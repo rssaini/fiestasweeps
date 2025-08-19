@@ -135,66 +135,10 @@ export default {
             const methodArray = newVal.split('-');
             if(methodArray[0] == 'saved'){
                 console.log("Saved Method: " ,this.sessionObject.PaymentMethods[methodArray[1]]);
+                this.paymentFormSubmit(this.sessionObject.PaymentMethods[methodArray[1]]);
             } else {
                 console.log("New Method: " ,this.sessionObject.PaymentMethodSettings[methodArray[1]]);
-                document.getElementById('payment-form-fields').innerHTML = '';
-                this.formObject = null;
-                this.formObject = GIDX.showPaymentMethodForm('payment-form-fields',{
-                    merchantSessionId: this.sessionObject.MerchantSessionID, //Must be the same MerchantSessionID provided to the CreateSession API.
-                    paymentMethodTypes: [this.sessionObject.PaymentMethodSettings[methodArray[1]].Type],
-                    tokenizer: this.sessionObject.PaymentMethodSettings[methodArray[1]].Tokenizer,
-                    onSaving: function (request) {
-                        console.log(request);
-                        request.paymentMethod.billingAddress = {
-                            addressLine1: '123 Main St.',
-                            city: 'Houston',
-                            stateCode: 'TX',
-                            postalCode: '77001'
-                        };
-                    },
-                    onSaved: async (paymentMethod) => {
-                        console.log("Final:", paymentMethod);
-                        //The full PaymentMethod object returned from our API is passed to this function.
-                        //Use it to populate your CompleteSession request and finalize the transaction.
-                        let completeSessionRequest = {
-                            MerchantTransactionID: this.sessionObject.MerchantTransactionID,
-                            MerchantSessionID: this.sessionObject.MerchantSessionID,
-                            PaymentMethod: {
-                                Type: paymentMethod.Type,
-                                Token: paymentMethod.Token,
-                            },
-                            PaymentAmount: {
-                                PaymentAmount: this.finalAmount,
-                                BonusAmount: 0.0,
-                                BonusDetails: "No Bonus",
-                                FeeAmount: 0.0,
-                                TaxAmount: 0.0,
-                                OverrideLimit: false,
-                                CurrencyCode: 'USD'
-                            },
-                        };
-                        console.log(completeSessionRequest);
-                        try{
-                            const response = await fetch("/gidx-complete-session", {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                },
-                                body: JSON.stringify(completeSessionRequest)
-                            });
-                            const data = await response.json();
-                            alert("Payment Session Complete");
-                            window.location.reload();
-                            //this.sessionData = data;
-                            // this.toggleFundsStart();
-                            console.log("complete: ", data);
-                        }catch(err){
-                            console.log(err);
-                        }
-                    },
-                    theme: 'material'
-                });
+                this.paymentFormSubmit(this.sessionObject.PaymentMethodSettings[methodArray[1]]);
             }
         },
         showSummary(newVal) {
@@ -228,6 +172,68 @@ export default {
         },
         canProceed() {
             return this.finalAmount > 0 && this.selectedPaymentMethod !== '';
+        },
+        paymentFormSubmit(paymentMethod){
+            let ccSettings = this.sessionObject.PaymentMethodSettings.find((s) => s.Type === paymentMethod.Type);
+            document.getElementById('payment-form-fields').innerHTML = '';
+            this.formObject = null;
+
+            this.formObject = GIDX.showPaymentMethodForm('payment-form-fields',{
+                merchantSessionId: this.sessionObject.MerchantSessionID, //Must be the same MerchantSessionID provided to the CreateSession API.
+                paymentMethodTypes: [paymentMethod.Type],
+                tokenizer: ccSettings.Tokenizer,
+                onSaving: function (request) {
+                    console.log(request);
+                    request.paymentMethod.billingAddress = {
+                        addressLine1: '123 Main St.',
+                        city: 'Houston',
+                        stateCode: 'TX',
+                        postalCode: '77001'
+                    };
+                },
+                onSaved: async (paymentMethod) => {
+                    console.log("Final:", paymentMethod);
+                    //The full PaymentMethod object returned from our API is passed to this function.
+                    //Use it to populate your CompleteSession request and finalize the transaction.
+                    let completeSessionRequest = {
+                        MerchantTransactionID: this.sessionObject.MerchantTransactionID,
+                        MerchantSessionID: this.sessionObject.MerchantSessionID,
+                        PaymentMethod: {
+                            Type: paymentMethod.Type,
+                            Token: paymentMethod.Token,
+                        },
+                        PaymentAmount: {
+                            PaymentAmount: this.finalAmount,
+                            BonusAmount: 0.0,
+                            BonusDetails: "No Bonus",
+                            FeeAmount: 0.0,
+                            TaxAmount: 0.0,
+                            OverrideLimit: false,
+                            CurrencyCode: 'USD'
+                        },
+                    };
+                    console.log(completeSessionRequest);
+                    try{
+                        const response = await fetch("/gidx-complete-session", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify(completeSessionRequest)
+                        });
+                        const data = await response.json();
+                        alert("Payment Session Complete");
+                        window.location.reload();
+                        //this.sessionData = data;
+                        // this.toggleFundsStart();
+                        console.log("complete: ", data);
+                    }catch(err){
+                        console.log(err);
+                    }
+                },
+                theme: 'material'
+            });
         }
     },
     methods: {
