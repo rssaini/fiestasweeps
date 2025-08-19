@@ -132,13 +132,19 @@ export default {
     },
     watch: {
         selectedPaymentMethod(newVal) {
+            console.log("payment method selected val", newVal);
             const methodArray = newVal.split('-');
             if(methodArray[0] == 'saved'){
+                console.log("TYpe: ", this.sessionObject.PaymentMethods[methodArray[1]].Type);
+                console.log("Token: ", this.sessionObject.PaymentMethods[methodArray[1]].Token);
                 console.log("Saved Method: " ,this.sessionObject.PaymentMethods[methodArray[1]]);
-                this.paymentFormSubmit(Object.assign({},this.sessionObject.PaymentMethods[methodArray[1]]));
+
+                // this.paymentFormSubmit(Object.assign({},this.sessionObject.PaymentMethods[methodArray[1]]));
             } else {
                 console.log("New Method: " ,this.sessionObject.PaymentMethodSettings[methodArray[1]]);
-                this.paymentFormSubmit(Object.assign({}, this.sessionObject.PaymentMethodSettings[methodArray[1]]));
+                console.log("TYpe: ", this.sessionObject.PaymentMethodSettings[methodArray[1]].Type);
+                console.log("Token: ", this.sessionObject.PaymentMethodSettings[methodArray[1]].Token);
+                // this.paymentFormSubmit(Object.assign({}, this.sessionObject.PaymentMethodSettings[methodArray[1]]));
             }
         },
         showSummary(newVal) {
