@@ -135,10 +135,10 @@ export default {
             const methodArray = newVal.split('-');
             if(methodArray[0] == 'saved'){
                 console.log("Saved Method: " ,this.sessionObject.PaymentMethods[methodArray[1]]);
-                this.paymentFormSubmit(this.sessionObject.PaymentMethods[methodArray[1]]);
+                this.paymentFormSubmit(Object.assign({},this.sessionObject.PaymentMethods[methodArray[1]]));
             } else {
                 console.log("New Method: " ,this.sessionObject.PaymentMethodSettings[methodArray[1]]);
-                this.paymentFormSubmit(this.sessionObject.PaymentMethodSettings[methodArray[1]]);
+                this.paymentFormSubmit(Object.assign({}, this.sessionObject.PaymentMethodSettings[methodArray[1]]));
             }
         },
         showSummary(newVal) {
