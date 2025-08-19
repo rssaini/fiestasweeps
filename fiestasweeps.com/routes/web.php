@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/gidx-notification', [GidxController::class, 'notification'])->name('gidx.notification');
 Route::get('/gidx-redirect/{sessionId}', [GidxController::class, 'gidx_redirect'])->name('gidx.redirect');
-Route::post('/gidx-callback/{sessionId}', [GidxController::class, 'gidx_callback'])->name('gidx.callback');
+Route::post('/gidx-callback', [GidxController::class, 'gidx_callback'])->name('gidx.callback');
 
 Route::post('/gidx-create-session' , [GidxController::class, 'createSession'])->name('gidx.create.session');
 Route::post('/gidx-complete-session' , [GidxController::class, 'completeSession'])->name('gidx.complete.session');

@@ -213,10 +213,9 @@ class GidxController extends Controller
             'Accepted' => true
         ]);
     }
-    public function gidx_callback(Request $req, $sessionId){
-        Log::info('Gidx Callback: ', [
-            "Request" => $req,
-            "Session" => $sessionId,
+    public function gidx_callback(Request $req){
+        Log::info('Gidx Cashier Callback: ', [
+            "Request" => $req
         ]);
         return response()->json([
             'Accepted' => true

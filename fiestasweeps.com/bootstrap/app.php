@@ -20,10 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         );
         $middleware->validateCsrfTokens(except: [
-            'gidx-notification',
-            function ($request) {
-                return strpos($request->path(), 'gidx-callback/') !== false;
-            },
+            'gidx-notification','gidx-callback'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
