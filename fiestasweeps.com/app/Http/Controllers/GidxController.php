@@ -162,7 +162,7 @@ class GidxController extends Controller
             'MerchantTransactionID' => $transaction_id,
             'PayActionCode' => 'PAY',// PAYOUT, LOG
             'RedirectURL' => route('gidx.redirect', ['sessionId' => $session_id]),
-            'CallbackURL' => route('gidx.callback', ['sessionId' => $session_id]),
+            'CallbackURL' => route('gidx.callback'),
             'MerchantSessionID' => $session_id,
             'CustomerIpAddress' => $req->ip()
         ];
@@ -217,10 +217,11 @@ class GidxController extends Controller
         Log::info('Gidx Cashier Callback: ', [
             "Request" => $req
         ]);
+        /*
         return response()->json([
             'Accepted' => true
         ]);
-
+        */
     }
 
     public function createSession(Request $req){
