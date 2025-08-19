@@ -86,7 +86,7 @@
                     </div>
                     <div class="summary-item">
                         <span>Payment Method:</span>
-                        <span>{{ paymentMethodName }}</span>
+                        <span>{{ payMethodSummary }}</span>
                     </div>
                     <div class="summary-item summary-total">
                         <span>Total:</span>
@@ -129,6 +129,7 @@ export default {
             selectedPaymentMethod: '',
             formObject: null,
             completeSessionRequest: null,
+            payMethodSummary: ''
         }
     },
     watch: {
@@ -137,6 +138,7 @@ export default {
             const methodArray = newVal.split('-');
             if(methodArray[0] == 'saved'){
                 console.log("Saved Method: " ,this.sessionObject.PaymentMethods[methodArray[1]]);
+                this.payMethodSummary = this.sessionObject.PaymentMethods[methodArray[1]].DisplayName;
                 this.formObject = null;
                 this.completeSessionRequest = {
                     MerchantTransactionID: this.sessionObject.MerchantTransactionID,
@@ -175,9 +177,10 @@ export default {
                     },
                     onSaved: async (paymentMethod) => {
                         console.log("Final:", paymentMethod);
+                        this.payMethodSummary = this.sessionObject.PaymentMethods[methodArray[1]].DisplayName;
                         //The full PaymentMethod object returned from our API is passed to this function.
                         //Use it to populate your CompleteSession request and finalize the transaction.
-                        let completeSessionRequest = {
+                        this.completeSessionRequest = {
                             MerchantTransactionID: this.sessionObject.MerchantTransactionID,
                             MerchantSessionID: this.sessionObject.MerchantSessionID,
                             PaymentMethod: {
@@ -194,7 +197,7 @@ export default {
                                 CurrencyCode: 'USD'
                             },
                         };
-                        console.log(completeSessionRequest);
+                        console.log(this.completeSessionRequest);
 
                     },
                     theme: 'material'
@@ -267,10 +270,11 @@ export default {
             if(this.formObject !== null){
                 this.formObject.submit();
 
-                let message = `Processing payment of $${this.finalAmount.toFixed(2)} via ${this.paymentMethodName}`;
+                let message = `Processing payment of $${this.finalAmount.toFixed(2)} via ${this.payMethodSummary}`;
                 console.log(this.sessionObject, message);
+                this.paymentFormSubmit();
             } else {
-
+                this.paymentFormSubmit();
             }
         }
     },
