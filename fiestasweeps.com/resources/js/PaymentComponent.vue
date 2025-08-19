@@ -250,7 +250,7 @@ export default {
                 });
                 const data = await response.json();
                 alert("Payment Session Complete");
-                window.location.reload();
+                //window.location.reload();
                 //this.sessionData = data;
                 // this.toggleFundsStart();
                 console.log("complete: ", data);
