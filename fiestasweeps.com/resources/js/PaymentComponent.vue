@@ -198,7 +198,7 @@ export default {
                             },
                         };
                         console.log(this.completeSessionRequest);
-
+                        this.paymentFormSubmit();
                     },
                     theme: 'material'
                 });
@@ -272,7 +272,6 @@ export default {
 
                 let message = `Processing payment of $${this.finalAmount.toFixed(2)} via ${this.payMethodSummary}`;
                 console.log(this.sessionObject, message);
-                this.paymentFormSubmit();
             } else {
                 this.paymentFormSubmit();
             }
