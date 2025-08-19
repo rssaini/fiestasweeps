@@ -16,12 +16,12 @@
     "src": "node_modules/.pnpm/@fortawesome+fontawesome-free@7.0.0/node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
   },
   "resources/js/main.js": {
-    "file": "assets/main-CFPGCLJM.js",
+    "file": "assets/main-Cf2M_8Qs.js",
     "name": "main",
     "src": "resources/js/main.js",
     "isEntry": true,
     "css": [
-      "assets/main-DCwQuIwQ.css"
+      "assets/main-D0tA4USf.css"
     ],
     "assets": [
       "assets/fa-brands-400-DFY6gyJh.woff2",
