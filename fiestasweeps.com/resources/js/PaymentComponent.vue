@@ -164,7 +164,7 @@ export default {
                                 Token: paymentMethod.Token,
                             },
                             PaymentAmount: {
-                                PaymentAmount: 10.0,
+                                PaymentAmount: this.finalAmount,
                                 BonusAmount: 0.0,
                                 BonusDetails: "No Bonus",
                                 FeeAmount: 0.0,
@@ -184,6 +184,8 @@ export default {
                                 body: JSON.stringify(completeSessionRequest)
                             });
                             const data = await response.json();
+                            alert("Payment Session Complete");
+                            window.location.reload();
                             //this.sessionData = data;
                             // this.toggleFundsStart();
                             console.log("complete: ", data);
