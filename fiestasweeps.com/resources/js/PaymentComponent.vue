@@ -236,6 +236,8 @@ export default {
         canProceed() {
             return this.finalAmount > 0 && this.selectedPaymentMethod !== '';
         },
+    },
+    methods: {
         async paymentFormSubmit(){
             try{
                 const response = await fetch("/gidx-complete-session", {
@@ -255,9 +257,7 @@ export default {
             }catch(err){
                 console.log(err);
             }
-        }
-    },
-    methods: {
+        },
         closeModal() {
             this.toggleShowModal();
             // this.$emit('close');
