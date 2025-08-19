@@ -159,7 +159,10 @@ export default {
                         let completeSessionRequest = {
                             MerchantTransactionID: this.sessionObject.MerchantTransactionID,
                             MerchantSessionID: this.sessionObject.MerchantSessionID,
-                            PaymentMethod: paymentMethod,
+                            PaymentMethod: {
+                                Type: paymentMethod.Type,
+                                Token: paymentMethod.Token,
+                            },
                             PaymentAmount: {
                                 PaymentAmount: 10.0,
                                 BonusAmount: 0.0,
