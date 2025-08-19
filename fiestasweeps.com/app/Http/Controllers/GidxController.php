@@ -217,11 +217,11 @@ class GidxController extends Controller
         Log::info('Gidx Cashier Callback: ', [
             "Request" => $req
         ]);
-        /*
+
         return response()->json([
-            'Accepted' => true
+            'MerchantTransactionID' => $req->MerchantTransactionID
         ]);
-        */
+
     }
 
     public function createSession(Request $req){
