@@ -25,7 +25,12 @@ class GidxController extends Controller
         }catch(\Exception $e){
             $customer = Customer::create([
                 'customer_id' => (string) Str::uuid(),
-                'users' => $user->id
+                'users' => $user->id,
+                'address1' => $req->address1,
+                'address2' => $req->address2,
+                'city' => $req->city,
+                'state' => $req->state,
+                'zip' => $req->zip,
             ]);
         }
         $gidx = new GidxService();
