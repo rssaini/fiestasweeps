@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    protected $fillable = ['customer_id', 'users', 'reasons'];
+    protected $fillable = ['customer_id', 'users', 'reasons', 'address1', 'address2', 'city', 'state', 'zip'];
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

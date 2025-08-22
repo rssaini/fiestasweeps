@@ -63,6 +63,34 @@
                                     <span v-if="!profile.dob" style="color: #ff8787">Required Field</span>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Address Line 1</label>
+                                    <input type="text" name="address1" required v-model="this.profile.address1">
+                                    <span v-if="!profile.address1" style="color: #ff8787">Required Field</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Address Line 2</label>
+                                    <input type="text" name="dob" v-model="this.profile.address2">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" name="city" required v-model="this.profile.city">
+                                    <span v-if="!profile.city" style="color: #ff8787">Required Field</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <input type="text" name="state" required v-model="this.profile.state">
+                                    <span v-if="!profile.state" style="color: #ff8787">Required Field</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Zip Code</label>
+                                    <input type="text" name="zip" required v-model="this.profile.zip">
+                                    <span v-if="!profile.zip" style="color: #ff8787">Required Field</span>
+                                </div>
+                            </div>
                             <button :disabled="verificationProcess" @click="startVerification" class="cta-button">Update & Verify
                                 <span v-if="verificationProcess" class="fa fa-spin fa-spinner"></span>
                             </button>
@@ -118,7 +146,12 @@ export default {
             dob: "",
             phone: "",
             location: "",
-            reasons:""
+            reasons:"",
+            address1: "",
+            address2: "",
+            city: "",
+            state: "",
+            zip: "",
         },
         verificationBegin: false,
         verificationProcess: false,
