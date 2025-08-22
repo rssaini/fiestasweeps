@@ -271,7 +271,9 @@ export default {
         }
     },
     async startVerification(){
-        if(!(this.profile.email && this.profile.fname && this.profile.lname && this.profile.dob && this.profile.phone)){
+        if(!(this.profile.email && this.profile.fname && this.profile.lname && this.profile.dob && this.profile.phone &&
+            this.profile.address1 && this.profile.city && this.profile.state && this.profile.zip
+        )){
             return;
         }
         this.verificationProcess = true;
