@@ -323,6 +323,11 @@ export default {
             this.profile.email = data.email;
             this.profile.phone = data.phone;
             this.profile.reasons = data.reasons;
+            this.profile.address1 = data.address1;
+            this.profile.address2 = data.address2;
+            this.profile.city = data.city;
+            this.profile.state = data.state;
+            this.profile.zip = data.zip;
         } catch (error) {
             console.error('Error generating QR code:', error);
         }

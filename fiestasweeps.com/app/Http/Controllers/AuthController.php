@@ -208,9 +208,19 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         $reasons = '';
+        $address1 = '';
+        $address2 = '';
+        $city = '';
+        $state = '';
+        $zip = '';
         try{
             $customer = Customer::where('users', auth()->user()->id)->firstOrFail();
             $reasons = $customer->reasons;
+            $address1 = $customer->address1;
+            $address2 = $customer->address2;
+            $city = $customer->city;
+            $state = $customer->state;
+            $zip = $customer->zip;
         }catch(\Exception $e){
 
         }
@@ -222,6 +232,11 @@ class AuthController extends Controller
             'phone' => auth()->user()->phone,
             'dob' => auth()->user()->dob,
             'reasons' => $reasons,
+            'address1' => $address1,
+            'address2' => $address2,
+            'city' => $city,
+            'state' => $state,
+            'zip' => $zip,
         ]);
     }
 }
