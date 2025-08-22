@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>State</label>
-                                    <input type="text" name="state" required v-model="this.profile.state">
+                                    <input placeholder="2-Digit State Code" maxlength="2" type="text" name="state" required v-model="this.profile.state">
                                     <span v-if="!profile.state" style="color: #ff8787">Required Field</span>
                                 </div>
                                 <div class="form-group">
