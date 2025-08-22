@@ -255,9 +255,9 @@ export default {
                     alert("Payment Failed");
                 }
 
-                //window.location.reload();
-                //this.sessionData = data;
-                // this.toggleFundsStart();
+                window.location.reload();
+                this.sessionData = data;
+                this.toggleFundsStart();
                 console.log("complete: ", data);
             }catch(err){
                 console.log(err);
