@@ -249,7 +249,12 @@ export default {
                     body: JSON.stringify(this.completeSessionRequest)
                 });
                 const data = await response.json();
-                alert("Payment Session Complete");
+                if(data.PaymentDetails && data.PaymentDetails.length > 0 && data.PaymentDetails[0].PaymentStatusCode == 0){
+                    alert("Payment Complete");
+                } else {
+                    alert("Payment Failed");
+                }
+
                 //window.location.reload();
                 //this.sessionData = data;
                 // this.toggleFundsStart();

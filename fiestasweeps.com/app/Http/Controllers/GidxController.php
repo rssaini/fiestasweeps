@@ -262,6 +262,17 @@ class GidxController extends Controller
         Log::info('Gidx Complete Session Request: ', $req->all());
         $gidx = new GidxService();
         $response = $gidx->completeSession($req->all());
+        try{
+            $Pd = $response['PaymentDetails'][0];
+            if($Pd['PaymentStatusCode'] == 0){
+                $user_id = auth()->user()->id;
+                $amount = $Pd['PaymentAmount'];
+                $customer = Customer::where('users', $user_id)->first();
+                $customer->balance += $amount;
+                $customer->total_deposited += $amount;
+                $customer->save();
+            }
+        } catch(\Exception $e){}
         Log::info('Gidx Complete Session Response: ', $response);
         return response()->json($response);
     }
