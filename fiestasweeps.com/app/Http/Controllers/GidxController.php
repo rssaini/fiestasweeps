@@ -72,20 +72,20 @@ class GidxController extends Controller
             ];
         }
 
-        if($req->AddressLine1 != null && $req->AddressLine1 != ''){
-            $data['AddressLine1'] = $req->AddressLine1;
+        if($req->address1 != null && $req->address1 != ''){
+            $data['AddressLine1'] = $req->address1;
         }
-        if($req->AddressLine2 != null && $req->AddressLine2 != ''){
-            $data['AddressLine2'] = $req->AddressLine2;
+        if($req->address2 != null && $req->address2 != ''){
+            $data['AddressLine2'] = $req->address2;
         }
-        if($req->City != null && $req->City != ''){
-            $data['City'] = $req->City;
+        if($req->city != null && $req->city != ''){
+            $data['City'] = $req->city;
         }
-        if($req->StateCode != null && $req->StateCode != ''){
-            $data['StateCode'] = $req->StateCode;
+        if($req->state != null && $req->state != ''){
+            $data['StateCode'] = $req->state;
         }
-        if($req->PostalCode != null && $req->PostalCode != ''){
-            $data['PostalCode'] = $req->PostalCode;
+        if($req->zip != null && $req->zip != ''){
+            $data['PostalCode'] = $req->zip;
         }
         if($req->CountryCode != null && $req->CountryCode != ''){
             $data['CountryCode'] = $req->CountryCode;
