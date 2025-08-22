@@ -85,6 +85,8 @@
                                     <input placeholder="2-Digit State Code" maxlength="2" type="text" name="state" required v-model="this.profile.state">
                                     <span v-if="!profile.state" style="color: #ff8787">Required Field</span>
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group">
                                     <label>Zip Code</label>
                                     <input type="text" name="zip" required v-model="this.profile.zip">
