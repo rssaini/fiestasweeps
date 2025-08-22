@@ -22,6 +22,12 @@ class GidxController extends Controller
         $customer = null;
         try{
             $customer = Customer::where('users', $user->id)->firstOrFail();
+            $customer->address1 = $req->address1;
+            $customer->address2 = $req->address2;
+            $customer->city = $req->city;
+            $customer->state = $req->state;
+            $customer->zip = $req->zip;
+            $customer->save();
         }catch(\Exception $e){
             $customer = Customer::create([
                 'customer_id' => (string) Str::uuid(),
