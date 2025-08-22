@@ -13,7 +13,7 @@
             </div>
             <div v-else>
                 <div v-if="balancePage">
-                    <button @click="addFunds" class="cta-button">Add Funds</button>
+                    <button @click="addFunds" :disabled="addFundButtonDisabled" class="cta-button">Add Funds</button>
                     <payment-component v-if="addFundsStarted" :toggleShowModal="toggleFundsStart" :session-object="sessionData" />
                 </div>
                 <div v-if="IdentityPage">
@@ -123,6 +123,7 @@ export default {
         verificationBegin: false,
         verificationProcess: false,
         addFundsStarted: false,
+        addFundButtonDisabled: false,
     };
   },
   methods: {
@@ -130,6 +131,7 @@ export default {
         this.addFundsStarted = !this.addFundsStarted;
     },
     async addFunds(){
+        this.addFundButtonDisabled = true;
         this.allowLocation();
         try{
             const response = await fetch("/gidx-create-session", {
@@ -141,11 +143,63 @@ export default {
                 body: JSON.stringify(this.profile)
             });
             const data = await response.json();
-            this.sessionData = data;
-            this.toggleFundsStart();
+            const reasons = data.ReasonCodes;
+            let flag = true;
+            if(!reasons.includes('ID-VERIFIED')){
+                flag = false;
+                alert("Your Identity is not verified.");
+            }
+            if(flag && (
+                reasons.includes('ID-UA18') ||
+                reasons.includes('ID-UA19') ||
+                reasons.includes('ID-UA21') ||
+                reasons.includes('ID-BLOCK') ||
+                reasons.includes('ID-DECEASED') ||
+                reasons.includes('ID-HR') ||
+                reasons.includes('DFP-HR-CONN') ||
+                reasons.includes('LL-BLOCK') ||
+                reasons.includes('DFP-VPRP')
+            )){
+                flag = false;
+                alert("You are not elegible to add funds, please contact support for more details");
+            }
+            if(flag && reasons.includes("PAY-HVEL")){
+                flag = false;
+                alert("Error: Transactions at a high velocity.");
+            }
+            if(flag && reasons.includes("PAY-MULTI-DFP")){
+                flag = false;
+                alert("Error: You are attempting transactions from multiple devices.");
+            }
+            if(flag && reasons.includes("PAY-LL-DIST")){
+                if(!confirm("You are not at home location.Are you sure to process this transaction")){
+                    flag = false;
+                }
+            }
+            if(flag && reasons.includes("PAY-LL-UNKN")){
+                if(!confirm("Previous transaction Location mismatch. Are you sure to continue")){
+                    flag = false;
+                }
+            }
+            if(flag && reasons.includes("PAY-METH-EXP")){
+                if(!confirm("One or more of the payment methods have expired and need to be updated")){
+                    flag = false;
+                }
+            }
+            if(flag && reasons.includes("PAY-MATCH-PO")){
+                if(!confirm("You are attempting to payout for the same amount of deposite in last 24 hour")){
+                    flag = false;
+                }
+            }
+            if(flag){
+                this.sessionData = data;
+                this.toggleFundsStart();
+            }
+            this.addFundButtonDisabled = false;
             console.log(data);
         }catch(err){
             console.log(err);
+            this.addFundButtonDisabled = false;
         }
     },
     allowLocation() {
