@@ -12,7 +12,7 @@
                 <div class="amount-section">
                     <h3 class="section-title">Payment Amount</h3>
                     <div class="amount-options">
-                        <div v-for="(amount, index) in sessionObject.PaymentAmounts" class="amount-option" :key="`amount-${index}`">
+                        <div v-for="(amount, index) in sessionObject.PaymentAmounts.filter(s => (s.PaymentAmount > 0))" class="amount-option" :key="`amount-${index}`">
                             <input type="radio" :id="`amount-${amount.PaymentAmount}`" name="amount" :value="amount.PaymentAmount" v-model="selectedAmount">
                             <label :for="`amount-${amount.PaymentAmount}`">${{ amount.PaymentAmount }}</label>
                         </div>
