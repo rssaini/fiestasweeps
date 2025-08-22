@@ -249,7 +249,7 @@ export default {
                     body: JSON.stringify(this.completeSessionRequest)
                 });
                 const data = await response.json();
-                if(data.PaymentDetails && data.PaymentDetails.length > 0 && data.PaymentDetails[0].PaymentStatusCode == 0){
+                if(data.PaymentDetails && data.PaymentDetails.length > 0 && data.PaymentDetails[0].PaymentStatusCode == 1){
                     alert("Payment Complete");
                 } else {
                     alert("Payment Failed");

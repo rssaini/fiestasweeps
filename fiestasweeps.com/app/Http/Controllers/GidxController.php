@@ -264,7 +264,7 @@ class GidxController extends Controller
         $response = $gidx->completeSession($req->all());
         try{
             $Pd = $response['PaymentDetails'][0];
-            if($Pd['PaymentStatusCode'] == 0){
+            if($Pd['PaymentStatusCode'] == 1){
                 $user_id = auth()->user()->id;
                 $amount = $Pd['PaymentAmount'];
                 $customer = Customer::where('users', $user_id)->first();
