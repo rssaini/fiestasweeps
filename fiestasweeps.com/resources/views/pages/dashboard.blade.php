@@ -353,20 +353,20 @@
             <div id="gameplay" class="content-section">
                 <div class="content-header">
                     <h1>Gameplay</h1>
-                    <p>Elevae your gaming experience</p>
+                    <p>Elevate your gaming experience</p>
                 </div>
                 <div class="content-card">
                     <div class="games-container">
 
                         <div class="game-card" style="text-align:center">
                             <img src="assets/vblink.png" alt="VBlink">
-                            <button type="button" class="cta-button">Play Now</button>
+                            <button type="button" class="cta-button" onclick="openGame('vblink')">Play Now</button>
                             <p>A sweepstakes gaming platform that offers a mix of fish shooting games, slot machines, and skill-based challenges. It provides an engaging experience where players can compete in fish redemption shooter games, testing their skills to win prizes.</p>
 
                         </div>
                         <div class="game-card" style="text-align:center">
                             <img src="assets/ultrapanda.png" alt="Ultra Panda">
-                            <button type="button" class="cta-button">Play Now</button>
+                            <button type="button" class="cta-button" onclick="openGame('ultra_panda')">Play Now</button>
                             <p>An exciting online slot game that combines visually stunning graphics with engaging gameplay mechanics. The game features a five-reel slot format with multiple paylines, allowing players to match symbols for winning combinations.</p>
 
                         </div>
@@ -374,7 +374,7 @@
 
                         <div class="game-card" style="text-align:center">
                             <img src="assets/gamevault.png" alt="Game Vault">
-                            <button type="button" class="cta-button">Play Now</button>
+                            <button type="button" class="cta-button" onclick="openGame('game_vault')">Play Now</button>
                             <p>An online gaming platform that offers a wide selection of casino-style games, including slots, fish games, keno, poker, and table games. It serves as a centralized hub where players can access multiple gambling-style games from a single app.</p>
                         </div>
                     </div>
@@ -394,8 +394,29 @@
             </div>
         </div>
     </div>
+    <div style="display:none">
+        <button onclick="closeFrame()">X</button>
+        <iframe id="game_frame"></iframe>
+    </div>
 
     <script>
+        function closeFrame(){
+            $('#game_frame').parent().hide();
+        }
+        function openGame(game){
+            $('#game_frame').parent().show();
+            switch(game){
+                case 'vblink':
+                    break;
+                case 'ultra_panda':
+                    $('#game_frame')[0].src = "https://www.ultrapanda.mobi/";
+                    break;
+                case 'game_vault':
+                    break;
+                default:
+                    alert("Invalid Game Selected.");
+            }
+        }
         function updateStat(stat, checkbox) {
             const isChecked = checkbox.checked ? 1 : 0;
             fetch(`/stats-update?stat_name=${stat}&value=${isChecked}`)
