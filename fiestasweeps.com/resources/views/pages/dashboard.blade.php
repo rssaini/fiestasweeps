@@ -410,7 +410,7 @@
             }).done(function(data){
                 if(data.reasons != ''){
                     //var re = data.reasons.split(',');
-                    if(!(data.reasons.includes('ID_VERIFIED'))){
+                    if(!(data.reasons.includes('ID-VERIFIED'))){
                         alert("Your Identity is not Verified.\nPlease Verify your profile first.");
                         window.location.href = "/dashboard/identity-verification";
                         return;
