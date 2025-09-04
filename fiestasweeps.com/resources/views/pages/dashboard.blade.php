@@ -408,8 +408,14 @@
             $.ajax({
                 url: '/user/profile',
             }).done(function(data){
-                console.log(data);
-                return;
+                if(data.reasons != ''){
+                    var re = data.split(',');
+                    if(!in_array('ID_VERIFIED', re)){
+                        alert("Your Identity is not Verified.\nPlease Verify your profile first.");
+                        window.location.href = "/dashboard/identity-verification";
+                        return;
+                    }
+                }
                 $('.page-loader').removeClass('hidden');
                 $('#game_frame').parent().show();
                 switch(game){
