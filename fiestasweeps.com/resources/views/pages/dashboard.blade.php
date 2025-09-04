@@ -402,7 +402,7 @@
     <script>
         function closeFrame(){
             $('#game_frame').parent().hide();
-            $('#game_frame')[0].src = "javascript:;";
+            $('#game_frame')[0].src = "about:blank";
         }
         function openGame(game){
             $('#game_frame').parent().show();
