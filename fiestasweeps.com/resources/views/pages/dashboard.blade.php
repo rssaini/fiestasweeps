@@ -394,14 +394,15 @@
             </div>
         </div>
     </div>
-    <div style="display:none">
-        <button onclick="closeFrame()">X</button>
-        <iframe id="game_frame"></iframe>
+    <div style="display:none;width: 100%;height: 100vh;position: fixed;top: 0;left: 0;z-index: 2000;">
+        <button style="position: absolute;top: 10px;right: 10px;z-index: 202;cursor: pointer;" onclick="closeFrame()">X</button>
+        <iframe style="width: 100%;height: 100%;position: absolute;top: 0;left: 0;z-index: 201;" id="game_frame"></iframe>
     </div>
 
     <script>
         function closeFrame(){
             $('#game_frame').parent().hide();
+            $('#game_frame')[0].src = "javascript:;";
         }
         function openGame(game){
             $('#game_frame').parent().show();
