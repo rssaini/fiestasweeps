@@ -362,11 +362,13 @@
                             <img src="assets/vblink.png" alt="VBlink">
                             <h3>VBlink</h3>
                             <p>A sweepstakes gaming platform that offers a mix of fish shooting games, slot machines, and skill-based challenges. It provides an engaging experience where players can compete in fish redemption shooter games, testing their skills to win prizes.</p>
+                            <button type="button" class="cta-button">Play Now</button>
                         </div>
                         <div class="game-card">
                             <img src="assets/ultrapanda.png" alt="Ultra Panda">
                             <h3>Ultra Panda</h3>
                             <p>An exciting online slot game that combines visually stunning graphics with engaging gameplay mechanics. The game features a five-reel slot format with multiple paylines, allowing players to match symbols for winning combinations.</p>
+                            <button type="button" class="cta-button">Play Now</button>
                         </div>
 
 
@@ -374,10 +376,8 @@
                             <img src="assets/gamevault.png" alt="Game Vault">
                             <h3>Game Vault</h3>
                             <p>An online gaming platform that offers a wide selection of casino-style games, including slots, fish games, keno, poker, and table games. It serves as a centralized hub where players can access multiple gambling-style games from a single app.</p>
+                            <button type="button" class="cta-button">Play Now</button>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
