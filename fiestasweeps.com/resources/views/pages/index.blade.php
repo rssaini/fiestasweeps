@@ -52,12 +52,12 @@
         <section id="games">
             <h2>Our Featured Games</h2>
             <div class="games-container">
-                <div class="game-card">
+                <div class="game-card" style="display:none;">
                     <img src="assets/orionstars.png" alt="Orion Stars">
                     <h3>Orion Stars</h3>
                     <p>An innovative sweepstakes and skill-based gaming platform that blends classic arcade-style games with modern technology. It offers a diverse range of games, including fish games, slot games, and skill-based challenges, making it appealing to both casual and competitive players.</p>
                 </div>
-                <div class="game-card">
+                <div class="game-card" style="display:none;">
                     <img src="assets/juwa.png" alt="Juwa">
                     <h3>Juwa</h3>
                     <p>A skill-based gaming platform that specializes in fish table games, offering an engaging arcade-style experience. Players aim and shoot at virtual sea creatures, testing their precision and strategy. The game features 14 unique variations, each with different visuals, gameplay speeds, and objectives.</p>
@@ -67,17 +67,17 @@
                     <h3>River Sweeps</h3>
                     <p>A sweepstakes gaming platform that offers a variety of fish games, slot games, keno, and poker. It provides an engaging experience where players can compete in fish redemption shooter games, testing their skills to win prizes.</p>
                 </div>
-                <div class="game-card">
+                <div class="game-card" style="display:none;">
                     <img src="assets/firekirin.png" alt="Fire Kirin">
                     <h3>Fire Kirin</h3>
                     <p>An arcade-style fish shooting game that combines skill, precision, and strategy. Players aim and shoot at various underwater creatures, each with different point values, to earn rewards.</p>
                 </div>
-                <div class="game-card"  style="display: none;">
+                <div class="game-card">
                     <img src="assets/vblink.png" alt="VBlink">
                     <h3>VBlink</h3>
                     <p>A sweepstakes gaming platform that offers a mix of fish shooting games, slot machines, and skill-based challenges. It provides an engaging experience where players can compete in fish redemption shooter games, testing their skills to win prizes.</p>
                 </div>
-                <div class="game-card"  style="display: none;">
+                <div class="game-card">
                     <img src="assets/ultrapanda.png" alt="Ultra Panda">
                     <h3>Ultra Panda</h3>
                     <p>An exciting online slot game that combines visually stunning graphics with engaging gameplay mechanics. The game features a five-reel slot format with multiple paylines, allowing players to match symbols for winning combinations.</p>
@@ -92,7 +92,7 @@
                     <h3>Vegas Sweeps</h3>
                     <p>A sweepstakes gaming platform that offers a variety of slot games, card games, fish games, keno, and blackjack. Unlike traditional online casinos, Vegas Sweeps operates under a sweepstakes model, allowing players to participate and win prizes without direct stake betting.</p>
                 </div>
-                <div class="game-card"  style="display: none;">
+                <div class="game-card">
                     <img src="assets/gamevault.png" alt="Game Vault">
                     <h3>Game Vault</h3>
                     <p>An online gaming platform that offers a wide selection of casino-style games, including slots, fish games, keno, poker, and table games. It serves as a centralized hub where players can access multiple gambling-style games from a single app.</p>
