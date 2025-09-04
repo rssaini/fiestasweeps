@@ -409,11 +409,13 @@
             $('#game_frame').parent().show();
             switch(game){
                 case 'vblink':
+                    $('#game_frame')[0].src = "https://www.vblink777.club/";
                     break;
                 case 'ultra_panda':
                     $('#game_frame')[0].src = "https://www.ultrapanda.mobi/";
                     break;
                 case 'game_vault':
+                    $('#game_frame')[0].src = "https://product.gamevault7777.com/web/";
                     break;
                 default:
                     alert("Invalid Game Selected.");
